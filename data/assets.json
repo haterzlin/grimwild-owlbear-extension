@@ -1,14 +1,14 @@
 {
-  "bard": "/assets/bard-R3bWg4a8.webp",
-  "berserker": "/assets/berserker-CD4sP1z1.webp",
-  "cleric": "/assets/cleric-AUMMv_bA.webp",
-  "druid": "/assets/druid-CSn4biQ7.webp",
-  "fighter": "/assets/fighter-8IlzykGF.webp",
-  "monk": "/assets/monk-DpIPgFKo.webp",
-  "paladin": "/assets/paladin-DrDKWUh-.webp",
-  "ranger": "/assets/ranger-BJwuBH29.webp",
-  "rogue": "/assets/rogue-Bv-LgLCy.webp",
-  "sorcerer": "/assets/sorcerer-BCfJdNJr.webp",
-  "warlock": "/assets/warlock-CeQtJVPg.webp",
-  "wizard": "/assets/wizard-B-Ah8_Bn.webp"
+  "bard": "/assets/bard.webp",
+  "berserker": "/assets/berserker.webp",
+  "cleric": "/assets/cleric.webp",
+  "druid": "/assets/druid.webp",
+  "fighter": "/assets/fighter.webp",
+  "monk": "/assets/monk.webp",
+  "paladin": "/assets/paladin.webp",
+  "ranger": "/assets/ranger.webp",
+  "rogue": "/assets/rogue.webp",
+  "sorcerer": "/assets/sorcerer.webp",
+  "warlock": "/assets/warlock.webp",
+  "wizard": "/assets/wizard.webp"
 }
