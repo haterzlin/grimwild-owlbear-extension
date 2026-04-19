@@ -14523,7 +14523,7 @@ const cr = o => {
 
 async function loadExternalGrimwildData() {
   try {
-    const [ assetsResponse, pathsResponse ] = await Promise.all([ fetch("/data/assets.json"), fetch("/data/paths.json") ]);
+    const [ assetsResponse, pathResponses ] = await Promise.all([ fetch("/data/assets.json"), Promise.all(Object.keys(vr).map((o => fetch(`/data/paths/${o}.json`).then((s => s.ok ? s.json().then((r => [ o, r ])) : [ o, null ])).catch((() => [ o, null ]))))) ]);
     if (assetsResponse.ok) {
       const externalAssets = await assetsResponse.json();
       externalAssets && typeof externalAssets === "object" && (Ns = {
@@ -14531,12 +14531,12 @@ async function loadExternalGrimwildData() {
         ...externalAssets
       });
     }
-    if (pathsResponse.ok) {
-      const externalPaths = await pathsResponse.json();
-      externalPaths && typeof externalPaths === "object" && (vr = {
+    const externalPaths = Object.fromEntries(pathResponses.filter((([, o]) => o && typeof o === "object")));
+    if (Object.keys(externalPaths).length > 0) {
+      vr = {
         ...vr,
         ...externalPaths
-      });
+      };
     }
   } catch (o) {
     console.warn("Failed to load external Grimwild data, using embedded bundle data.", o);
