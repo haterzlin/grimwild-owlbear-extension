@@ -12934,81 +12934,7 @@ const cr = o => {
       width: 450
     }) ]
   });
-}, Fp = "/assets/artificer.webp", Pp = "/assets/bard.webp", $p = "/assets/berserker.webp", tv = "/assets/cleric.webp", ev = "/assets/druid.webp", av = "/assets/fighter.webp", nv = "/assets/monk.webp", iv = "/assets/paladin.webp", lv = "/assets/psion.webp", sv = "/assets/ranger.webp", ov = "/assets/rogue.webp", uv = "/assets/sorcerer.webp", rv = "/assets/warlock.webp", cv = "/assets/wizard.webp", dv = "ARTIFICER", fv = "ALSO: Inventor, Mechanist, Tinkerer", hv = "You shape the world with your creations, blending ingenuity, technology, and just a touch of magic to forge wonders from the mundane.", mv = {
-  name: "INGENUITY",
-  description: "You harness the power of creativity. Begin play with <b>1 minor arcana</b> and <b>1 major arcana</b>, chosen from those on <i>pg. 150</i> onwards or work with the GM to create your own arcana. You do not have talents—instead choose a <b>gadget</b> from your path list or reflavor a non-path talent as a gadget. Others can use your gadgets but take +1t and must always roll to use them.<br><br>When given time, you can pull off <b>potent feats of mechanical ingenuity</b> like <i>crafting a temporary device without proper materials</i> or <i>combining arcana and gadgets for wild effects</i>. You can <b>push yourself</b> to do it on the spot.<br><br><b>Engineering:</b> Take +1d at creating, repairing, or destroying mechanisms and arcana.<br><br><b>GROWTH:</b> Every 2 levels, gain a new minor and major arcana.",
-  trackers: [ {
-    name: "Push",
-    type: "checkbox"
-  } ]
-}, yv = [ {
-  name: "Making Up Gadgets - Advice",
-  description: "Reflavor your arcana, toss in some magitech buzzwords that <i>almost</i> make sense, and use them to sound like you know what you’re talking about—perfect for baffling the less inventive.<br><br> <b>MAGITECHNOBABBLE</b> <i>Roll 1 on each table, smash them together, and ramble on.</i><br><br> <table> <tr> <td>alche-</td> <td>tink-</td> <td>zapp-</td> <td>blun-</td> <td>fum-</td> <td>dab-</td> </tr> <tr> <td>fizzi-</td> <td>glim-</td> <td>boond-</td> <td>gogg-</td> <td>sput-</td> <td>splin-</td> </tr> <tr> <td>clank-</td> <td>cogg-</td> <td>whim-</td> <td>philz-</td> <td>miz-</td> <td>bung-</td> </tr> <tr> <td>mag-</td> <td>quib-</td> <td>wob-</td> <td>zind-</td> <td>cran-</td> <td>rat-</td> </tr> <tr> <td>whizz-</td> <td>griz-</td> <td>scran-</td> <td>quirk-</td> <td>jig-</td> <td>quab-</td> </tr> </table> <br> <table> <tr> <td>-nic</td> <td>-crank</td> <td>-nar</td> <td>-tome</td> <td>-nox</td> <td>-lash</td> </tr> <tr> <td>-tor</td> <td>-mage</td> <td>-gram</td> <td>-phage</td> <td>-press</td> <td>-hinge</td> </tr> <tr> <td>-al</td> <td>-flux</td> <td>-plex</td> <td>-tron</td> <td>-scope</td> <td>-ring</td> </tr> <tr> <td>-con</td> <td>-bolt</td> <td>-lock</td> <td>-spark</td> <td>-spire</td> <td>-shift</td> </tr> <tr> <td>-fuse</td> <td>-meter</td> <td>-gear</td> <td>-lume</td> <td>-turn</td> <td>-stone</td> </tr> <tr> <td>-matic</td> <td>-ator</td> <td>-cog</td> <td>-craft</td> <td>-drum</td> <td>-knob</td> </tr> </table> <br> <b>IT'S A...</b> metal, wood, crystal, cloth, glass, stone<br><br> <b>GADGET POWERED BY...</b> clockwork, burnables, steam, sunshine, kinetics, lightning<br><br> <b>THAT...</b> explodes, scans, builds, destroys, moves, protects<br><br> <b>BUT IS...</b> noisy, fragile, glowing, smelly, unstable, fidgety"
-} ], gv = [ {
-  name: "ANCHORSHOT",
-  description: "You have a hook, harpoon, and rope contraption that anchors large monsters to the ground. With it, you have <b>potency</b> to hinder the movement of anything elephant-sized or larger. When hit, the target becomes <b>4d Tethered</b>. It anchors to the ground so you can leave it.",
-  trackers: [ {
-    name: "Anchor",
-    type: "field"
-  } ]
-}, {
-  name: "AUTOMATONS",
-  description: "You have three small helpers you created. Each has a different descriptor, an adjective that determines what tasks they can do. Each session, each has a <b>2d power pool</b> you roll to perform tasks. When assisting, they roll 1d of their pool. They can follow simple commands, without which they will simply search for you."
-}, {
-  name: "DOUBLE-BARRELED BLUNDERBUSS",
-  description: "You have a firearm that fires specialized, crafted ammo. You get one shot of each per session. When you shoot, choose the ammo: <i>blast core—drill shot—inferno shot—scatter shot—shrapnel burst—tangler shot</i>. Each shot has a <i>secondary</i> or <i>collateral effect</i> related to the type. You can fire two ammo types at the same time for a <b>potent shot</b>.",
-  trackers: [ {
-    name: "B",
-    type: "checkbox"
-  }, {
-    name: "D",
-    type: "checkbox"
-  }, {
-    name: "I",
-    type: "checkbox"
-  }, {
-    name: "SC",
-    type: "checkbox"
-  }, {
-    name: "SH",
-    type: "checkbox"
-  }, {
-    name: "T",
-    type: "checkbox"
-  } ]
-}, {
-  name: "GRENADES",
-  description: "Each session, you have a <b>4d Grenades</b> resource pool. You have access to the following bombs: <i>choking—flashbang—glue—smoke—stink</i>. Bombs can affect multiple targets or an area even without <b>potency</b>. You can drop 1 and roll the pool to have a <b>potent grenade</b>.",
-  trackers: [ {
-    name: "Grenades",
-    type: "field"
-  } ]
-}, {
-  name: "MECHANICAL MOUNT",
-  description: "You have a small mechanical vehicle, like a <i>steamwork spider</i> or <i>smoke-belching cart</i>. It has three features: <i>all-terrain—armored—burrowing—grappling hook—submergible—turbo boost</i>. You can activate each perk once per session to pull off a <b>potent feat of piloting</b>. It also has one drawback: <i>conspicuous—horrifying—slow—unreliable</i>."
-}, {
-  name: "STEAMHAMMER",
-  description: "You have a large steam-infused warhammer. Each session, you have a <b>6d Steamhammer</b> power pool. You can roll the pool to pull off <b>potent feats of pulverizing force</b>. You can also not expend its steam to use it as a normal warhammer.",
-  trackers: [ {
-    name: "Steam",
-    type: "field"
-  } ]
-}, {
-  name: "SWIFTWING",
-  description: "You have <i>highly maneuverable</i> wings that allow you to glide (<i>not fly</i>). You gain a <b>3d power pool</b> while aloft, or <b>4d</b> if you have extreme height or speed. You must roll the pool as bonus dice with any physical roll made while aloft, including defenses. At 0d, you coast back to the ground.",
-  trackers: [ {
-    name: "Wing",
-    type: "field"
-  } ]
-} ], bv = "<i>If a gadget or arcana is ever lost, you can re-create one of them during any downtime. They take effort, but you remember the schematics.</i>", pv = {
-  name: dv,
-  description: fv,
-  quote: hv,
-  coreTalent: mv,
-  details: yv,
-  pathTalent: gv,
-  other: bv
-}, vv = "BARD", Av = "ALSO: Minstrel, Orator, Warlord", Ev = "You spin tales and songs that stir emotions, inspire bravery, and turn simple deeds into legends.", Sv = {
+}, Fp = "", Pp = "/assets/bard.webp", $p = "/assets/berserker.webp", tv = "/assets/cleric.webp", ev = "/assets/druid.webp", av = "/assets/fighter.webp", nv = "/assets/monk.webp", iv = "/assets/paladin.webp", lv = "", sv = "/assets/ranger.webp", ov = "/assets/rogue.webp", uv = "/assets/sorcerer.webp", rv = "/assets/warlock.webp", cv = "/assets/wizard.webp", dv = "", fv = "", hv = "", mv = null, yv = [], gv = [], bv = null, pv = null, vv = "BARD", Av = "ALSO: Minstrel, Orator, Warlord", Ev = "You spin tales and songs that stir emotions, inspire bravery, and turn simple deeds into legends.", Sv = {
   name: "BARDSONG",
   description: "Each session, you can sing <b>3 bardsongs</b>, rolling Presence. Sing one to pull off a <i>potent feat of emotional influence</i>, like <i>eliciting a vex response in an NPC, buffing a group of allies, or inflicting hindrances on enemies</i>. You can also sing one to <b>interrupt</b> an impact move. A bardsong's effect flows from its composition. Choose a <b>style</b>, <b>tune</b>, and <b>impact</b> (below) that matches the effect.<br><br>Each session, you can also sing <b>3 melodies</b>, spur-of-the-moment tunes without specific composition. Spend them to: <i>assist without risk</i>—<i>calm or intensify a vex response</i>—<i>clear a mark</i>. These don't require a roll. You cannot affect yourself.<br><br><b>GROWTH:</b> Every 3 levels, gain +1 bardsong and +1 melody per session.",
   trackers: [ {
@@ -13550,61 +13476,7 @@ const cr = o => {
   details: bA,
   pathTalent: pA,
   other: vA
-}, EA = "PSION", SA = "ALSO: Mentalist, Seer, Telepath", TA = "You unlock the limitless power of the mind, bending thought, will, and reality through focus and discipline.", OA = {
-  name: "AWAKENED MIND",
-  description: "You have spellcasting ability. Choose 2 bastions below, which act as touchstones for your psionic magic. You roll two stats combined to cast, forming the roll by adding the bastion's key stats <i>(below)</i> and subtracting two <i>(3 Brawn and 2 Wits = 3d)</i>.<br><br>Each session, you have <b>8 power points</b>. Spend 1 power point to cast a spell. You can <b>augment</b> it by spending 1 or more points to: <i>cast a potent spell—take +1d (max once) on the roll—ignore thorns from damage—add another of your bastions as a touchstone</i>.<br><br><b>GROWTH:</b> Every 2 levels, learn a new bastion and gain 2 power points per session.",
-  trackers: [ {
-    name: "Power Points",
-    type: "field"
-  }, {
-    name: "Bastions",
-    type: "fieldSmallLong"
-  } ]
-}, wA = [ {
-  name: "BASTIONS",
-  description: "Within your mind lie bastions of psionic power. As you grow stronger, you break down their walls, unlocking your true potential. These powers take shape as visions, psychic phenomena, and even physical manifestations in the form of <i>ectoplasm—pure essence of creation</i>.<br><br><table><tr><td><b>BIODYNAMICS</b> • Altering and enhancing your own body.</td></tr><tr><td><b>Key Stat:</b> Brawn + Agility.</td></tr><tr><td><b>Power:</b> <i>Heal your broken arm. Hold your breath for hours. Run faster than a horse.</i></td></tr></table><br><table><tr><td><b>CLAIRSENTIENCE</b> • Gaining knowledge and visions from the collective unconscious.</td></tr><tr><td><b>Key Stat:</b> Wits + Presence.</td></tr><tr><td><b>Power:</b> <i>Sense a hidden truth. See into someone's dreams. Find the way home.</i></td></tr></table><br><table><tr><td><b>METACREATION</b> • Creating objects from ectoplasm, pure mental energy.</td></tr><tr><td><b>Key Stat:</b> Brawn + Presence.</td></tr><tr><td><b>Power:</b> <i>Forge a glowing sword. Build a bridge of thought. Shape armor from pure will.</i></td></tr></table><br><table><tr><td><b>PSYCHOKINESIS</b> • Manipulating energy and force.</td></tr><tr><td><b>Key Stat:</b> Brawn + Wits.</td></tr><tr><td><b>Power:</b> <i>Shatter a boulder. Push an enemy back. Lift a heavy object with your mind.</i></td></tr></table><br><table><tr><td><b>TELEPATHY</b> • Mind-to-mind communication, manipulation, and control.</td></tr><tr><td><b>Key Stat:</b> Wits + Presence.</td></tr><tr><td><b>Power:</b> <i>Read someone's surface thoughts. Calm an angry mob. Implant a fleeting suggestion.</i></td></tr></table><br><table><tr><td><b>TRANSPOSITION</b> • Movement and manipulation of space.</td></tr><tr><td><b>Key Stat:</b> Agility + Wits.</td></tr><tr><td><b>Power:</b> <i>Teleport across a room. Switch places with an ally. Freeze someone in place.</i></td></tr></table>"
-} ], _A = [ {
-  name: "DISTURBED MIND",
-  description: "Your presence is highly disturbing to others. The GM judges an NPC's response, or you can spend story to set it: <i>agitated—fractured—paranoid—repulsed</i>. Once per session when you would take vex, a nearby sentient creature—even an ally—must instead take a vex response.",
-  trackers: [ {
-    name: "Vex",
-    type: "checkbox"
-  } ]
-}, {
-  name: "MIND SEED",
-  description: "When you plant thoughts or alter memories in someone's head, you can always choose to have them take effect exactly when you want them to. You can decide this at any time later. Once per session, you can use this for an <b>interrupt</b>.",
-  trackers: [ {
-    name: "Interrupt",
-    type: "checkbox"
-  } ]
-}, {
-  name: "MIND THIEF",
-  description: "On a critical on a bastion roll, refund the power points spent and gain 3 power points. This causes mental <b>collateral damage</b> around you: <i>confusion—hallucinations—headaches—panic</i>. One time only, you can make this a ritual-level effect, affecting all within miles."
-}, {
-  name: "PSYCHIC WARRIOR",
-  description: "On a perfect with a feat of martial prowess, spend no power points and take +1d on an immediate follow-up with a bastion. You can't follow-up with a bastion you just used."
-}, {
-  name: "READER",
-  description: "You gain 1 story per session and can spend story when you first meet someone to know their foremost surface thought—they are like an open book to you. If you follow-up on it, it counts as a <b>setup</b>.",
-  trackers: [ {
-    name: "Story",
-    type: "checkbox"
-  } ]
-}, {
-  name: "TUMULTUOUS MIND",
-  description: "You can spend 2 power points to gain potency on any Wits or Presence defense roll. Regardless of the roll, if the attacker is sentient, you can <b>interrupt</b> their next impact move."
-}, {
-  name: "WILDER",
-  description: "Your powers are inherently chaotic, either by nature or nurture, and you struggle to control them. Take +1d, but also +1t, on all psionic bastion rolls. You can never ignore thorns from any source, including by using your core talent. On a critical, regain the power points you just spent."
-} ], RA = null, CA = {
-  name: EA,
-  description: SA,
-  quote: TA,
-  coreTalent: OA,
-  details: wA,
-  pathTalent: _A,
-  other: RA
-}, BA = "RANGER", NA = "ALSO: Beastmaster, Pathfinder, Trapper", xA = "You stalk relentlessly, moving unseen through the wilderness, tracking your prey with deadly precision, and striking them at their weakest point.", DA = {
+}, EA = "", SA = "", TA = "", OA = null, wA = [], _A = [], RA = null, CA = null, BA = "RANGER", NA = "ALSO: Beastmaster, Pathfinder, Trapper", xA = "You stalk relentlessly, moving unseen through the wilderness, tracking your prey with deadly precision, and striking them at their weakest point.", DA = {
   name: "HUNTER’S MARK",
   description: "Twice per session, you can declare a weakness in a non-humanoid creature. Describe what you know or see, tagging it with a <b>2d Weakness</b> pool. When anyone targets the weakness specifically, you roll the pool as bonus dice on their roll. As it depletes, the creature learns to hide its weakness, causing it to shift its behavior. <b>Take spark</b> when a Weakness die rolls a perfect (not the overall result).<br><br><b>Prowess:</b> Take +1d at stealth, traversal, setting traps, and tracking.<br><br><b>Growth:</b> Every 2 levels, you can use Hunter's Mark one more time per session.",
   trackers: [ {
@@ -13917,7 +13789,6 @@ const cr = o => {
   pathTalent: fE,
   other: hE
 }, Ns = {
-  artificer: Fp,
   bard: Pp,
   berserker: $p,
   cleric: tv,
@@ -13925,14 +13796,12 @@ const cr = o => {
   fighter: av,
   monk: nv,
   paladin: iv,
-  psion: lv,
   ranger: sv,
   rogue: ov,
   sorcerer: uv,
   warlock: rv,
   wizard: cv
 }, vr = {
-  artificer: pv,
   bard: _v,
   berserker: kv,
   cleric: qv,
@@ -13940,7 +13809,6 @@ const cr = o => {
   fighter: iA,
   monk: fA,
   paladin: AA,
-  psion: CA,
   ranger: jA,
   rogue: QA,
   sorcerer: PA,
@@ -14334,7 +14202,7 @@ const cr = o => {
       }) ]
     }), d.jsx("div", {
       className: v.header,
-      children: o.path === "artificer" ? "GADGETS" : "TALENTS"
+      children: "TALENTS"
     }), d.jsx("img", {
       src: Ae
     }), o.talents.map(((g, p) => d.jsx(xs, {
@@ -14361,7 +14229,7 @@ const cr = o => {
       onClick: () => {
         h(!0);
       },
-      children: o.path === "artificer" ? "Add Gadget" : "Add Talent"
+      children: "Add Talent"
     }) ]
   });
 }, pE = "/assets/logo.webp", vE = ({player: o, onRemove: s, onOpen: r}) => d.jsx("div", {
