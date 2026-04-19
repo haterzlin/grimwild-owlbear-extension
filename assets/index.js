@@ -13393,9 +13393,14 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
   },
   children: d.jsxs("div", {
     className: v.characterRow,
-    children: [ d.jsx("img", {
-      src: o.path && Ns[o.path.toLowerCase()] ? Ns[o.path.toLowerCase()] : pE,
+    children: [ o.path && Ns[o.path.toLowerCase()] ? d.jsx("img", {
+      src: Ns[o.path.toLowerCase()],
       height: 40
+    }) : d.jsx("div", {
+      style: {
+        width: 40,
+        height: 40
+      }
     }), d.jsx("div", {
       className: v.fieldLabel,
       children: "PC: "
