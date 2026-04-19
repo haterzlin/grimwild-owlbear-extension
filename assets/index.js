@@ -14179,7 +14179,7 @@ const cr = o => {
     }) ]
   });
 }, Ch = ({player: o, updatePlayer: s, onSelect: r}) => {
-  const u = Object.keys(Ns);
+  const u = Object.keys(vr);
   return d.jsx("div", {
     className: v.pathList,
     children: u.map((m => d.jsxs("div", {
@@ -14523,20 +14523,17 @@ const cr = o => {
 
 async function loadExternalGrimwildData() {
   try {
-    const [ assetsResponse, pathResponses ] = await Promise.all([ fetch("/data/assets.json"), Promise.all(Object.keys(vr).map((o => fetch(`/data/paths/${o}.json`).then((s => s.ok ? s.json().then((r => [ o, r ])) : [ o, null ])).catch((() => [ o, null ]))))) ]);
+    let externalAssets = null;
+    const assetsResponse = await fetch("/data/assets.json");
     if (assetsResponse.ok) {
-      const externalAssets = await assetsResponse.json();
-      externalAssets && typeof externalAssets === "object" && (Ns = {
-        ...Ns,
-        ...externalAssets
-      });
+      externalAssets = await assetsResponse.json();
+      externalAssets && typeof externalAssets === "object" && (Ns = externalAssets);
     }
+    const pathKeys = externalAssets && typeof externalAssets === "object" ? Object.keys(externalAssets) : Object.keys(vr);
+    const pathResponses = await Promise.all(pathKeys.map((o => fetch(`/data/paths/${o}.json`).then((s => s.ok ? s.json().then((r => [ o, r ])) : [ o, null ])).catch((() => [ o, null ])))));
     const externalPaths = Object.fromEntries(pathResponses.filter((([, o]) => o && typeof o === "object")));
     if (Object.keys(externalPaths).length > 0) {
-      vr = {
-        ...vr,
-        ...externalPaths
-      };
+      vr = externalPaths;
     }
   } catch (o) {
     console.warn("Failed to load external Grimwild data, using embedded bundle data.", o);
