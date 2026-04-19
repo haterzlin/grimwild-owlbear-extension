@@ -13090,24 +13090,6 @@ const cr = o => {
 }, yE = ({player: o, updatePlayer: s, broadcast: r}) => {
   if (o.path === "") return "";
   const u = vr[o.path], [m, h] = Et.useState(!0);
-  if (!u) return d.jsxs(d.Fragment, {
-    children: [ d.jsx("div", {
-      className: v.header,
-      children: "PATH NOT FOUND"
-    }), d.jsx("div", {
-      className: v.statDetail,
-      children: `The path "${o.path}" is not available in /data/paths.`
-    }), d.jsx("button", {
-      onClick: () => {
-        s({
-          ...o,
-          path: "",
-          coreTalent: null
-        });
-      },
-      children: "Clear Core Path"
-    }) ]
-  });
   return d.jsxs(d.Fragment, {
     children: [ d.jsxs("div", {
       className: v.fieldRowNoSpread,
@@ -13213,20 +13195,6 @@ const cr = o => {
 }, gE = ({path: o, player: s, updatePlayer: r, onClose: u, broadcast: m}) => {
   if (o === "") return "";
   const h = vr[o];
-  if (!h) return d.jsxs(d.Fragment, {
-    children: [ d.jsx("div", {
-      className: v.header,
-      children: "PATH NOT FOUND"
-    }), d.jsx("div", {
-      className: v.statDetail,
-      children: `The path "${o}" is not available in /data/paths.`
-    }), d.jsx("button", {
-      onClick: () => {
-        u();
-      },
-      children: "Close"
-    }) ]
-  });
   return d.jsxs(d.Fragment, {
     children: [ d.jsxs("div", {
       className: v.fieldRowNoSpread,
@@ -13392,7 +13360,7 @@ const cr = o => {
   children: d.jsxs("div", {
     className: v.characterRow,
     children: [ d.jsx("img", {
-      src: o.path && Ns[o.path.toLowerCase()] ? Ns[o.path.toLowerCase()] : pE,
+      src: Ns[o.path.toLowerCase()],
       height: 40
     }), d.jsx("div", {
       className: v.fieldLabel,
@@ -13412,7 +13380,7 @@ const cr = o => {
       style: {
         width: 100
       },
-      children: o.path || "-"
+      children: o.path
     }), d.jsx("button", {
       className: v.statButton,
       style: {
