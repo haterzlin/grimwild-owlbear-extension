@@ -12934,7 +12934,9 @@ const cr = o => {
       width: 450
     }) ]
   });
-}, Fp = "", Pp = "", $p = "", tv = "", ev = "", av = "", nv = "", iv = "", lv = "", sv = "", ov = "", uv = "", rv = "", cv = "", dv = "", fv = "", hv = "", mv = null, yv = [], gv = [], bv = null, pv = null, _v = null, kv = null, qv = null, Jv = null, iA = null, fA = null, AA = null, jA = null, QA = null, PA = null, sE = null, mE = null, Ns = {}, vr = {}, xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcast: m}) => {
+}, Fp = "", Pp = "", $p = "", tv = "", ev = "", av = "", nv = "", iv = "", lv = "", sv = "", ov = "", uv = "", rv = "", cv = "", dv = "", fv = "", hv = "", mv = null, yv = [], gv = [], bv = null, pv = null, _v = null, kv = null, qv = null, Jv = null, iA = null, fA = null, AA = null, jA = null, QA = null, PA = null, sE = null, mE = null;
+let Ns = {}, vr = {};
+const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcast: m}) => {
   var h, y;
   return d.jsxs("div", {
     className: ot(v.fieldColumn, v.statContainer),
@@ -13550,7 +13552,10 @@ async function loadExternalGrimwildData() {
       externalAssets && typeof externalAssets === "object" && (Ns = externalAssets);
     }
     const pathKeys = externalAssets && typeof externalAssets === "object" ? Object.keys(externalAssets) : Object.keys(vr);
-    const pathResponses = await Promise.all(pathKeys.map((o => fetch(`/data/paths/${o}.json`).then((s => s.ok ? s.json().then((r => [ o, r ])) : [ o, null ])).catch((() => [ o, null ])))));
+    const pathResponses = await Promise.all(pathKeys.map((o => {
+      const s = `/data/paths/${o}.json`;
+      return fetch(s).then((r => r.ok ? r.json().then((u => [ o, u ])) : [ o, null ])).catch((() => [ o, null ]));
+    })));
     const externalPaths = Object.fromEntries(pathResponses.filter((([, o]) => o && typeof o === "object")));
     if (Object.keys(externalPaths).length > 0) {
       vr = externalPaths;
