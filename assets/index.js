@@ -11609,7 +11609,7 @@ var wh;
   o[o.CUBIC = 4] = "CUBIC", o[o.CLOSE = 5] = "CLOSE";
 })(wh || (wh = {}));
 
-const rr = up(), Zt = new pb(rr.origin, rr.roomId), rp = new rb(Zt), cp = new ub(Zt), dp = new Qb(Zt), fp = new vb(Zt), hp = new Lb(Zt), mp = new jb(Zt), yp = new Hb(Zt), gp = new zb(Zt), bp = new Ub(Zt), pp = new Gb(Zt), vp = new qb(Zt), Ap = new Ib(Zt), Ep = new Kb(Zt), Sp = new Zb(Zt), Tp = new Jb(Zt), st = {
+const rr = up(), Zt = new pb(rr.origin, rr.roomId), rp = new rb(Zt), cp = new ub(Zt), dp = new Qb(Zt), fp = new vb(Zt), hp = new Lb(Zt), mp = new jb(Zt), yp = new Hb(Zt), gp = new zb(Zt), bp = new Ub(Zt), pp = new Gb(Zt), vp = new qb(Zt), Ap = new Ib(Zt), Ep = new Kb(Zt), Sp = new Zb(Zt), Tp = new Jb(Zt), PpMock = globalThis.__grimwild_test_obr, st = PpMock || {
   onReady: o => {
     Zt.ready ? o() : Zt.once("OBR_READY", (() => o()));
   },
