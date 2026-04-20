@@ -24,6 +24,10 @@ const experienceSection = page => page.locator(
   'xpath=//b[normalize-space()="Experience"]/ancestor::div[contains(@class,"_statContainer_")][1]'
 );
 
+const labeledSelect = (page, label, index = 0) => page.locator(
+  `xpath=(//div[contains(@class,"_fieldStatLabel_")][normalize-space()="${label}"]/following-sibling::select)[${index + 1}]`
+);
+
 test.describe("Character Sheet", () => {
   test("allows all attribute values from 1 to 3", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
@@ -161,6 +165,48 @@ test.describe("Character Sheet", () => {
         await expect(counters.nth(0)).toHaveText(testCase.level);
         await expect(counters.nth(1)).toHaveText(testCase.next);
       }
+    } finally {
+      await flushDebug();
+    }
+  });
+
+  test("allows selecting and updating traits", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openCharacterSheet(page);
+
+      const firstTrait = labeledSelect(page, "2 you are", 0);
+      const secondTrait = labeledSelect(page, "2 you are", 1);
+      const notTrait = labeledSelect(page, "1 you're really not", 0);
+
+      await firstTrait.selectOption("Brave");
+      await secondTrait.selectOption("Curious");
+      await notTrait.selectOption("Rash");
+
+      await expect(firstTrait).toHaveValue("Brave");
+      await expect(secondTrait).toHaveValue("Curious");
+      await expect(notTrait).toHaveValue("Rash");
+    } finally {
+      await flushDebug();
+    }
+  });
+
+  test("allows selecting and updating desires", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openCharacterSheet(page);
+
+      const firstDesire = labeledSelect(page, "2 you want", 0);
+      const secondDesire = labeledSelect(page, "2 you want", 1);
+      const notDesire = labeledSelect(page, "1 you really don't", 0);
+
+      await firstDesire.selectOption("Justice");
+      await secondDesire.selectOption("Wisdom");
+      await notDesire.selectOption("Power");
+
+      await expect(firstDesire).toHaveValue("Justice");
+      await expect(secondDesire).toHaveValue("Wisdom");
+      await expect(notDesire).toHaveValue("Power");
     } finally {
       await flushDebug();
     }
