@@ -212,6 +212,35 @@ test.describe("Character Sheet", () => {
     }
   });
 
+  test("can add, edit, and remove a bond", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openCharacterSheet(page);
+
+      await page.getByRole("button", { name: "Add PC Bond" }).click();
+
+      const bondName = page.locator('xpath=(//div[normalize-space()="PC:"]/following-sibling::input[@type="text"])[last()]');
+      await bondName.fill("Bruno");
+      await expect(bondName).toHaveValue("Bruno");
+
+      const selects = page.getByRole("combobox");
+      const intensity = selects.nth(-2);
+      const nature = selects.nth(-1);
+
+      await intensity.selectOption("Deep");
+      await nature.selectOption("Respect");
+
+      await expect(intensity).toHaveValue("Deep");
+      await expect(nature).toHaveValue("Respect");
+
+      const bondDelete = page.locator('xpath=(//div[normalize-space()="PC:"]/following-sibling::button[normalize-space()="×"])[last()]');
+      await bondDelete.click();
+      await expect(page.locator('xpath=//div[normalize-space()="PC:"]/following-sibling::input[@type="text"]')).toHaveCount(0);
+    } finally {
+      await flushDebug();
+    }
+  });
+
   test("rolls the correct number of dice for an attribute and shows the result in chat", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {
