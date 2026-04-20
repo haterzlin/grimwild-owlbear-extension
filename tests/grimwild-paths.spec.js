@@ -41,6 +41,67 @@ const attachDebugLogging = (page, testInfo) => {
 };
 
 test.describe("Grimwild path flow", () => {
+  test("keeps row actions visible for an empty-path character with a long name", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await page.goto("/?mockOwlbear=1");
+
+      await page.evaluate(() => {
+        window.__grimwildTestApi.setCharacters([
+          {
+            id: 1,
+            name: "A Very Long Grimwild Character Name That Should Not Hide Open",
+            path: "",
+            player: "",
+            background1: "",
+            background2: "",
+            wise1: "",
+            wise2: "",
+            groupArc: "",
+            characterArc: "",
+            features: "",
+            conditions: "",
+            brawn: 0,
+            agility: 0,
+            wits: 0,
+            presence: 0,
+            brawnMark: false,
+            agilityMark: false,
+            witsMark: false,
+            presenceMark: false,
+            bloodied: false,
+            rattled: false,
+            story1: false,
+            story2: false,
+            spark1: false,
+            spark2: false,
+            experience: 0,
+            trait1: "",
+            trait2: "",
+            notTrait: "",
+            desire1: "",
+            desire2: "",
+            notDesire: "",
+            bonds: [],
+            talents: [],
+            coreTalent: null,
+            bio: ""
+          }
+        ]);
+      });
+
+      const characterRow = page.locator("div").filter({
+        has: page.locator('input[value="A Very Long Grimwild Character Name That Should Not Hide Open"]')
+      }).first();
+
+      await expect(characterRow.getByRole("button", { name: "Open" })).toBeVisible();
+      await expect(characterRow.getByRole("button", { name: "×" })).toBeVisible();
+      await expect(characterRow.getByText("-", { exact: true })).toBeVisible();
+    } finally {
+      await flushDebug();
+    }
+  });
+
   test("renders picker and assigns a core path", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {
