@@ -20,6 +20,10 @@ const statSection = (page, label) => page.locator(
   `xpath=//b[normalize-space()="${label}"]/ancestor::div[contains(@class,"_fieldStatContainer_")][1]`
 );
 
+const experienceSection = page => page.locator(
+  'xpath=//b[normalize-space()="Experience"]/ancestor::div[contains(@class,"_statContainer_")][1]'
+);
+
 test.describe("Character Sheet", () => {
   test("allows all attribute values from 1 to 3", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
@@ -124,6 +128,39 @@ test.describe("Character Sheet", () => {
       await expect(spark2).toBeChecked();
       await spark2.uncheck();
       await expect(spark2).not.toBeChecked();
+    } finally {
+      await flushDebug();
+    }
+  });
+
+  test("updates level and next-level XP correctly for experience values", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openCharacterSheet(page);
+
+      const section = experienceSection(page);
+      const input = section.locator("input").first();
+      const counters = section.locator('div[class*="_talentCount_"]');
+
+      await expect(input).toHaveValue("0");
+      await expect(counters.nth(0)).toHaveText("1");
+      await expect(counters.nth(1)).toHaveText("2");
+
+      const cases = [
+        { xp: "0", level: "1", next: "2" },
+        { xp: "1", level: "1", next: "1" },
+        { xp: "2", level: "2", next: "3" },
+        { xp: "5", level: "3", next: "4" },
+        { xp: "8", level: "3", next: "1" },
+        { xp: "12", level: "4", next: "2" }
+      ];
+
+      for (const testCase of cases) {
+        await input.fill(testCase.xp);
+        await expect(input).toHaveValue(testCase.xp);
+        await expect(counters.nth(0)).toHaveText(testCase.level);
+        await expect(counters.nth(1)).toHaveText(testCase.next);
+      }
     } finally {
       await flushDebug();
     }
