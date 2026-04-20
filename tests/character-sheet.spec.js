@@ -4,6 +4,7 @@ import { attachDebugLogging } from "./helpers/debug.js";
 
 const openCharacterSheet = async page => {
   await page.goto("/?mockOwlbear=1");
+  await expect(page.getByText("CHARACTER LIST", { exact: true })).toBeVisible();
 
   await page.evaluate(character => {
     window.__grimwildTestApi.setCharacters([ character ]);
@@ -12,6 +13,7 @@ const openCharacterSheet = async page => {
     name: "Sheet Test Character"
   }));
 
+  await expect(page.getByRole("button", { name: "Open" })).toBeVisible();
   await page.getByRole("button", { name: "Open" }).click();
   await expect(page.getByText("CHARACTER", { exact: true })).toBeVisible();
 };
