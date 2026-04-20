@@ -16,11 +16,9 @@ const openCharacterSheet = async page => {
   await expect(page.getByText("CHARACTER", { exact: true })).toBeVisible();
 };
 
-const statSection = (page, label) => page.locator("div").filter({
-  has: page.locator("b", { hasText: label })
-}).filter({
-  has: page.getByRole("button", { name: "Roll" })
-}).first();
+const statSection = (page, label) => page.locator(
+  `xpath=//b[normalize-space()="${label}"]/ancestor::div[contains(@class,"_fieldStatContainer_")][1]`
+);
 
 test.describe("Character Sheet", () => {
   test("allows all attribute values from 1 to 3", async ({ page }, testInfo) => {
@@ -85,6 +83,44 @@ test.describe("Character Sheet", () => {
       await expect(rattled).toBeChecked();
       await rattled.uncheck();
       await expect(rattled).not.toBeChecked();
+    } finally {
+      await flushDebug();
+    }
+  });
+
+  test("rolls the correct number of dice for an attribute and shows the result in chat", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openCharacterSheet(page);
+
+      const brawn = statSection(page, "Brawn");
+      const brawnValue = brawn.locator("input").first();
+      await brawnValue.fill("3");
+      await expect(brawnValue).toHaveValue("3");
+
+      await brawn.getByRole("button", { name: "Roll" }).click();
+
+      await expect(page.getByRole("button", { name: "Chat" })).toBeVisible();
+      await expect(page.getByText("Sheet Test Character", { exact: true })).toBeVisible();
+
+      await expect
+        .poll(async () => {
+          return page.evaluate(() => {
+            const chatMetadata = window.__grimwildTestApi.getMetadata()["grimwild.extension/metadata"];
+            const entries = Object.values(chatMetadata).flat();
+            const lastRoll = entries.filter(entry => Array.isArray(entry.dice)).at(-1);
+            if (!lastRoll) return null;
+
+            return {
+              user: lastRoll.user,
+              diceCount: lastRoll.dice.length
+            };
+          });
+        })
+        .toEqual({
+          user: "Sheet Test Character",
+          diceCount: 3
+        });
     } finally {
       await flushDebug();
     }
