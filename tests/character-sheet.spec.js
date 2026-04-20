@@ -88,6 +88,47 @@ test.describe("Character Sheet", () => {
     }
   });
 
+  test("can mark and unmark story and spark", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openCharacterSheet(page);
+
+      const storyRow = page.locator("div").filter({
+        has: page.locator("b", { hasText: "Story" })
+      }).first();
+      const sparkRow = page.locator("div").filter({
+        has: page.locator("b", { hasText: "Spark" })
+      }).first();
+
+      const story1 = storyRow.locator('input[type="checkbox"]').nth(0);
+      const story2 = storyRow.locator('input[type="checkbox"]').nth(1);
+      const spark1 = sparkRow.locator('input[type="checkbox"]').nth(0);
+      const spark2 = sparkRow.locator('input[type="checkbox"]').nth(1);
+
+      await story1.check();
+      await expect(story1).toBeChecked();
+      await story1.uncheck();
+      await expect(story1).not.toBeChecked();
+
+      await story2.check();
+      await expect(story2).toBeChecked();
+      await story2.uncheck();
+      await expect(story2).not.toBeChecked();
+
+      await spark1.check();
+      await expect(spark1).toBeChecked();
+      await spark1.uncheck();
+      await expect(spark1).not.toBeChecked();
+
+      await spark2.check();
+      await expect(spark2).toBeChecked();
+      await spark2.uncheck();
+      await expect(spark2).not.toBeChecked();
+    } finally {
+      await flushDebug();
+    }
+  });
+
   test("rolls the correct number of dice for an attribute and shows the result in chat", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {
