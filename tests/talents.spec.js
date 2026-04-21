@@ -41,6 +41,34 @@ test.describe("Talents", () => {
     }
   });
 
+  test("can send a talent description to chat", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openPathTabWithCorePath(page, "bard");
+      await page.getByRole("button", { name: "Add Talent" }).click();
+      await page.getByText("bard").click();
+
+      const talentCard = page.locator(
+        'xpath=//div[normalize-space()="BARDIC LORE"]/ancestor::div[contains(@class,"_statContainer_")][1]'
+      );
+
+      await talentCard.getByRole("button", { name: "➤" }).click();
+
+      await expect
+        .poll(async () => {
+          return page.evaluate(() => {
+            const chatMetadata = window.__grimwildTestApi.getMetadata()["grimwild.extension/metadata"];
+            const entries = Object.values(chatMetadata).flat();
+            const lastDescription = entries.filter(entry => entry.description).at(-1);
+            return lastDescription ? lastDescription.description : null;
+          });
+        })
+        .toBe("You gain any 3 wises and 1 extra story per session. You take +1d on any story rolls pertaining to what you know or story details you add.");
+    } finally {
+      await flushDebug();
+    }
+  });
+
   test("can add a talent from a different path than the core path", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {
