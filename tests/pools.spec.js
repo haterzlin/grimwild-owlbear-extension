@@ -202,13 +202,55 @@ test.describe("Pools", () => {
           return {
             poolName: roll.thornEffect?.[0] ?? "",
             rolledDice: roll.dice?.length ?? 0,
-            remainingValue: poolMetadata.value
+            remainingValue: poolMetadata.value,
+            reductionText: roll.thornEffect?.[1] ?? ""
           };
         })
-        .toMatchObject({
-          poolName: "Energy",
-          rolledDice: 4
+        .toEqual(
+          expect.objectContaining({
+            poolName: "Energy",
+            rolledDice: 4
+          })
+        );
+
+      await expect
+        .poll(async () => {
+          const roll = await lastRoll(page);
+          const poolMetadata = await page.evaluate(() => {
+            const pools = window.__grimwildTestApi.getMetadata()["grimwild.pool.extension/metadata"];
+            return Object.values(pools)[0] ?? null;
+          });
+          if (!roll || !poolMetadata) return null;
+
+          const reductionText = roll.thornEffect?.[1] ?? "";
+          const match = reductionText.match(/^4 ➜ (\d+)$/);
+          if (!match) return null;
+
+          return {
+            remainingValue: String(poolMetadata.value),
+            reducedTo: match[1]
+          };
+        })
+        .toEqual({
+          remainingValue: expect.any(String),
+          reducedTo: expect.any(String)
         });
+
+      const finalPoolState = await page.evaluate(() => {
+        const chatMetadata = window.__grimwildTestApi.getMetadata()["grimwild.extension/metadata"];
+        const entries = Object.values(chatMetadata).flat();
+        const roll = entries.filter(entry => Array.isArray(entry.dice) && Array.isArray(entry.thornEffect)).at(-1);
+        const pools = window.__grimwildTestApi.getMetadata()["grimwild.pool.extension/metadata"];
+        const pool = Object.values(pools)[0] ?? null;
+        if (!roll || !pool) return null;
+
+        const reductionText = roll.thornEffect?.[1] ?? "";
+        const match = reductionText.match(/^4 ➜ (\d+)$/);
+        return match ? { expectedRemaining: match[1], actualRemaining: String(pool.value) } : null;
+      });
+
+      expect(finalPoolState).not.toBeNull();
+      expect(finalPoolState.actualRemaining).toBe(finalPoolState.expectedRemaining);
     } finally {
       await flushDebug();
     }
