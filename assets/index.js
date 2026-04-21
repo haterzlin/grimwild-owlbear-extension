@@ -1,3 +1,11 @@
+import { buildLocalMetadataBackup, CHARACTER_METADATA_KEY, CHAT_METADATA_KEY, DATE_METADATA_KEY, DEFAULT_GM_DATA, getCharactersFromMetadata, getChatStateFromMetadata, getPoolsFromMetadata, getRestoreMetadataPatch, GM_METADATA_KEY, mergeCharacterUpdate, POOL_METADATA_KEY, writeSceneMetadata } from "../src-like/metadata.js";
+import { loadExternalData } from "../src-like/data-loader.js";
+import { APP_SCREENS, getVisiblePanels, hydrateAppShell, isChatPopoverLocation, openCharacterFromList, openChatPopover, scrollChatboxToEnd, showChatScreen, showPoolsScreen, syncAppShellFromMetadata } from "../src-like/app-shell.js";
+import { buildCharacterCreatePatch, buildCharacterRemovePatch, createEmptyCharacter, getCharacterRowViewModel } from "../src-like/character-model.js";
+import { addTalentToCharacter, assignCorePath, buildTalentBroadcastPatch, clearCorePath, getPathData, getPathIds, removeTalentAtIndex, updateCoreTalentTracker, updateTalentTrackerAtIndex } from "../src-like/path-talent.js";
+import { buildClearChatPatch, buildChatMessagePatch } from "../src-like/chat.js";
+import { buildDescriptionChatPatch, buildNamedPoolRollChatPatch, buildNamedPoolRollEntry, buildPoolCreatePatch, buildPoolRemovePatch, buildPoolUpdatePatch, buildSuspensePatch, createPoolRecord } from "../src-like/pools.js";
+
 (function() {
   const s = document.createElement("link").relList;
   if (s && s.supports && s.supports("modulepreload")) return;
@@ -11808,69 +11816,38 @@ const cr = o => {
   })
 }), Qp = ({chat: o, myChat: s, id: r, pools: u, player: m, role: h, gmData: y, players: T}) => {
   const [O, g] = Et.useState(0), [p, R] = Et.useState(0), G = async H => {
-    const k = {
-      ...(await st.scene.getMetadata())["grimwild.gm.extension/metadata"],
-      suspense: H
-    };
-    re({
-      "grimwild.gm.extension/metadata": k
-    });
+    const k = await st.scene.getMetadata();
+    re(buildSuspensePatch(k, H));
   }, W = async () => {
-    const H = Yp(), N = {
-      id: Date.now(),
+    const H = Yp(), N = await st.scene.getMetadata();
+    re(buildDescriptionChatPatch({
+      metadata: N,
+      ownPlayerId: r,
+      myChatEntries: s,
       user: h === "GM" ? "GM" : m,
       description: `- Crucible - <br><b>${H}</b>`,
       gmRoll: !0
-    }, B = [ ...s, N ];
-    let I = {
-      ...(await st.scene.getMetadata())["grimwild.extension/metadata"]
-    };
-    I[r] = B, re({
-      "grimwild.extension/metadata": I
-    });
+    }));
   }, X = async () => {
-    const H = T[Math.floor(Math.random() * T.length)], N = {
-      id: Date.now(),
+    const H = T[Math.floor(Math.random() * T.length)], N = await st.scene.getMetadata();
+    re(buildDescriptionChatPatch({
+      metadata: N,
+      ownPlayerId: r,
+      myChatEntries: s,
       user: h === "GM" ? "GM" : m,
       description: `- You've been targeted - <br><b>${H.name}</b>`,
       gmRoll: !0
-    }, B = [ ...s, N ];
-    let I = {
-      ...(await st.scene.getMetadata())["grimwild.extension/metadata"]
-    };
-    I[r] = B, re({
-      "grimwild.extension/metadata": I
-    });
+    }));
   }, P = async H => {
-    const N = {
-      id: Date.now(),
-      name: "",
-      value: H || 0
-    };
-    let z = {
-      ...(await st.scene.getMetadata())["grimwild.pool.extension/metadata"]
-    };
-    z[N.id] = N, re({
-      "grimwild.pool.extension/metadata": z
-    });
+    const N = createPoolRecord(H), z = await st.scene.getMetadata();
+    re(buildPoolCreatePatch(z, N));
   }, it = async H => {
-    let k = {
-      ...(await st.scene.getMetadata())["grimwild.pool.extension/metadata"]
-    };
-    delete k[H], re({
-      "grimwild.pool.extension/metadata": k
-    });
+    const k = await st.scene.getMetadata();
+    re(buildPoolRemovePatch(k, H));
   }, ut = async H => {
     if (H) {
-      let k = {
-        ...(await st.scene.getMetadata())["grimwild.pool.extension/metadata"]
-      };
-      k[H.id] = {
-        ...H,
-        lastEdit: r
-      }, re({
-        "grimwild.pool.extension/metadata": k
-      });
+      const k = await st.scene.getMetadata();
+      re(buildPoolUpdatePatch(k, H, r));
     }
   }, J = async H => {
     let N = 0, B = [], k = 0, z = 0;
@@ -11880,29 +11857,25 @@ const cr = o => {
     }
     let I = "Grim";
     k > 1 ? I = "Critical" : k > 0 ? I = "Perfect" : z > 0 && (I = "Messy");
-    const q = H.value - N, V = [ H.name, `${H.value} ➜ ${q}` ];
-    H.value === q && V.push("Take secondary effect");
-    const bt = {
-      id: Date.now(),
+    const q = H.value - N, V = buildNamedPoolRollEntry({
       user: h === "GM" ? "GM" : m,
       dice: B,
-      thornEffect: V,
+      poolName: H.name,
+      startingValue: H.value,
+      remainingValue: q,
       outcome: I
-    };
+    });
     ut({
       ...H,
       value: q
     });
-    const Dt = [ ...s, bt ];
-    let jt = {
-      ...(await st.scene.getMetadata())["grimwild.extension/metadata"]
-    };
-    jt[r] = Dt, re({
-      "grimwild.extension/metadata": jt
-    }), setTimeout((() => {
-      var Y = document.getElementById("chatbox");
-      Y && (Y.scrollTop = Y.scrollHeight);
-    }), 100);
+    const Dt = await st.scene.getMetadata();
+    re(buildNamedPoolRollChatPatch({
+      metadata: Dt,
+      ownPlayerId: r,
+      myChatEntries: s,
+      rollEntry: V
+    })), scrollChatboxToEnd();
   };
   return d.jsxs("div", {
     className: ot(v.Sheet),
@@ -12178,31 +12151,18 @@ const cr = o => {
         p(), T("");
         return;
       }
-      const R = {
-        id: Date.now(),
+      const R = await st.scene.getMetadata();
+      re(buildChatMessagePatch({
+        metadata: R,
+        ownPlayerId: u,
+        myChatEntries: s,
         user: r === "GM" ? "GM" : m,
-        message: y.trim()
-      }, G = [ ...s, R ];
-      let P = {
-        ...(await st.scene.getMetadata())["grimwild.extension/metadata"]
-      };
-      P[u] = G, re({
-        "grimwild.extension/metadata": P
-      }), T(""), setTimeout((() => {
-        var it = document.getElementById("chatbox");
-        it && (it.scrollTop = it.scrollHeight);
-      }), 100);
+        message: y
+      })), T(""), scrollChatboxToEnd();
     }
   }, p = async () => {
-    const G = (await st.scene.getMetadata())["grimwild.extension/metadata"], W = Object.keys(G);
-    let X = {
-      ...G
-    };
-    W.forEach((P => {
-      X[P] = [];
-    })), re({
-      "grimwild.extension/metadata": X
-    });
+    const G = await st.scene.getMetadata();
+    re(buildClearChatPatch(G));
   };
   return d.jsx("div", {
     className: ot(v.Sheet),
@@ -13091,7 +13051,7 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
   });
 }, yE = ({player: o, updatePlayer: s, broadcast: r}) => {
   if (o.path === "") return "";
-  const u = vr[o.path], [m, h] = Et.useState(!0);
+  const u = getPathData(vr, o.path), [m, h] = Et.useState(!0);
   if (!u) return d.jsxs(d.Fragment, {
     children: [ d.jsx("div", {
       className: v.header,
@@ -13101,11 +13061,7 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
       children: `The path "${o.path}" is not available in /data/paths.`
     }), d.jsx("button", {
       onClick: () => {
-        s({
-          ...o,
-          path: "",
-          coreTalent: null
-        });
+        s(clearCorePath(o));
       },
       children: "Clear Core Path"
     }) ]
@@ -13148,11 +13104,7 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
     }), d.jsx(xs, {
       talent: o.coreTalent ?? u.coreTalent,
       onChangeTracker: (y, T) => {
-        const O = o.coreTalent;
-        O && O.trackers && (O.trackers[T] = y, s({
-          ...o,
-          coreTalent: O
-        }));
+        s(updateCoreTalentTracker(o, y, T));
       },
       onBroadcast: () => {
         r(u.coreTalent);
@@ -13187,19 +13139,14 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
     }) ]
   });
 }, Ch = ({player: o, updatePlayer: s, onSelect: r}) => {
-  const u = Object.keys(vr);
+  const u = getPathIds(vr);
   return d.jsx("div", {
     className: v.pathList,
     children: u.map((m => d.jsxs("div", {
       className: v.pathItem,
       onClick: () => {
         if (s) {
-          const h = m !== "" ? vr[m].coreTalent : null;
-          s({
-            ...o,
-            path: m,
-            coreTalent: h
-          });
+          s(assignCorePath(o, m, vr));
         }
         r && r(m);
       },
@@ -13214,7 +13161,7 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
   });
 }, gE = ({path: o, player: s, updatePlayer: r, onClose: u, broadcast: m}) => {
   if (o === "") return "";
-  const h = vr[o];
+  const h = getPathData(vr, o);
   if (!h) return d.jsxs(d.Fragment, {
     children: [ d.jsx("div", {
       className: v.header,
@@ -13251,11 +13198,7 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
     }), h.pathTalent.map((y => d.jsx(xs, {
       talent: y,
       onSelect: () => {
-        const T = s.talents;
-        r({
-          ...s,
-          talents: [ ...T, y ]
-        }), u();
+        r(addTalentToCharacter(s, y)), u();
       },
       onChangeTracker: () => {},
       onBroadcast: () => {
@@ -13265,20 +13208,13 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
   });
 }, bE = ({player: o, updatePlayer: s, myChat: r, id: u}) => {
   const [m, h] = Et.useState(!1), [y, T] = Et.useState(""), O = async g => {
-    const p = {
-      id: Date.now(),
-      user: g.name,
-      description: g.description
-    }, R = [ ...r, p ];
-    let X = {
-      ...(await st.scene.getMetadata())["grimwild.extension/metadata"]
-    };
-    X[u] = R, re({
-      "grimwild.extension/metadata": X
-    }), setTimeout((() => {
-      var P = document.getElementById("chatbox");
-      P && (P.scrollTop = P.scrollHeight);
-    }), 100);
+    const p = await st.scene.getMetadata();
+    re(buildTalentBroadcastPatch({
+      metadata: p,
+      ownPlayerId: u,
+      myChatEntries: r,
+      talent: g
+    })), scrollChatboxToEnd();
   };
   return m && y === "" ? d.jsxs("div", {
     className: ot(v.scrollable, v.Sheet),
@@ -13331,10 +13267,7 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
           },
           children: d.jsx("button", {
             onClick: () => {
-              s({
-                ...o,
-                path: ""
-              });
+              s(clearCorePath(o));
             },
             children: "Change Core Path"
           })
@@ -13362,18 +13295,10 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
     }), o.talents.map(((g, p) => d.jsx(xs, {
       talent: g,
       onRemove: () => {
-        const R = o.talents;
-        R.splice(p, 1), s({
-          ...o,
-          talents: R
-        });
+        s(removeTalentAtIndex(o, p));
       },
       onChangeTracker: (R, G) => {
-        const W = o.talents;
-        W[p] && W[p].trackers && (W[p].trackers[G] = R, s({
-          ...o,
-          talents: W
-        }));
+        s(updateTalentTrackerAtIndex(o, p, R, G));
       },
       onBroadcast: () => {
         O(g);
@@ -13386,15 +13311,17 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
       children: "Add Talent"
     }) ]
   });
-}, pE = "/assets/logo.webp", vE = ({player: o, onRemove: s, onOpen: r}) => d.jsx("div", {
+}, pE = "/assets/logo.webp", vE = ({player: o, onRemove: s, onOpen: r}) => {
+  const u = getCharacterRowViewModel(o, Ns);
+  return d.jsx("div", {
   className: ot(v.fieldContainer),
   style: {
     flexDirection: "row"
   },
   children: d.jsxs("div", {
     className: v.characterRow,
-    children: [ o.path && Ns[o.path.toLowerCase()] ? d.jsx("img", {
-      src: Ns[o.path.toLowerCase()],
+    children: [ u.artSrc ? d.jsx("img", {
+      src: u.artSrc,
       height: 40
     }) : d.jsx("div", {
       style: {
@@ -13406,7 +13333,7 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
       children: "PC: "
     }), d.jsx("input", {
       className: v.field,
-      value: o.name,
+      value: u.name,
       readOnly: !0,
       style: {
         width: 140
@@ -13419,7 +13346,7 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
       style: {
         width: 100
       },
-      children: o.path || "-"
+      children: u.pathLabel
     }), d.jsx("button", {
       className: v.statButton,
       style: {
@@ -13442,61 +13369,14 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
       children: "×"
     }) ]
   })
-}), AE = () => ({
-  id: Date.now(),
-  name: "",
-  path: "",
-  player: "",
-  background1: "",
-  background2: "",
-  wise1: "",
-  wise2: "",
-  groupArc: "",
-  characterArc: "",
-  features: "",
-  conditions: "",
-  brawn: 0,
-  agility: 0,
-  wits: 0,
-  presence: 0,
-  brawnMark: !1,
-  agilityMark: !1,
-  witsMark: !1,
-  presenceMark: !1,
-  bloodied: !1,
-  rattled: !1,
-  story1: !1,
-  story2: !1,
-  spark1: !1,
-  spark2: !1,
-  experience: 0,
-  trait1: "",
-  trait2: "",
-  notTrait: "",
-  desire1: "",
-  desire2: "",
-  notDesire: "",
-  bonds: [],
-  talents: [],
-  coreTalent: null,
-  bio: ""
-}), EE = ({playerList: o, onOpen: s}) => {
+});
+}, AE = () => createEmptyCharacter(), EE = ({playerList: o, onOpen: s}) => {
   const r = async () => {
-    const m = AE();
-    let T = {
-      ...(await st.scene.getMetadata())["grimwild.character.extension/metadata"]
-    };
-    T[m.id] = m, re({
-      "grimwild.character.extension/metadata": T
-    });
+    const m = AE(), T = await st.scene.getMetadata();
+    re(buildCharacterCreatePatch(T, m));
   }, u = async m => {
-    let T = {
-      ...(await st.scene.getMetadata())["grimwild.character.extension/metadata"]
-    };
-    confirm("Are you sure you want to delete the character?") == !0 && (delete T[m], 
-    re({
-      "grimwild.character.extension/metadata": T
-    }));
+    const T = await st.scene.getMetadata();
+    confirm("Are you sure you want to delete the character?") == !0 && re(buildCharacterRemovePatch(T, m));
   };
   return d.jsx("div", {
     className: ot(v.scrollable, v.Sheet),
@@ -13541,59 +13421,41 @@ const xs = ({talent: o, onSelect: s, onRemove: r, onChangeTracker: u, onBroadcas
     })
   });
 }, re = o => {
-  const s = {
-    ...o,
-    "grimwild.date.extension/metadata": Date.now()
-  };
-  st.scene.setMetadata(s);
+  writeSceneMetadata(st.scene, o);
 };
 
 async function loadExternalGrimwildData() {
   try {
-    let externalAssets = null;
-    const assetsResponse = await fetch("/data/assets.json");
-    if (assetsResponse.ok) {
-      externalAssets = await assetsResponse.json();
-      externalAssets && typeof externalAssets === "object" && (Ns = externalAssets);
-    }
-    const pathKeys = externalAssets && typeof externalAssets === "object" ? Object.keys(externalAssets) : Object.keys(vr);
-    const pathResponses = await Promise.all(pathKeys.map((o => {
-      const s = `/data/paths/${o}.json`;
-      return fetch(s).then((r => r.ok ? r.json().then((u => [ o, u ])) : [ o, null ])).catch((() => [ o, null ]));
-    })));
-    const externalPaths = Object.fromEntries(pathResponses.filter((([, o]) => o && typeof o === "object")));
-    if (Object.keys(externalPaths).length > 0) {
-      vr = externalPaths;
-    }
+    const {
+      assets: externalAssets,
+      paths: externalPaths
+    } = await loadExternalData({
+      currentPaths: vr
+    });
+    externalAssets && typeof externalAssets === "object" && (Ns = externalAssets);
+    Object.keys(externalPaths).length > 0 && (vr = externalPaths);
   } catch (o) {
     console.warn("Failed to load external Grimwild data, using embedded bundle data.", o);
   }
 }
 
 function SE() {
-  const [o, s] = Et.useState(!1), [r, u] = Et.useState(0), [m, h] = Et.useState(""), [y, T] = Et.useState(""), [O, g] = Et.useState("PLAYER"), [p, R] = Et.useState([]), [G, W] = Et.useState([]), [X, P] = Et.useState([]), [it, ut] = Et.useState(!1), [J, H] = Et.useState(null), [N, B] = Et.useState(null), [k, z] = Et.useState({
-    suspense: "0"
-  }), [I, q] = Et.useState(!1), [V, bt] = Et.useState("chat"), [Dt, Vt] = Et.useState([]), [te, jt] = Et.useState([]);
+  const [o, s] = Et.useState(!1), [r, u] = Et.useState(0), [m, h] = Et.useState(""), [y, T] = Et.useState(""), [O, g] = Et.useState("PLAYER"), [p, R] = Et.useState([]), [G, W] = Et.useState([]), [X, P] = Et.useState([]), [it, ut] = Et.useState(!1), [J, H] = Et.useState(null), [N, B] = Et.useState(null), [k, z] = Et.useState(DEFAULT_GM_DATA), [I, q] = Et.useState(!1), [V, bt] = Et.useState(APP_SCREENS.CHAT), [Dt, Vt] = Et.useState([]), [te, jt] = Et.useState([]);
   Et.useEffect((() => {
-    q(window.location.href.indexOf("/chatpopover") > 1);
+    q(isChatPopoverLocation(window.location.href));
   }), []);
   const Y = async M => {
-    const Q = M["grimwild.character.extension/metadata"], K = [];
-    return Object.keys(Q).forEach((dt => {
-      K.push(Q[dt]);
-    })), K;
+    return getCharactersFromMetadata(M);
   }, nt = async M => {
-    const Q = M["grimwild.pool.extension/metadata"], K = [];
-    return Object.keys(Q).forEach((dt => {
-      K.push(Q[dt]);
-    })), K;
+    return getPoolsFromMetadata(M);
   }, et = async M => {
-    const Q = M["grimwild.extension/metadata"];
-    let K = [];
     const Ot = await st.player.getId();
-    return T(Ot), Q && Object.keys(Q).forEach((_t => {
-      K = K.concat(Q[_t]), _t === Ot && P(Q[_t]);
-    })), K.sort(((dt, _t) => dt.id - _t.id));
+    T(Ot);
+    const {
+      allEntries: Q,
+      myEntries: K
+    } = getChatStateFromMetadata(M, Ot);
+    return P(K), Q;
   }, At = M => {
     if (N) {
       clearTimeout(N);
@@ -13610,94 +13472,52 @@ function SE() {
     H(M);
   }, A = async M => {
     if (M) {
-      let Ot = {
-        ...(await st.scene.getMetadata())["grimwild.character.extension/metadata"]
-      };
-      Ot[M.id] = {
-        ...M,
-        lastEdit: y
-      }, re({
-        "grimwild.character.extension/metadata": Ot
-      }), B(null);
+      const Ot = await st.scene.getMetadata();
+      re(mergeCharacterUpdate(Ot, M, y)), B(null);
     }
   }, U = async () => {
-    const M = await st.scene.getMetadata(), Q = {
-      room: st.room.id,
-      dateNow: Date.now(),
-      "grimwild.character.extension/metadata": M["grimwild.character.extension/metadata"],
-      "grimwild.pool.extension/metadata": M["grimwild.pool.extension/metadata"],
-      "grimwild.extension/metadata": M["grimwild.extension/metadata"]
-    };
+    const M = await st.scene.getMetadata(), Q = buildLocalMetadataBackup(st.room.id, M);
     localStorage.setItem("grimwild.extension/metadata", JSON.stringify(Q));
   }, at = async () => {
     const M = localStorage.getItem("grimwild.extension/metadata"), Q = await st.scene.getMetadata();
-    if (M) {
-      const K = JSON.parse(M), Ot = Q["grimwild.date.extension/metadata"] ?? 0;
-      K.room === st.room.id && Ot < K.dateNow && await re({
-        ...Q,
-        "grimwild.character.extension/metadata": K["grimwild.character.extension/metadata"],
-        "grimwild.pool.extension/metadata": K["grimwild.pool.extension/metadata"],
-        "grimwild.extension/metadata": K["grimwild.extension/metadata"]
-      });
-    }
+    const K = getRestoreMetadataPatch(st.room.id, M, Q);
+    K && await re(K);
+  }, lt = async M => {
+    await syncAppShellFromMetadata({
+      metadata: M,
+      loadCharacters: Y,
+      loadPools: nt,
+      loadChat: et,
+      setCharacters: Vt,
+      setPools: jt,
+      setChat: W,
+      setGmData: z
+    });
   };
   if (Et.useEffect((() => {
     st.onReady((async () => {
-      if (st.scene.onReadyChange((async M => {
+      st.scene.onReadyChange((async M => {
         if (M) {
-          await st.player.getRole() === "GM" && await at();
-          const Q = await st.scene.getMetadata();
-          if (Q["grimwild.character.extension/metadata"]) {
-            const K = await Y(Q);
-            Vt(K);
-          }
-          if (Q["grimwild.pool.extension/metadata"]) {
-            const K = await nt(Q);
-            jt(K);
-          }
-          if (Q["grimwild.extension/metadata"]) {
-            const K = await et(Q);
-            W(K);
-          }
-          if (Q["grimwild.gm.extension/metadata"]) {
-            const K = Q["grimwild.gm.extension/metadata"];
-            z(K);
-          }
-          s(!0), setTimeout((() => {
-            var K = document.getElementById("chatbox");
-            K && (K.scrollTop = K.scrollHeight);
-          }), 100), st.action.setBadgeBackgroundColor("orange"), h(await st.player.getName()), 
-          T(await st.player.getId()), st.player.onChange((async () => {
-            h(await st.player.getName());
-          })), g(await st.player.getRole());
+          await hydrateAppShell({
+            obr: st,
+            restoreLocalMetadata: at,
+            syncFromMetadata: lt,
+            setReady: s,
+            setPlayerName: h,
+            setPlayerId: T,
+            setRole: g
+          });
         } else s(!1), R([]);
-      })), await st.scene.isReady()) {
-        await st.player.getRole() === "GM" && await at();
-        const M = await st.scene.getMetadata();
-        if (M["grimwild.character.extension/metadata"]) {
-          const Q = await Y(M);
-          Vt(Q);
-        }
-        if (M["grimwild.pool.extension/metadata"]) {
-          const Q = await nt(M);
-          jt(Q);
-        }
-        if (M["grimwild.extension/metadata"]) {
-          const Q = await et(M);
-          W(Q);
-        }
-        if (M["grimwild.gm.extension/metadata"]) {
-          const Q = M["grimwild.gm.extension/metadata"];
-          z(Q);
-        }
-        s(!0), setTimeout((() => {
-          var Q = document.getElementById("chatbox");
-          Q && (Q.scrollTop = Q.scrollHeight);
-        }), 100), st.action.setBadgeBackgroundColor("orange"), h(await st.player.getName()), 
-        T(await st.player.getId()), st.player.onChange((async () => {
-          h(await st.player.getName());
-        })), g(await st.player.getRole());
-      }
+      }));
+      await st.scene.isReady() && await hydrateAppShell({
+        obr: st,
+        restoreLocalMetadata: at,
+        syncFromMetadata: lt,
+        setReady: s,
+        setPlayerName: h,
+        setPlayerId: T,
+        setRole: g
+      });
     }));
     try {
       localStorage.getItem("grimwild.extension/rolldata");
@@ -13705,23 +13525,17 @@ function SE() {
       ut(!0);
     }
   }), []), Et.useEffect((() => {
-    G.length !== p.length && (R(G), setTimeout((() => {
-      var M = document.getElementById("chatbox");
-      M && (M.scrollTop = M.scrollHeight);
-    }), 100));
+    G.length !== p.length && (R(G), scrollChatboxToEnd());
   }), [ G ]), Et.useEffect((() => {
     if (o) {
+      (async () => {
+        const M = await st.scene.getMetadata();
+        await lt(M);
+      })();
       st.scene.onMetadataChange((async M => {
-        const Q = await et(M);
-        W(Q);
-        const K = await Y(M);
-        Vt(K);
-        const Ot = await nt(M);
-        jt(Ot);
-        const dt = M["grimwild.gm.extension/metadata"];
-        z(dt), await st.player.getRole() === "GM" && U();
+        await lt(M), await st.player.getRole() === "GM" && U();
       })), st.action.onOpenChange((async M => {
-        M && V === "chat" && J && u(0);
+        M && V === APP_SCREENS.CHAT && J && u(0);
       }));
       try {
         localStorage.getItem("grimwild.extension/rolldata");
@@ -13734,7 +13548,7 @@ function SE() {
     r > 0 ? st.action.setBadgeText("" + r) : st.action.setBadgeText(void 0);
   }), [ r, o ]), Et.useEffect((() => {
     o && (async () => {
-      p[p.length - 1] && o && o && (!await st.action.isOpen() || V !== "chat") && u(r + 1);
+      p[p.length - 1] && o && o && (!await st.action.isOpen() || V !== APP_SCREENS.CHAT) && u(r + 1);
     })();
   }), [ p ]), it) return "Cookies not enabled";
   if (!o) return d.jsx("div", {
@@ -13780,60 +13594,45 @@ function SE() {
     }) ]
   });
   const tt = async () => {
-    await st.popover.open({
-      id: "chat/popover",
-      url: "/chatpopover",
-      height: 600,
-      width: 300,
-      anchorOrigin: {
-        horizontal: "RIGHT",
-        vertical: "BOTTOM"
-      },
-      hidePaper: !0,
-      marginThreshold: 0,
-      disableClickAway: !0
-    });
-  };
+    await openChatPopover(st);
+  }, Pt = getVisiblePanels({
+    currentScreen: V,
+    selectedCharacter: J
+  });
   return d.jsxs("div", {
     className: v.global,
-    children: [ J && d.jsxs("div", {
+    children: [ Pt.showMenu && d.jsxs("div", {
       className: ot(v.fixedMenu),
       children: [ d.jsx("button", {
         className: ot(v.menuButton, {
-          [v.menuButtonSelected]: V === "character"
+          [v.menuButtonSelected]: V === APP_SCREENS.CHARACTER
         }),
         onClick: () => {
-          bt("character");
+          bt(APP_SCREENS.CHARACTER);
         },
         children: "Character"
       }), d.jsx("button", {
         className: ot(v.menuButton, {
-          [v.menuButtonSelected]: V === "path"
+          [v.menuButtonSelected]: V === APP_SCREENS.PATH
         }),
         onClick: () => {
-          bt("path");
+          bt(APP_SCREENS.PATH);
         },
         children: "Path"
       }), d.jsx("button", {
         className: ot(v.menuButton, {
-          [v.menuButtonSelected]: V === "pool"
+          [v.menuButtonSelected]: V === APP_SCREENS.POOL
         }),
         onClick: () => {
-          bt("pool"), setTimeout((() => {
-            var M = document.getElementById("chatbox");
-            M && (M.scrollTop = M.scrollHeight);
-          }), 1);
+          showPoolsScreen(bt);
         },
         children: "Pools"
       }), d.jsxs("button", {
         className: ot(v.menuButton, {
-          [v.menuButtonSelected]: V === "chat"
+          [v.menuButtonSelected]: V === APP_SCREENS.CHAT
         }),
         onClick: () => {
-          bt("chat"), u(0), setTimeout((() => {
-            var M = document.getElementById("chatbox");
-            M && (M.scrollTop = M.scrollHeight);
-          }), 1);
+          showChatScreen(bt, u);
         },
         children: [ "Chat ", r ? `(${r})` : "" ]
       }), d.jsx("button", {
@@ -13845,27 +13644,27 @@ function SE() {
         onClick: () => {
           H(null);
         },
-        children: "Close"
-      }) ]
-    }), V === "character" && J && d.jsx(Jp, {
+          children: "Close"
+        }) ]
+    }), Pt.showCharacter && d.jsx(Jp, {
       player: J,
       updatePlayer: At,
       myChat: X,
       id: y,
       onRoll: () => {
-        bt("chat");
+        bt(APP_SCREENS.CHAT);
       }
-    }), V === "path" && J && d.jsx(bE, {
+    }), Pt.showPath && d.jsx(bE, {
       player: J,
       updatePlayer: At,
       myChat: X,
       id: y
-    }), !J && d.jsx(EE, {
+    }), Pt.showCharacterList && d.jsx(EE, {
       playerList: Dt,
       onOpen: M => {
-        bt("character"), H(M);
+        openCharacterFromList(bt, H, M);
       }
-    }), V === "pool" && J && d.jsx(Qp, {
+    }), Pt.showPools && d.jsx(Qp, {
       chat: p,
       role: O,
       myChat: X,
@@ -13875,7 +13674,7 @@ function SE() {
       gmData: k,
       players: Dt,
       chatOnly: I
-    }), V === "chat" && J && d.jsxs(d.Fragment, {
+    }), Pt.showChat && d.jsxs(d.Fragment, {
       children: [ d.jsxs("div", {
         style: {
           display: "flex",
