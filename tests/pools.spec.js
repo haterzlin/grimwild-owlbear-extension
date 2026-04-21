@@ -2,6 +2,84 @@ import { expect, test } from "@playwright/test";
 import { buildCharacter } from "./helpers/characters.js";
 import { attachDebugLogging } from "./helpers/debug.js";
 
+const CRUCIBLE_FIRST_WORDS = [
+  "Tough",
+  "Quiet",
+  "Precarious",
+  "Wild",
+  "Mysterious",
+  "Rustic",
+  "Muffled",
+  "Aged",
+  "Romantic",
+  "Menacing",
+  "Puzzling",
+  "Eerie",
+  "Broken",
+  "Distant",
+  "Dwindling",
+  "Perilous",
+  "Bleak",
+  "Tense",
+  "Forgotten",
+  "Hidden",
+  "Abundant",
+  "Withered",
+  "Chaotic",
+  "Looming",
+  "Festive",
+  "Lost",
+  "Immense",
+  "Serene",
+  "Vibrant",
+  "Flickering",
+  "Rugged",
+  "Sacred",
+  "Splintered",
+  "Relentless",
+  "Tangled",
+  "Twisted"
+];
+
+const CRUCIBLE_SECOND_WORDS = [
+  "Journey",
+  "Juncture",
+  "Rift",
+  "Scheme",
+  "Nexus",
+  "Team",
+  "Tremor",
+  "Debris",
+  "Symbol",
+  "Scar",
+  "Archive",
+  "Chasm",
+  "Sanctuary",
+  "Betrayal",
+  "Trail",
+  "Wasteland",
+  "Help",
+  "Mystery",
+  "Peak",
+  "Threshold",
+  "Boundary",
+  "Beacon",
+  "Secret",
+  "Wall",
+  "Territory",
+  "Rumor",
+  "Standoff",
+  "Strife",
+  "Maze",
+  "Pact",
+  "Dilemma",
+  "Tradition",
+  "Jackpot",
+  "Omen",
+  "Deception",
+  "Illusion"
+];
+
 const openPoolsTab = async page => {
   await page.goto("/?mockOwlbear=1");
   await expect(page.getByText("CHARACTER LIST", { exact: true })).toBeVisible();
@@ -23,6 +101,12 @@ const lastRoll = async page => page.evaluate(() => {
   const chatMetadata = window.__grimwildTestApi.getMetadata()["grimwild.extension/metadata"];
   const entries = Object.values(chatMetadata).flat();
   return entries.filter(entry => Array.isArray(entry.dice) || Array.isArray(entry.thorns)).at(-1) ?? null;
+});
+
+const lastDescriptionEntry = async page => page.evaluate(() => {
+  const chatMetadata = window.__grimwildTestApi.getMetadata()["grimwild.extension/metadata"];
+  const entries = Object.values(chatMetadata).flat();
+  return entries.filter(entry => entry.description).at(-1) ?? null;
 });
 
 test.describe("Pools", () => {
@@ -66,6 +150,56 @@ test.describe("Pools", () => {
           diceCount: 3,
           odds: true
         });
+    } finally {
+      await flushDebug();
+    }
+  });
+
+  test("crucible button sends a crucible description to chat", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openPoolsTab(page);
+
+      await page.getByRole("button", { name: "Crucible", exact: true }).click();
+
+      await expect
+        .poll(async () => {
+          const entry = await lastDescriptionEntry(page);
+          if (!entry) return null;
+
+          const match = entry.description.match(/^- Crucible - <br><b>([^<]+)<\/b>$/);
+          if (!match) return null;
+
+          const parts = match[1].trim().split(/\s+/);
+          if (parts.length !== 2) return null;
+
+          return {
+            firstWord: parts[0],
+            secondWord: parts[1]
+          };
+        })
+        .toEqual({
+          firstWord: expect.stringMatching(new RegExp(`^(${CRUCIBLE_FIRST_WORDS.join("|")})$`)),
+          secondWord: expect.stringMatching(new RegExp(`^(${CRUCIBLE_SECOND_WORDS.join("|")})$`))
+        });
+    } finally {
+      await flushDebug();
+    }
+  });
+
+  test("pc button sends a targeted player description to chat", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openPoolsTab(page);
+
+      await page.getByRole("button", { name: "PC", exact: true }).click();
+
+      await expect
+        .poll(async () => {
+          const entry = await lastDescriptionEntry(page);
+          return entry ? entry.description : null;
+        })
+        .toBe("- You've been targeted - <br><b>Pool Test Character</b>");
     } finally {
       await flushDebug();
     }
