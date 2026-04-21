@@ -109,6 +109,18 @@ const lastDescriptionEntry = async page => page.evaluate(() => {
   return entries.filter(entry => entry.description).at(-1) ?? null;
 });
 
+const customDiceInput = page => page.locator(
+  'xpath=(//b[normalize-space()="Dice"]/following::input[1])[1]'
+);
+
+const customThornsInput = page => page.locator(
+  'xpath=(//b[normalize-space()="Thorns"]/following::input[1])[1]'
+);
+
+const namedPoolRow = (page, name) => page.locator(
+  `xpath=//input[@type="text" and @value="${name}"]/ancestor::div[contains(@class,"_fieldRowNoSpread_")][1]`
+);
+
 test.describe("Pools", () => {
   test("renders pools screen and base controls", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
@@ -210,11 +222,8 @@ test.describe("Pools", () => {
     try {
       await openPoolsTab(page);
 
-      const fields = page.locator('input[type="number"], input').filter({
-        has: page.locator("xpath=ancestor::div[contains(@class,\"_fieldStatContainerSmall_\")]")
-      });
-      const diceInput = fields.nth(1);
-      const thornsInput = fields.nth(2);
+      const diceInput = customDiceInput(page);
+      const thornsInput = customThornsInput(page);
 
       await diceInput.fill("2");
       await thornsInput.fill("1");
@@ -244,11 +253,8 @@ test.describe("Pools", () => {
     try {
       await openPoolsTab(page);
 
-      const fields = page.locator('input[type="number"], input').filter({
-        has: page.locator("xpath=ancestor::div[contains(@class,\"_fieldStatContainerSmall_\")]")
-      });
-      const diceInput = fields.nth(1);
-      const thornsInput = fields.nth(2);
+      const diceInput = customDiceInput(page);
+      const thornsInput = customThornsInput(page);
 
       await diceInput.fill("4");
       await thornsInput.fill("0");
@@ -258,14 +264,37 @@ test.describe("Pools", () => {
       await expect
         .poll(async () => {
           const roll = await lastRoll(page);
-          if (!roll) return false;
+          if (!roll) return null;
 
-          const remainingDice = Number(await diceInput.inputValue());
-          const thornEffect = roll.thornEffect ?? [];
+          const reductionText = (roll.thornEffect ?? []).find(effect => effect.startsWith("4 ➜ "));
+          const match = reductionText ? reductionText.match(/^4 ➜ (\d+)$/) : null;
+          if (!match) return null;
 
-          return roll.dice?.length === 4 && Array.isArray(thornEffect) && thornEffect.some(effect => effect.startsWith("4 ➜ ")) && Number.isInteger(remainingDice) && remainingDice >= 0 && remainingDice <= 4;
+          return {
+            rolledDice: roll.dice?.length ?? 0,
+            expectedRemaining: match[1],
+            actualRemaining: await diceInput.inputValue()
+          };
         })
-        .toBeTruthy();
+        .toEqual({
+          rolledDice: 4,
+          expectedRemaining: expect.any(String),
+          actualRemaining: expect.any(String)
+        });
+
+      const finalState = await page.evaluate(() => {
+        const chatMetadata = window.__grimwildTestApi.getMetadata()["grimwild.extension/metadata"];
+        const entries = Object.values(chatMetadata).flat();
+        const roll = entries.filter(entry => Array.isArray(entry.dice) && Array.isArray(entry.thornEffect)).at(-1);
+        if (!roll) return null;
+
+        const reductionText = (roll.thornEffect ?? []).find(effect => effect.startsWith("4 ➜ "));
+        const match = reductionText ? reductionText.match(/^4 ➜ (\d+)$/) : null;
+        return match ? match[1] : null;
+      });
+
+      expect(finalState).not.toBeNull();
+      await expect(diceInput).toHaveValue(finalState);
     } finally {
       await flushDebug();
     }
@@ -313,17 +342,16 @@ test.describe("Pools", () => {
 
       await page.getByRole("button", { name: "Short", exact: true }).click();
 
-      const poolValue = page.locator('input').filter({
-        has: page.locator("xpath=following-sibling::button[normalize-space()=\"Roll\"]")
-      }).first();
-      const poolName = page.locator('input[type="text"]').first();
+      const poolName = page.locator('xpath=(//input[@type="text"])[last()]');
 
       await poolName.fill("Energy");
+      const row = namedPoolRow(page, "Energy");
+      const poolValue = row.locator('input:not([type="text"])').first();
       await poolValue.fill("4");
       await expect(poolName).toHaveValue("Energy");
       await expect(poolValue).toHaveValue("4");
 
-      await page.locator("button", { hasText: "Roll" }).last().click();
+      await row.getByRole("button", { name: "Roll", exact: true }).click();
 
       await expect
         .poll(async () => {

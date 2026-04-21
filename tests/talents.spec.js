@@ -10,6 +10,10 @@ const openPathTabWithCorePath = async (page, pathName = "bard") => {
   await expect(page.getByText(pathName.toUpperCase(), { exact: true })).toBeVisible();
 };
 
+const talentCard = (page, talentName) => page.locator(
+  `xpath=//div[normalize-space()="${talentName}"]/ancestor::div[contains(@class,"_statContainer_")][1]`
+);
+
 test.describe("Talents", () => {
   test("adds a talent from the selected path", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
@@ -48,11 +52,7 @@ test.describe("Talents", () => {
       await page.getByRole("button", { name: "Add Talent" }).click();
       await page.getByText("bard").click();
 
-      const talentCard = page.locator(
-        'xpath=//div[normalize-space()="BARDIC LORE"]/ancestor::div[contains(@class,"_statContainer_")][1]'
-      );
-
-      await talentCard.getByRole("button", { name: "➤" }).click();
+      await talentCard(page, "BARDIC LORE").getByRole("button", { name: "➤" }).click();
 
       await expect
         .poll(async () => {
@@ -118,13 +118,7 @@ test.describe("Talents", () => {
         })
         .toBeTruthy();
 
-      const talentCard = page.locator("div").filter({
-        has: page.getByText("BARDIC LORE", { exact: true })
-      }).filter({
-        has: page.getByRole("button", { name: "×" })
-      }).first();
-
-      await talentCard.getByRole("button", { name: "×" }).click();
+      await talentCard(page, "BARDIC LORE").getByRole("button", { name: "×" }).click();
 
       await expect
         .poll(async () => {

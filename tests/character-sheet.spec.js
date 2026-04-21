@@ -225,9 +225,11 @@ test.describe("Character Sheet", () => {
       await bondName.fill("Bruno");
       await expect(bondName).toHaveValue("Bruno");
 
-      const selects = page.getByRole("combobox");
-      const intensity = selects.nth(-2);
-      const nature = selects.nth(-1);
+      const bondRow = page.locator(
+        'xpath=(//div[normalize-space()="PC:"]/following-sibling::input[@type="text" and @value="Bruno"]/ancestor::div[contains(@class,"_fieldRowNoSpread_")])[1]'
+      );
+      const intensity = bondRow.locator("select").nth(0);
+      const nature = bondRow.locator("select").nth(1);
 
       await intensity.selectOption("Deep");
       await nature.selectOption("Respect");
@@ -235,9 +237,8 @@ test.describe("Character Sheet", () => {
       await expect(intensity).toHaveValue("Deep");
       await expect(nature).toHaveValue("Respect");
 
-      const bondDelete = page.locator('xpath=(//div[normalize-space()="PC:"]/following-sibling::button[normalize-space()="×"])[last()]');
-      await bondDelete.click();
-      await expect(page.locator('xpath=//div[normalize-space()="PC:"]/following-sibling::input[@type="text"]')).toHaveCount(0);
+      await bondRow.getByRole("button", { name: "×" }).click();
+      await expect(page.locator('xpath=//div[normalize-space()="PC:"]/following-sibling::input[@type="text" and @value="Bruno"]')).toHaveCount(0);
     } finally {
       await flushDebug();
     }
