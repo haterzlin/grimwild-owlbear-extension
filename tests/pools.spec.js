@@ -105,6 +105,38 @@ test.describe("Pools", () => {
     }
   });
 
+  test("custom pool roll reduces the dice input after rolling", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openPoolsTab(page);
+
+      const fields = page.locator('input[type="number"], input').filter({
+        has: page.locator("xpath=ancestor::div[contains(@class,\"_fieldStatContainerSmall_\")]")
+      });
+      const diceInput = fields.nth(1);
+      const thornsInput = fields.nth(2);
+
+      await diceInput.fill("4");
+      await thornsInput.fill("0");
+
+      await page.getByRole("button", { name: "Pool", exact: true }).click();
+
+      await expect
+        .poll(async () => {
+          const roll = await lastRoll(page);
+          if (!roll) return false;
+
+          const remainingDice = Number(await diceInput.inputValue());
+          const thornEffect = roll.thornEffect ?? [];
+
+          return roll.dice?.length === 4 && Array.isArray(thornEffect) && thornEffect.some(effect => effect.startsWith("4 ➜ ")) && Number.isInteger(remainingDice) && remainingDice >= 0 && remainingDice <= 4;
+        })
+        .toBeTruthy();
+    } finally {
+      await flushDebug();
+    }
+  });
+
   test("can add and remove short mid and long pools", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {
