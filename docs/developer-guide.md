@@ -1,80 +1,64 @@
 # Developer Guide
 
-This document describes the current refactor shape of the recovered Grimwild extension.
+This document describes the maintained developer workflow after the source reconstruction phases.
 
-## Current runtime model
+## Maintained runtime
 
-The extension still runs from the recovered production bundle:
+Primary maintained implementation:
+- [../src](../src)
+
+Source entrypoints and ownership:
+- app shell:
+  - [../src/app/AppShell.js](../src/app/AppShell.js)
+- source screens:
+  - [../src/screens/CharacterList.js](../src/screens/CharacterList.js)
+  - [../src/screens/CharacterSheet.js](../src/screens/CharacterSheet.js)
+  - [../src/screens/PathScreen.js](../src/screens/PathScreen.js)
+  - [../src/screens/PoolsAndChat.js](../src/screens/PoolsAndChat.js)
+- contracts:
+  - [../src/contracts/index.js](../src/contracts/index.js)
+  - [../src/contracts/app.js](../src/contracts/app.js)
+  - [../src/contracts/entities.js](../src/contracts/entities.js)
+- core and domain APIs:
+  - [../src/core](../src/core)
+  - [../src/domain](../src/domain)
+
+## Compatibility code
+
+Compatibility layers that still exist:
 - [../assets/index.js](../assets/index.js)
+  - recovered compatibility runtime artifact
+  - use only when the maintained source runtime needs bridging into the current artifact
+- [../src-like](../src-like)
+  - transitional compatibility modules
+  - do not start new feature work here
 
-The bundle now delegates more domain logic into source-like helper modules:
-- metadata and persistence:
-  - [../src-like/metadata.js](../src-like/metadata.js)
-- external data loading:
-  - [../src-like/data-loader.js](../src-like/data-loader.js)
-- app-shell bootstrap and routing:
-  - [../src-like/app-shell.js](../src-like/app-shell.js)
-- character model and character-list operations:
-  - [../src-like/character-model.js](../src-like/character-model.js)
-- path and talent operations:
-  - [../src-like/path-talent.js](../src-like/path-talent.js)
-- pools and chat operations:
-  - [../src-like/pools.js](../src-like/pools.js)
-  - [../src-like/chat.js](../src-like/chat.js)
+## Canonical edit targets
 
-## What is still bundle-owned
+Use these directories by default:
+- shared contracts: `src/contracts/*`
+- app/runtime wiring: `src/app/*` and `src/core/*`
+- domain state and patch logic: `src/domain/*`
+- UI and screen behavior: `src/screens/*`
+- path content and art mapping: `data/assets.json` and `data/paths/*`
 
-The following are still primarily rendered and composed inside [../assets/index.js](../assets/index.js):
-- screen JSX layout
-- CSS class usage
-- low-level interaction wiring inside each screen
-- dice/thorn random roll routines already embedded in the recovered bundle
+## Verification workflow
 
-This is intentional. The current refactor goal is readability and safer maintenance, not a full rewrite.
+Recommended workflow:
+1. make the smallest source-level change possible in `src/*`
+2. run the most relevant Playwright suite first
+3. run the full suite after the focused suite passes
 
-## Source of truth for path content
-
-Path art and path definitions come from external JSON:
-- [../data/assets.json](../data/assets.json)
-- [../data/paths](../data/paths)
-
-For Community Edition updates, prefer editing those files rather than editing embedded bundle data.
-
-## Test harness
-
-The local regression harness is already in place:
-- Playwright config:
-  - [../playwright.config.js](../playwright.config.js)
-- mock Owlbear runtime:
-  - [../test/mock-obr.js](../test/mock-obr.js)
-- test suites:
-  - [../tests](../tests)
-
-Recommended workflow for refactors:
-1. make the smallest domain-level change possible
-2. run the most relevant category first
-3. run the full suite only after the category passes
-
-Examples:
-- `npx playwright test tests/paths.spec.js`
-- `npx playwright test tests/pools.spec.js`
+Useful commands:
+- `npm run test:character-list`
+- `npm run test:character-sheet`
+- `npm run test:paths`
+- `npm run test:talents`
+- `npm run test:pools`
 - `npm run test:e2e`
 
-## Recommended next migration direction
+## Additional reference
 
-If the codebase is refactored further, use this order:
-1. keep moving non-UI state mutations into `src-like/*`
-2. extract reusable view models and action helpers
-3. only then reconstruct actual React component files for each screen
-4. keep the bundle runnable until a replacement render layer reaches test parity
-
-## Practical rule
-
-If a behavior can be expressed as:
-- metadata patch building
-- entity creation/removal/update
-- chat entry creation
-- path/talent selection logic
-- pool mutation logic
-
-it should live in `src-like/*`, not as anonymous inline logic inside the bundle.
+For the source architecture and maintenance boundary, see:
+- [source-architecture.md](./source-architecture.md)
+- [runtime-map.md](./runtime-map.md)

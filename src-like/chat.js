@@ -1,3 +1,5 @@
+// Transitional compatibility module.
+// New maintained runtime work should go into src/domain or src/screens instead.
 import { CHAT_METADATA_KEY } from "./metadata.js";
 
 export const buildChatMessageEntry = ({ user, message }) => ({

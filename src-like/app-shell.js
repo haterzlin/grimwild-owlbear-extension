@@ -1,3 +1,5 @@
+// Transitional compatibility module.
+// New maintained runtime work should go into src/app or src/core instead.
 import { GM_METADATA_KEY } from "./metadata.js";
 
 export const APP_SCREENS = {

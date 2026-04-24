@@ -1,3 +1,5 @@
+// Transitional compatibility module.
+// New maintained runtime work should go into src/core or src/domain instead.
 export const CHARACTER_METADATA_KEY = "grimwild.character.extension/metadata";
 export const POOL_METADATA_KEY = "grimwild.pool.extension/metadata";
 export const CHAT_METADATA_KEY = "grimwild.extension/metadata";

@@ -1,3 +1,5 @@
+// Transitional compatibility module.
+// New maintained runtime work should go into src/core or src/domain instead.
 export const loadExternalData = async ({
   currentPaths = {},
   assetsUrl = "/data/assets.json",

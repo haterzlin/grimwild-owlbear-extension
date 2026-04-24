@@ -1,3 +1,5 @@
+// Recovered compatibility runtime.
+// Maintain behavior in src/*; only touch this file for compatibility bridging.
 import { buildLocalMetadataBackup, CHARACTER_METADATA_KEY, CHAT_METADATA_KEY, DATE_METADATA_KEY, DEFAULT_GM_DATA, getCharactersFromMetadata, getChatStateFromMetadata, getPoolsFromMetadata, getRestoreMetadataPatch, GM_METADATA_KEY, mergeCharacterUpdate, POOL_METADATA_KEY, writeSceneMetadata } from "../src-like/metadata.js";
 import { loadExternalData } from "../src-like/data-loader.js";
 import { APP_SCREENS, getVisiblePanels, hydrateAppShell, isChatPopoverLocation, openCharacterFromList, openChatPopover, scrollChatboxToEnd, showChatScreen, showPoolsScreen, syncAppShellFromMetadata } from "../src-like/app-shell.js";
@@ -5,6 +7,11 @@ import { buildCharacterCreatePatch, buildCharacterRemovePatch, createEmptyCharac
 import { addTalentToCharacter, assignCorePath, buildTalentBroadcastPatch, clearCorePath, getPathData, getPathIds, removeTalentAtIndex, updateCoreTalentTracker, updateTalentTrackerAtIndex } from "../src-like/path-talent.js";
 import { buildClearChatPatch, buildChatMessagePatch } from "../src-like/chat.js";
 import { buildDescriptionChatPatch, buildNamedPoolRollChatPatch, buildNamedPoolRollEntry, buildPoolCreatePatch, buildPoolRemovePatch, buildPoolUpdatePatch, buildSuspensePatch, createPoolRecord } from "../src-like/pools.js";
+import createAppShell from "../src/app/AppShell.js";
+import { createCharacterListScreens } from "../src/screens/CharacterList.js";
+import createCharacterSheetScreen from "../src/screens/CharacterSheet.js";
+import { createPathScreens } from "../src/screens/PathScreen.js";
+import { createPoolsAndChatScreens } from "../src/screens/PoolsAndChat.js";
 
 (function() {
   const s = document.createElement("link").relList;
@@ -13439,274 +13446,77 @@ async function loadExternalGrimwildData() {
   }
 }
 
-function SE() {
-  const [o, s] = Et.useState(!1), [r, u] = Et.useState(0), [m, h] = Et.useState(""), [y, T] = Et.useState(""), [O, g] = Et.useState("PLAYER"), [p, R] = Et.useState([]), [G, W] = Et.useState([]), [X, P] = Et.useState([]), [it, ut] = Et.useState(!1), [J, H] = Et.useState(null), [N, B] = Et.useState(null), [k, z] = Et.useState(DEFAULT_GM_DATA), [I, q] = Et.useState(!1), [V, bt] = Et.useState(APP_SCREENS.CHAT), [Dt, Vt] = Et.useState([]), [te, jt] = Et.useState([]);
-  Et.useEffect((() => {
-    q(isChatPopoverLocation(window.location.href));
-  }), []);
-  const Y = async M => {
-    return getCharactersFromMetadata(M);
-  }, nt = async M => {
-    return getPoolsFromMetadata(M);
-  }, et = async M => {
-    const Ot = await st.player.getId();
-    T(Ot);
-    const {
-      allEntries: Q,
-      myEntries: K
-    } = getChatStateFromMetadata(M, Ot);
-    return P(K), Q;
-  }, At = M => {
-    if (N) {
-      clearTimeout(N);
-      const Q = setTimeout((() => {
-        A(M);
-      }), 500);
-      B(Q);
-    } else {
-      const Q = setTimeout((() => {
-        A(M);
-      }), 500);
-      B(Q);
-    }
-    H(M);
-  }, A = async M => {
-    if (M) {
-      const Ot = await st.scene.getMetadata();
-      re(mergeCharacterUpdate(Ot, M, y)), B(null);
-    }
-  }, U = async () => {
-    const M = await st.scene.getMetadata(), Q = buildLocalMetadataBackup(st.room.id, M);
-    localStorage.setItem("grimwild.extension/metadata", JSON.stringify(Q));
-  }, at = async () => {
-    const M = localStorage.getItem("grimwild.extension/metadata"), Q = await st.scene.getMetadata();
-    const K = getRestoreMetadataPatch(st.room.id, M, Q);
-    K && await re(K);
-  }, lt = async M => {
-    await syncAppShellFromMetadata({
-      metadata: M,
-      loadCharacters: Y,
-      loadPools: nt,
-      loadChat: et,
-      setCharacters: Vt,
-      setPools: jt,
-      setChat: W,
-      setGmData: z
-    });
-  };
-  if (Et.useEffect((() => {
-    st.onReady((async () => {
-      st.scene.onReadyChange((async M => {
-        if (M) {
-          await hydrateAppShell({
-            obr: st,
-            restoreLocalMetadata: at,
-            syncFromMetadata: lt,
-            setReady: s,
-            setPlayerName: h,
-            setPlayerId: T,
-            setRole: g
-          });
-        } else s(!1), R([]);
-      }));
-      await st.scene.isReady() && await hydrateAppShell({
-        obr: st,
-        restoreLocalMetadata: at,
-        syncFromMetadata: lt,
-        setReady: s,
-        setPlayerName: h,
-        setPlayerId: T,
-        setRole: g
-      });
-    }));
-    try {
-      localStorage.getItem("grimwild.extension/rolldata");
-    } catch {
-      ut(!0);
-    }
-  }), []), Et.useEffect((() => {
-    G.length !== p.length && (R(G), scrollChatboxToEnd());
-  }), [ G ]), Et.useEffect((() => {
-    if (o) {
-      (async () => {
-        const M = await st.scene.getMetadata();
-        await lt(M);
-      })();
-      st.scene.onMetadataChange((async M => {
-        await lt(M), await st.player.getRole() === "GM" && U();
-      })), st.action.onOpenChange((async M => {
-        M && V === APP_SCREENS.CHAT && J && u(0);
-      }));
-      try {
-        localStorage.getItem("grimwild.extension/rolldata");
-      } catch {
-        ut(!0);
-        return;
-      }
-    }
-  }), [ o ]), Et.useEffect((() => {
-    r > 0 ? st.action.setBadgeText("" + r) : st.action.setBadgeText(void 0);
-  }), [ r, o ]), Et.useEffect((() => {
-    o && (async () => {
-      p[p.length - 1] && o && o && (!await st.action.isOpen() || V !== APP_SCREENS.CHAT) && u(r + 1);
-    })();
-  }), [ p ]), it) return "Cookies not enabled";
-  if (!o) return d.jsx("div", {
-    className: v.global,
-    children: d.jsxs("div", {
-      className: ot(v.scrollable, v.Sheet),
-      children: [ d.jsx("div", {
-        className: v.header,
-        children: "No Scene found."
-      }), d.jsx("div", {
-        children: "You need to load a scene to start adding/updating characters. If a scene is already loaded, kindly refresh the page."
-      }) ]
-    })
-  });
-  if (I) return d.jsxs("div", {
-    className: v.global,
-    children: [ d.jsxs("div", {
-      style: {
-        display: "flex",
-        alignItems: "center",
-        padding: "0.5rem"
-      },
-      children: [ d.jsx("div", {
-        className: v.header,
-        children: "Chat"
-      }), d.jsx("button", {
-        className: v.chatCloseButton,
-        onClick: () => {
-          st.popover.close("chat/popover");
-        },
-        children: "Close"
-      }) ]
-    }), d.jsx(_h, {
-      chat: p,
-      role: O,
-      myChat: X,
-      id: y,
-      pools: te,
-      player: J ? J.name : m,
-      gmData: k,
-      players: Dt,
-      chatOnly: I
-    }) ]
-  });
-  const tt = async () => {
-    await openChatPopover(st);
-  }, Pt = getVisiblePanels({
-    currentScreen: V,
-    selectedCharacter: J
-  });
-  return d.jsxs("div", {
-    className: v.global,
-    children: [ Pt.showMenu && d.jsxs("div", {
-      className: ot(v.fixedMenu),
-      children: [ d.jsx("button", {
-        className: ot(v.menuButton, {
-          [v.menuButtonSelected]: V === APP_SCREENS.CHARACTER
-        }),
-        onClick: () => {
-          bt(APP_SCREENS.CHARACTER);
-        },
-        children: "Character"
-      }), d.jsx("button", {
-        className: ot(v.menuButton, {
-          [v.menuButtonSelected]: V === APP_SCREENS.PATH
-        }),
-        onClick: () => {
-          bt(APP_SCREENS.PATH);
-        },
-        children: "Path"
-      }), d.jsx("button", {
-        className: ot(v.menuButton, {
-          [v.menuButtonSelected]: V === APP_SCREENS.POOL
-        }),
-        onClick: () => {
-          showPoolsScreen(bt);
-        },
-        children: "Pools"
-      }), d.jsxs("button", {
-        className: ot(v.menuButton, {
-          [v.menuButtonSelected]: V === APP_SCREENS.CHAT
-        }),
-        onClick: () => {
-          showChatScreen(bt, u);
-        },
-        children: [ "Chat ", r ? `(${r})` : "" ]
-      }), d.jsx("button", {
-        className: ot(v.menuButton),
-        style: {
-          marginLeft: "auto",
-          width: "3rem"
-        },
-        onClick: () => {
-          H(null);
-        },
-          children: "Close"
-        }) ]
-    }), Pt.showCharacter && d.jsx(Jp, {
-      player: J,
-      updatePlayer: At,
-      myChat: X,
-      id: y,
-      onRoll: () => {
-        bt(APP_SCREENS.CHAT);
-      }
-    }), Pt.showPath && d.jsx(bE, {
-      player: J,
-      updatePlayer: At,
-      myChat: X,
-      id: y
-    }), Pt.showCharacterList && d.jsx(EE, {
-      playerList: Dt,
-      onOpen: M => {
-        openCharacterFromList(bt, H, M);
-      }
-    }), Pt.showPools && d.jsx(Qp, {
-      chat: p,
-      role: O,
-      myChat: X,
-      id: y,
-      pools: te,
-      player: J.name,
-      gmData: k,
-      players: Dt,
-      chatOnly: I
-    }), Pt.showChat && d.jsxs(d.Fragment, {
-      children: [ d.jsxs("div", {
-        style: {
-          display: "flex",
-          alignItems: "center",
-          paddingTop: "0.5rem",
-          paddingLeft: "1.5rem",
-          paddingRight: "1.5rem"
-        },
-        children: [ d.jsx("div", {
-          className: v.header,
-          children: "Chat"
-        }), d.jsx("button", {
-          className: v.chatCloseButton,
-          onClick: () => {
-            tt();
-          },
-          children: "Popover"
-        }) ]
-      }), d.jsx(_h, {
-        chat: p,
-        role: O,
-        myChat: X,
-        id: y,
-        pools: te,
-        player: J.name,
-        gmData: k,
-        players: Dt,
-        chatOnly: I
-      }) ]
-    }) ]
-  });
-}
+const { CharacterList: SourceCharacterList, CharacterRow: SourceCharacterRow } = createCharacterListScreens({
+  jsxRuntime: d,
+  obr: st,
+  styles: v,
+  classNames: ot,
+  assets: {
+    logo: pE,
+    dividerPrimary: Ae
+  },
+  getPathAssets: () => Ns
+});
+
+const SourceCharacterSheet = createCharacterSheetScreen({
+  jsxRuntime: d,
+  styles: v,
+  classNames: ot,
+  assets: {
+    dividerPrimary: Ae,
+    dividerSecondary: je
+  },
+  rollDice: ti
+});
+
+const {
+  PathScreen: SourcePathScreen
+} = createPathScreens({
+  jsxRuntime: d,
+  React: Et,
+  obr: st,
+  styles: v,
+  classNames: ot,
+  assets: {
+    dividerPrimary: Ae,
+    dividerSecondary: je
+  },
+  getPathAssets: () => Ns,
+  getPathsById: () => vr
+});
+
+const {
+  PoolsScreen: SourcePoolsScreen,
+  ChatScreen: SourceChatScreen
+} = createPoolsAndChatScreens({
+  jsxRuntime: d,
+  React: Et,
+  obr: st,
+  styles: v,
+  classNames: ot,
+  assets: {
+    dividerPrimary: Ae,
+    diceFaces: zp,
+    thornFaces: Up
+  },
+  rollDice: ti
+});
+
+const SE = createAppShell({
+  React: Et,
+  jsxRuntime: d,
+  obr: st,
+  styles: v,
+  classNames: ot,
+  screens: {
+    CharacterSheet: SourceCharacterSheet,
+    PathScreen: SourcePathScreen,
+    CharacterList: SourceCharacterList,
+    CharacterRow: SourceCharacterRow,
+    PoolsScreen: SourcePoolsScreen,
+    ChatScreen: SourceChatScreen
+  }
+});
 
 loadExternalGrimwildData().finally((() => {
   gg.createRoot(document.getElementById("root")).render(d.jsx(Et.StrictMode, {
