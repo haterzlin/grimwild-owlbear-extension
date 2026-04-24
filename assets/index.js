@@ -1,12 +1,12 @@
 // Recovered compatibility runtime.
 // Maintain behavior in src/*; only touch this file for compatibility bridging.
-import { buildLocalMetadataBackup, CHARACTER_METADATA_KEY, CHAT_METADATA_KEY, DATE_METADATA_KEY, DEFAULT_GM_DATA, getCharactersFromMetadata, getChatStateFromMetadata, getPoolsFromMetadata, getRestoreMetadataPatch, GM_METADATA_KEY, mergeCharacterUpdate, POOL_METADATA_KEY, writeSceneMetadata } from "../src-like/metadata.js";
-import { loadExternalData } from "../src-like/data-loader.js";
-import { APP_SCREENS, getVisiblePanels, hydrateAppShell, isChatPopoverLocation, openCharacterFromList, openChatPopover, scrollChatboxToEnd, showChatScreen, showPoolsScreen, syncAppShellFromMetadata } from "../src-like/app-shell.js";
-import { buildCharacterCreatePatch, buildCharacterRemovePatch, createEmptyCharacter, getCharacterRowViewModel } from "../src-like/character-model.js";
-import { addTalentToCharacter, assignCorePath, buildTalentBroadcastPatch, clearCorePath, getPathData, getPathIds, removeTalentAtIndex, updateCoreTalentTracker, updateTalentTrackerAtIndex } from "../src-like/path-talent.js";
-import { buildClearChatPatch, buildChatMessagePatch } from "../src-like/chat.js";
-import { buildDescriptionChatPatch, buildNamedPoolRollChatPatch, buildNamedPoolRollEntry, buildPoolCreatePatch, buildPoolRemovePatch, buildPoolUpdatePatch, buildSuspensePatch, createPoolRecord } from "../src-like/pools.js";
+import { buildLocalMetadataBackup, CHARACTER_METADATA_KEY, CHAT_METADATA_KEY, DATE_METADATA_KEY, DEFAULT_GM_DATA, getCharactersFromMetadata, getChatStateFromMetadata, getPoolsFromMetadata, getRestoreMetadataPatch, GM_METADATA_KEY, mergeCharacterUpdate, POOL_METADATA_KEY, writeSceneMetadata } from "../src/core/metadata.js";
+import { loadExternalData } from "../src/core/data-loader.js";
+import { APP_SCREENS, getVisiblePanels, hydrateAppShell, isChatPopoverLocation, openCharacterFromList, openChatPopover, scrollChatboxToEnd, showChatScreen, showPoolsScreen, syncAppShellFromMetadata } from "../src/core/app-shell-state.js";
+import { buildCharacterCreatePatch, buildCharacterRemovePatch, createEmptyCharacter, getCharacterRowViewModel } from "../src/domain/characters.js";
+import { addTalentToCharacter, assignCorePath, buildTalentBroadcastPatch, clearCorePath, getPathData, getPathIds, removeTalentAtIndex, updateCoreTalentTracker, updateTalentTrackerAtIndex } from "../src/domain/paths.js";
+import { buildClearChatPatch, buildChatMessagePatch } from "../src/domain/chat.js";
+import { buildDescriptionChatPatch, buildNamedPoolRollChatPatch, buildNamedPoolRollEntry, buildPoolCreatePatch, buildPoolRemovePatch, buildPoolUpdatePatch, buildSuspensePatch, createPoolRecord } from "../src/domain/pools.js";
 import createAppShell from "../src/app/AppShell.js";
 import { createCharacterListScreens } from "../src/screens/CharacterList.js";
 import createCharacterSheetScreen from "../src/screens/CharacterSheet.js";

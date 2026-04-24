@@ -28,11 +28,8 @@ The maintained implementation is the `src/` tree:
 
 ## Compatibility layers
 
-The repository still contains two compatibility layers:
+The repository still contains one compatibility layer:
 
-- [../src-like](../src-like)
-  - transitional adapters extracted during reconstruction
-  - no new feature work should start here
 - [../assets/index.js](../assets/index.js)
   - recovered compatibility runtime loaded by the extension entrypoint
   - still required for the current browser-delivered artifact
@@ -83,6 +80,5 @@ Then run:
 ## Maintenance policy
 
 - `src/*` is the maintained implementation.
-- `src-like/*` is transitional.
 - `assets/index.js` is a compatibility artifact, not the preferred development target.
 - Documentation should assume developers can understand the app from `src/*` plus `docs/*` without reading the recovered bundle first.

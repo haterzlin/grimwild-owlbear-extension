@@ -9,8 +9,7 @@ What to maintain:
 - source screens in [src/screens](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens)
 - external path content in [data/assets.json](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/data/assets.json) and [data/paths](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/data/paths)
 
-What is transitional:
-- [src-like](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src-like) is compatibility glue kept during reconstruction
+Compatibility boundary:
 - [assets/index.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/assets/index.js) is a recovered compatibility runtime, not the preferred place to implement features
 
 ## Runtime layout
@@ -62,8 +61,7 @@ npm run test:pools
 
 ## Maintenance rules
 
-- Add new behavior in `src/*`, not `src-like/*`.
-- Treat `src-like/*` as transitional adapters until they can be deleted.
+- Add new behavior in `src/*`.
 - Treat `assets/index.js` as a compatibility artifact and integration bridge.
 - Update `data/assets.json` and `data/paths/*` for path content changes instead of editing embedded path data.
 - Keep Playwright green after every meaningful change.

@@ -25,13 +25,10 @@ Source entrypoints and ownership:
 
 ## Compatibility code
 
-Compatibility layers that still exist:
+Compatibility layer that still exists:
 - [../assets/index.js](../assets/index.js)
   - recovered compatibility runtime artifact
   - use only when the maintained source runtime needs bridging into the current artifact
-- [../src-like](../src-like)
-  - transitional compatibility modules
-  - do not start new feature work here
 
 ## Canonical edit targets
 
