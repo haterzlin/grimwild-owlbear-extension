@@ -31,7 +31,10 @@ The maintained implementation is the `src/` tree:
 The repository still contains one compatibility layer:
 
 - [../assets/index.js](../assets/index.js)
-  - recovered compatibility runtime loaded by the extension entrypoint
+  - thin compatibility entrypoint loaded by the extension entrypoint
+  - imports the recovered runtime module below
+- [../assets/recovered-compat.js](../assets/recovered-compat.js)
+  - recovered compatibility runtime
   - still required for the current browser-delivered artifact
   - should be touched only when the source runtime needs a compatibility bridge
 
@@ -80,5 +83,6 @@ Then run:
 ## Maintenance policy
 
 - `src/*` is the maintained implementation.
-- `assets/index.js` is a compatibility artifact, not the preferred development target.
+- `assets/index.js` is a thin compatibility artifact, not the preferred development target.
+- `assets/recovered-compat.js` is legacy compatibility code, not the preferred development target.
 - Documentation should assume developers can understand the app from `src/*` plus `docs/*` without reading the recovered bundle first.

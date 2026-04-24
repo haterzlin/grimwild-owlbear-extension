@@ -10,7 +10,8 @@ What to maintain:
 - external path content in [data/assets.json](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/data/assets.json) and [data/paths](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/data/paths)
 
 Compatibility boundary:
-- [assets/index.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/assets/index.js) is a recovered compatibility runtime, not the preferred place to implement features
+- [assets/index.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/assets/index.js) is a thin compatibility entrypoint
+- [assets/recovered-compat.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/assets/recovered-compat.js) contains the recovered compatibility runtime and is not the preferred place to implement features
 
 ## Runtime layout
 
@@ -62,6 +63,7 @@ npm run test:pools
 ## Maintenance rules
 
 - Add new behavior in `src/*`.
-- Treat `assets/index.js` as a compatibility artifact and integration bridge.
+- Treat `assets/index.js` as a thin compatibility artifact and integration bridge.
+- Treat `assets/recovered-compat.js` as legacy compatibility code.
 - Update `data/assets.json` and `data/paths/*` for path content changes instead of editing embedded path data.
 - Keep Playwright green after every meaningful change.

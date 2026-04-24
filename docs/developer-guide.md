@@ -27,8 +27,11 @@ Source entrypoints and ownership:
 
 Compatibility layer that still exists:
 - [../assets/index.js](../assets/index.js)
-  - recovered compatibility runtime artifact
+  - thin compatibility runtime artifact
   - use only when the maintained source runtime needs bridging into the current artifact
+- [../assets/recovered-compat.js](../assets/recovered-compat.js)
+  - recovered compatibility runtime
+  - do not use as the default place for new feature work
 
 ## Canonical edit targets
 
