@@ -11,11 +11,14 @@ What to maintain:
 
 Compatibility boundary:
 - [assets/index.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/assets/index.js) is a thin compatibility entrypoint
-- [assets/recovered-compat.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/assets/recovered-compat.js) contains the recovered compatibility runtime and is not the preferred place to implement features
+- [src/runtime/entry.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/entry.js) is the maintained browser bootstrap
+- [src/vendor](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/vendor) contains the still-vendored recovered runtime dependencies that power the source entry
 
 ## Runtime layout
 
 - Top-level app shell: [src/app/AppShell.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/app/AppShell.js)
+- Source bootstrap: [src/runtime/entry.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/entry.js)
+- Runtime adapters: [src/runtime](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime)
 - Character screens: [src/screens/CharacterList.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/CharacterList.js), [src/screens/CharacterSheet.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/CharacterSheet.js)
 - Path/talent screens: [src/screens/PathScreen.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/PathScreen.js)
 - Pools/chat screens: [src/screens/PoolsAndChat.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/PoolsAndChat.js)
@@ -63,7 +66,8 @@ npm run test:pools
 ## Maintenance rules
 
 - Add new behavior in `src/*`.
-- Treat `assets/index.js` as a thin compatibility artifact and integration bridge.
-- Treat `assets/recovered-compat.js` as legacy compatibility code.
+- Treat `assets/index.js` as a thin compatibility artifact only.
+- Treat `src/runtime/*` as the maintained browser bootstrap layer.
+- Treat `src/vendor/*` as vendored runtime code that should only change when source runtime wiring requires it.
 - Update `data/assets.json` and `data/paths/*` for path content changes instead of editing embedded path data.
 - Keep Playwright green after every meaningful change.

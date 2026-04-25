@@ -23,14 +23,20 @@ Source entrypoints and ownership:
   - [../src/core](../src/core)
   - [../src/domain](../src/domain)
 
-## Compatibility code
+## Runtime bootstrap
 
-Compatibility layer that still exists:
+Maintained bootstrap code:
+- [../src/runtime](../src/runtime)
+  - source-owned browser bootstrap, runtime helpers, style map, and roll wiring
+
+Thin artifact layer:
 - [../assets/index.js](../assets/index.js)
   - thin compatibility runtime artifact
-  - use only when the maintained source runtime needs bridging into the current artifact
-- [../assets/recovered-compat.js](../assets/recovered-compat.js)
-  - recovered compatibility runtime
+  - use only when the maintained source runtime needs bridging into the extension entrypoint
+
+Vendored runtime code:
+- [../src/vendor](../src/vendor)
+  - recovered runtime dependencies kept as isolated vendor modules
   - do not use as the default place for new feature work
 
 ## Canonical edit targets
@@ -38,6 +44,7 @@ Compatibility layer that still exists:
 Use these directories by default:
 - shared contracts: `src/contracts/*`
 - app/runtime wiring: `src/app/*` and `src/core/*`
+- browser bootstrap wiring: `src/runtime/*`
 - domain state and patch logic: `src/domain/*`
 - UI and screen behavior: `src/screens/*`
 - path content and art mapping: `data/assets.json` and `data/paths/*`

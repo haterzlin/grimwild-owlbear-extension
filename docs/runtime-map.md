@@ -1,18 +1,24 @@
 # Grimwild Runtime Map
 
-This document is the Phase 1 source-of-truth map for the recovered Grimwild Owlbear Rodeo extension.
+This document is the Phase 1 bundle-era map for the recovered Grimwild Owlbear Rodeo extension.
 
-It describes the current runnable implementation without changing behavior.
+It is now a historical reference for the original recovered bundle analysis, not the current maintained runtime.
+
+Current source-first runtime references:
+- [source-architecture.md](./source-architecture.md)
+- [developer-guide.md](./developer-guide.md)
+- [../src/runtime/entry.js](../src/runtime/entry.js)
 
 ## Runtime shape
 
 - Framework: `React`
 - Likely original bundler: `Vite`
-- Runnable artifact: [../assets/index.js](../assets/index.js)
+- Current browser entry artifact: [../assets/index.js](../assets/index.js)
+- Historical analyzed bundle artifact: pre-refactor `assets/index.js`
 - HTML shell: [../index.html](../index.html)
 - Manifest: [../manifest.json](../manifest.json)
 
-The current extension is a compiled production bundle. The goal of refactoring is to make the runtime understandable in layers before attempting deeper rewrites.
+The current extension is source-owned in `src/*`. The line references below were captured before the source-first runtime rewrite and are preserved only for bundle forensics.
 
 ## Entry points
 

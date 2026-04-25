@@ -26,25 +26,30 @@ The maintained implementation is the `src/` tree:
   - [../src/screens/PathScreen.js](../src/screens/PathScreen.js)
   - [../src/screens/PoolsAndChat.js](../src/screens/PoolsAndChat.js)
 
-## Compatibility layers
+## Runtime layers
 
-The repository still contains one compatibility layer:
+The browser-delivered entry path is now:
 
 - [../assets/index.js](../assets/index.js)
   - thin compatibility entrypoint loaded by the extension entrypoint
-  - imports the recovered runtime module below
-- [../assets/recovered-compat.js](../assets/recovered-compat.js)
-  - recovered compatibility runtime
-  - still required for the current browser-delivered artifact
-  - should be touched only when the source runtime needs a compatibility bridge
+  - imports the maintained source bootstrap below
+- [../src/runtime/entry.js](../src/runtime/entry.js)
+  - maintained source-owned browser bootstrap
+  - wires OBR, React runtime, assets, data loading, screen factories, and root render
+- [../src/vendor/react-runtime.js](../src/vendor/react-runtime.js)
+  - vendored recovered React/render runtime
+- [../src/vendor/obr-runtime.js](../src/vendor/obr-runtime.js)
+  - vendored recovered Owlbear client runtime
 
 Practical rule:
 - if a change can be implemented in `src/*`, implement it there
-- only edit `assets/index.js` when wiring the source runtime into the current artifact
+- only edit `assets/index.js` when wiring the maintained runtime into the extension artifact
 
 ## Runtime ownership
 
 Current ownership split:
+- bootstrap, runtime assets, dice/chat roll wiring, CSS-class mapping, and OBR resolution:
+  - [../src/runtime](../src/runtime)
 - app bootstrap, readiness, subscriptions, screen routing, unread state, and local backup/restore:
   - [../src/app/AppShell.js](../src/app/AppShell.js)
 - character UI:
@@ -83,6 +88,7 @@ Then run:
 ## Maintenance policy
 
 - `src/*` is the maintained implementation.
+- `src/runtime/*` is the maintained browser bootstrap layer.
+- `src/vendor/*` is vendored runtime code, not the preferred feature-development target.
 - `assets/index.js` is a thin compatibility artifact, not the preferred development target.
-- `assets/recovered-compat.js` is legacy compatibility code, not the preferred development target.
 - Documentation should assume developers can understand the app from `src/*` plus `docs/*` without reading the recovered bundle first.
