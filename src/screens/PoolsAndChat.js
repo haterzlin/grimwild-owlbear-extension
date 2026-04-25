@@ -38,7 +38,7 @@ const rollDie = sides => Math.floor(Math.random() * sides) + 1;
 const getOutcomeColor = outcome => {
   switch (outcome) {
     case "Critical":
-      return "gold";
+      return "purple";
     case "Perfect":
       return "green";
     case "Messy":
