@@ -60,10 +60,6 @@ export const hydrateAppShell = async ({
   setPlayerName(await obr.player.getName());
   setPlayerId(await obr.player.getId());
   setRole(await obr.player.getRole());
-
-  obr.player.onChange(async () => {
-    setPlayerName(await obr.player.getName());
-  });
 };
 
 export const openChatPopover = obr => obr.popover.open({

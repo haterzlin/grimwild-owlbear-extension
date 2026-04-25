@@ -164,35 +164,49 @@ export default function createAppShell(dependencies) {
     };
 
     React.useEffect(() => {
+      let isDisposed = false;
+      let didHydrateReadyScene = false;
+      let stopSceneReadyChange;
+      let stopPlayerChange;
+
+      const runHydrate = async () => {
+        await hydrateAppShell({
+          obr,
+          restoreLocalMetadata,
+          syncFromMetadata,
+          setReady,
+          setPlayerName,
+          setPlayerId,
+          setRole
+        });
+      };
+
       obr.onReady(async () => {
-        obr.scene.onReadyChange(async sceneReady => {
+        if (isDisposed) return;
+
+        stopSceneReadyChange = obr.scene.onReadyChange(async sceneReady => {
+          if (isDisposed) return;
+
           if (sceneReady) {
-            await hydrateAppShell({
-              obr,
-              restoreLocalMetadata,
-              syncFromMetadata,
-              setReady,
-              setPlayerName,
-              setPlayerId,
-              setRole
-            });
+            didHydrateReadyScene = true;
+            await runHydrate();
           } else {
+            didHydrateReadyScene = false;
             setReady(false);
             setChatEntries([]);
           }
         });
 
-        if (await obr.scene.isReady()) {
-          await hydrateAppShell({
-            obr,
-            restoreLocalMetadata,
-            syncFromMetadata,
-            setReady,
-            setPlayerName,
-            setPlayerId,
-            setRole
-          });
+        if (await obr.scene.isReady() && !didHydrateReadyScene) {
+          didHydrateReadyScene = true;
+          await runHydrate();
         }
+
+        if (isDisposed) return;
+        stopPlayerChange = obr.player.onChange(async () => {
+          if (isDisposed) return;
+          setPlayerName(await obr.player.getName());
+        });
       });
 
       try {
@@ -200,6 +214,12 @@ export default function createAppShell(dependencies) {
       } catch {
         setCookiesUnavailable(true);
       }
+
+      return () => {
+        isDisposed = true;
+        if (typeof stopSceneReadyChange === "function") stopSceneReadyChange();
+        if (typeof stopPlayerChange === "function") stopPlayerChange();
+      };
     }, []);
 
     React.useEffect(() => {

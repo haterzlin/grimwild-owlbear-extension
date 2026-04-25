@@ -64,7 +64,14 @@ export const buildLocalMetadataBackup = (roomId, metadata) => ({
 export const getRestoreMetadataPatch = (roomId, backupString, currentMetadata) => {
   if (!backupString) return null;
 
-  const parsedBackup = JSON.parse(backupString);
+  let parsedBackup;
+  try {
+    parsedBackup = JSON.parse(backupString);
+  } catch {
+    return null;
+  }
+
+  if (!parsedBackup || typeof parsedBackup !== "object") return null;
   const currentDate = currentMetadata?.[DATE_METADATA_KEY] ?? 0;
 
   if (parsedBackup.room !== roomId) return null;
