@@ -97,6 +97,13 @@ const openPoolsTab = async page => {
   await expect(page.locator('div[class*="_header_"]').filter({ hasText: "Pools" }).first()).toBeVisible();
 };
 
+const openChatTab = async page => {
+  await openPoolsTab(page);
+  await page.getByRole("button", { name: "Chat" }).click();
+  await expect(page.locator('div[class*="_header_"]').filter({ hasText: "Chat" }).first()).toBeVisible();
+  await expect(page.getByRole("button", { name: "Popover", exact: true })).toBeVisible();
+};
+
 const lastRoll = async page => page.evaluate(() => {
   const chatMetadata = window.__grimwildTestApi.getMetadata()["grimwild.extension/metadata"];
   const entries = Object.values(chatMetadata).flat();
@@ -295,6 +302,47 @@ test.describe("Pools", () => {
 
       expect(finalState).not.toBeNull();
       await expect(diceInput).toHaveValue(finalState);
+    } finally {
+      await flushDebug();
+    }
+  });
+
+  test("popover button opens the chat popover route", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openChatTab(page);
+
+      const popupPromise = page.waitForEvent("popup");
+      await page.getByRole("button", { name: "Popover", exact: true }).click();
+      const popup = await popupPromise;
+
+      await expect
+        .poll(async () => page.evaluate(() => window.__grimwildTestApi.getPopoverState().lastOpen))
+        .toEqual({
+          id: "chat/popover",
+          url: "/chatpopover",
+          height: 600,
+          width: 300,
+          anchorOrigin: {
+            horizontal: "RIGHT",
+            vertical: "BOTTOM"
+          },
+          hidePaper: true,
+          marginThreshold: 0,
+          disableClickAway: true
+        });
+
+      await expect(popup).toHaveURL(/\/chatpopover\/?\?mockOwlbear=1$/);
+      await expect(popup.getByText("Chat", { exact: true })).toBeVisible();
+      await expect(popup.getByRole("button", { name: "Close", exact: true })).toBeVisible();
+
+      const popupClosed = popup.waitForEvent("close");
+      await popup.getByRole("button", { name: "Close", exact: true }).click();
+      await popupClosed;
+
+      await expect
+        .poll(async () => page.evaluate(() => window.__grimwildTestApi.getPopoverState().isOpen))
+        .toBe(false);
     } finally {
       await flushDebug();
     }

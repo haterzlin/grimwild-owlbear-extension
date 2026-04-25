@@ -33,6 +33,22 @@
     badgeBackgroundColor: undefined
   };
 
+  const sharedPopoverHost = window.opener?.__grimwildMockPopoverHost ?? {
+    state: {
+      lastOpen: null,
+      closedIds: [],
+      isOpen: false
+    },
+    popupWindow: null
+  };
+  window.__grimwildMockPopoverHost = sharedPopoverHost;
+
+  const buildMockPopoverUrl = url => {
+    const target = new URL(url, window.location.origin);
+    target.searchParams.set("mockOwlbear", "1");
+    return target.toString();
+  };
+
   const notify = (type, payload) => {
     for (const listener of listeners[type]) listener(payload);
   };
@@ -107,8 +123,21 @@
       }
     },
     popover: {
-      async open() {},
-      close() {}
+      async open(options) {
+        sharedPopoverHost.state.lastOpen = clone(options);
+        sharedPopoverHost.state.isOpen = true;
+        const popupUrl = buildMockPopoverUrl(options.url);
+        sharedPopoverHost.popupWindow = window.open(popupUrl, options.id, "popup,width=300,height=600");
+      },
+      close(id) {
+        sharedPopoverHost.state.closedIds.push(id);
+        sharedPopoverHost.state.isOpen = false;
+        if (sharedPopoverHost.popupWindow && !sharedPopoverHost.popupWindow.closed) {
+          sharedPopoverHost.popupWindow.close();
+        } else if (window.opener && !window.closed) {
+          window.close();
+        }
+      }
     }
   };
 
@@ -136,6 +165,9 @@
     },
     getPlayer() {
       return clone(player);
+    },
+    getPopoverState() {
+      return clone(sharedPopoverHost.state);
     }
   };
 })();
