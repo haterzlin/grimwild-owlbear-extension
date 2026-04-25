@@ -69,8 +69,10 @@ Metadata contracts and patch builders:
 - [../src/domain/pools.js](../src/domain/pools.js)
 - [../src/domain/chat.js](../src/domain/chat.js)
 
-External path data remains authoritative in:
-- [../data/assets.json](../data/assets.json)
+Path identity and art mapping are authoritative in:
+- [../src/runtime/assets.js](../src/runtime/assets.js)
+
+Path definitions remain authoritative in:
 - [../data/paths](../data/paths)
 
 ## Verification workflow

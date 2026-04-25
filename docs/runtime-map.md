@@ -8,6 +8,7 @@ Current source-first runtime references:
 - [source-architecture.md](./source-architecture.md)
 - [developer-guide.md](./developer-guide.md)
 - [../src/runtime/entry.js](../src/runtime/entry.js)
+- [../src/runtime/assets.js](../src/runtime/assets.js)
 
 ## Runtime shape
 
@@ -19,6 +20,8 @@ Current source-first runtime references:
 - Manifest: [../manifest.json](../manifest.json)
 
 The current extension is source-owned in `src/*`. The line references below were captured before the source-first runtime rewrite and are preserved only for bundle forensics.
+
+Some bundle-era references below mention an older external asset-map file that has since been removed. The current path asset manifest is [../src/runtime/assets.js](../src/runtime/assets.js).
 
 ## Entry points
 
@@ -59,11 +62,11 @@ These names should be used in future refactor notes and extracted modules.
 ### JSON-backed path data
 
 - Path art map:
-  - [../data/assets.json](../data/assets.json)
+  - current source manifest: [../src/runtime/assets.js](../src/runtime/assets.js)
 - Per-path content:
   - [../data/paths](../data/paths)
 
-Current path ids from [../data/assets.json](../data/assets.json):
+Current path ids from [../src/runtime/assets.js](../src/runtime/assets.js):
 - `bard`
 - `berserker`
 - `cleric`
@@ -219,13 +222,12 @@ Main responsibilities in [../assets/index.js:12172](../assets/index.js:12172):
 
 Current runtime boot flow:
 1. [../assets/index.js:13912](../assets/index.js:13912) calls `loadExternalGrimwildData()`
-2. `loadExternalData` fetches [../data/assets.json](../data/assets.json)
-3. it derives the path ids from that file
-4. it fetches each path from [../data/paths](../data/paths)
-5. it populates `Ns` and `vr`
-6. only then does React render the app
+2. the current source runtime derives path ids from [../src/runtime/assets.js](../src/runtime/assets.js)
+3. it fetches each path from [../data/paths](../data/paths)
+4. it populates the runtime path tables
+5. only then does React render the app
 
-This means external JSON is the authoritative source for path art and path content.
+This means the source asset manifest is authoritative for path ids/art mapping, while `data/paths/*` remains authoritative for path definitions.
 
 ## Test coverage map
 

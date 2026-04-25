@@ -47,7 +47,8 @@ Use these directories by default:
 - browser bootstrap wiring: `src/runtime/*`
 - domain state and patch logic: `src/domain/*`
 - UI and screen behavior: `src/screens/*`
-- path content and art mapping: `data/assets.json` and `data/paths/*`
+- path asset manifest: `src/runtime/assets.js`
+- path definitions: `data/paths/*`
 
 ## Verification workflow
 

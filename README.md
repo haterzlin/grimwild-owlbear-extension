@@ -7,7 +7,8 @@ What to maintain:
 - source contracts in [src/contracts](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/contracts)
 - source runtime/core APIs in [src/core](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/core)
 - source screens in [src/screens](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens)
-- external path content in [data/assets.json](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/data/assets.json) and [data/paths](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/data/paths)
+- path asset manifest in [src/runtime/assets.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/assets.js)
+- external path content in [data/paths](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/data/paths)
 
 Compatibility boundary:
 - [assets/index.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/assets/index.js) is a thin compatibility entrypoint
@@ -69,5 +70,5 @@ npm run test:pools
 - Treat `assets/index.js` as a thin compatibility artifact only.
 - Treat `src/runtime/*` as the maintained browser bootstrap layer.
 - Treat `src/vendor/*` as vendored runtime code that should only change when source runtime wiring requires it.
-- Update `data/assets.json` and `data/paths/*` for path content changes instead of editing embedded path data.
+- Update `src/runtime/assets.js` and `data/paths/*` together for path content changes.
 - Keep Playwright green after every meaningful change.

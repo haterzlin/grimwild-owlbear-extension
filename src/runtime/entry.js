@@ -11,6 +11,8 @@ import classNames from "./class-names.js";
 import styles from "./styles.js";
 import { APP_ASSETS, DEFAULT_PATH_ASSETS } from "./assets.js";
 
+const DEFAULT_PATH_KEYS = Object.keys(DEFAULT_PATH_ASSETS);
+
 let pathAssets = {
   ...DEFAULT_PATH_ASSETS
 };
@@ -89,16 +91,14 @@ const AppShell = createAppShell({
 async function loadRuntimeData() {
   try {
     const {
-      assets: externalAssets,
       paths: externalPaths
     } = await loadExternalData({
-      currentPaths: pathsById
+      pathKeys: DEFAULT_PATH_KEYS
     });
 
-    if (externalAssets && typeof externalAssets === "object") pathAssets = externalAssets;
     if (externalPaths && Object.keys(externalPaths).length > 0) pathsById = externalPaths;
   } catch (error) {
-    console.warn("Failed to load external Grimwild data. Using local asset defaults.", error);
+    console.warn("Failed to load external Grimwild path data.", error);
   }
 }
 
