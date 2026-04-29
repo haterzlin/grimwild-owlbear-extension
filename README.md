@@ -10,10 +10,13 @@ What to maintain:
 - path asset manifest in [src/runtime/assets.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/assets.js)
 - external path content in [data/paths](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/data/paths)
 
-Compatibility boundary:
-- [assets/index.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/assets/index.js) is a thin compatibility entrypoint
+Runtime boundary:
+- [index.html](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/index.html) and [chatpopover/index.html](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/chatpopover/index.html) are the active browser entry pages
+- [src/main.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/main.js) boots the main extension route explicitly
+- [src/chatpopover-main.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/chatpopover-main.js) boots the chat popover route explicitly
 - [src/runtime/entry.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/entry.js) is the maintained browser bootstrap
-- [src/vendor](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/vendor) contains the still-vendored recovered runtime dependencies that power the source entry
+- [src/runtime/react-runtime.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/react-runtime.js) bridges the current screen factories onto standard `react` / `react-dom`
+- [src/runtime/obr-client.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/obr-client.js) is the live Owlbear adapter
 
 ## Runtime layout
 
@@ -28,22 +31,29 @@ Source architecture details live in [docs/source-architecture.md](/home/lmlich/D
 
 ## Local run
 
-Serve the repository root on `http://localhost:8000`. One simple option:
+Run the app through Vite on `http://127.0.0.1:8000`:
 
 ```bash
-python3 -c "from http.server import HTTPServer, SimpleHTTPRequestHandler as SHTH; c = type('CORSRequestHandler', (SHTH,), {'end_headers': lambda self: [self.send_header('Access-Control-Allow-Origin', '*'), self.send_header('Access-Control-Allow-Methods', 'GET'), self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate'), SHTH.end_headers(self)]}); HTTPServer(('localhost', 8000), c).serve_forever()"
+npm run dev -- --host 127.0.0.1 --port 8000 --strictPort
 ```
 
 Then install the extension in Owlbear Rodeo from:
 
 ```text
-http://localhost:8000/manifest.json
+http://127.0.0.1:8000/manifest.json
 ```
 
 For local mock-runtime testing, open:
 
 ```text
 http://127.0.0.1:8000/?mockOwlbear=1
+```
+
+To verify the production build locally:
+
+```bash
+npm run build
+npm run preview -- --host 127.0.0.1 --port 8000 --strictPort
 ```
 
 ## Tests
@@ -67,8 +77,8 @@ npm run test:pools
 ## Maintenance rules
 
 - Add new behavior in `src/*`.
-- Treat `assets/index.js` as a thin compatibility artifact only.
+- Treat `index.html`, `chatpopover/index.html`, `src/main.js`, and `src/chatpopover-main.js` as the active entry flow.
 - Treat `src/runtime/*` as the maintained browser bootstrap layer.
-- Treat `src/vendor/*` as vendored runtime code that should only change when source runtime wiring requires it.
+- Treat `src/runtime/obr-client.js` as the source-owned Owlbear integration boundary.
 - Update `src/runtime/assets.js` and `data/paths/*` together for path content changes.
 - Keep Playwright green after every meaningful change.

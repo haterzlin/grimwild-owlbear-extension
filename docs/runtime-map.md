@@ -14,8 +14,10 @@ Current source-first runtime references:
 
 - Framework: `React`
 - Likely original bundler: `Vite`
-- Current browser entry artifact: [../assets/index.js](../assets/index.js)
-- Historical analyzed bundle artifact: pre-refactor `assets/index.js`
+- Current browser entry pages:
+  - [../index.html](../index.html)
+  - [../chatpopover/index.html](../chatpopover/index.html)
+- Historical analyzed bundle artifact: removed pre-refactor `assets/index.js`
 - HTML shell: [../index.html](../index.html)
 - Manifest: [../manifest.json](../manifest.json)
 
@@ -30,9 +32,8 @@ Some bundle-era references below mention an older external asset-map file that h
   - `action.popover` points to `/`
 - HTML shell:
   - [../index.html](../index.html)
-  - loads [../assets/index.js](../assets/index.js)
-- App boot:
-  - [../assets/index.js:13912](../assets/index.js:13912)
+  - loads [../src/main.js](../src/main.js) in the maintained runtime
+- Historical bundle app boot:
   - `loadExternalGrimwildData().finally(...)`
   - `createRoot(...).render(...)`
 

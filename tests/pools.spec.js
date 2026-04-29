@@ -333,6 +333,7 @@ test.describe("Pools", () => {
         });
 
       await expect(popup).toHaveURL(/\/chatpopover\/?\?mockOwlbear=1$/);
+      await popup.waitForLoadState("domcontentloaded");
       await expect(popup.getByText("Chat", { exact: true })).toBeVisible();
       await expect(popup.getByRole("button", { name: "Close", exact: true })).toBeVisible();
 

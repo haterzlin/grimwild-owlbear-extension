@@ -25,19 +25,31 @@ Source entrypoints and ownership:
 
 ## Runtime bootstrap
 
+Active entry flow:
+- [../index.html](../index.html)
+- [../chatpopover/index.html](../chatpopover/index.html)
+- [../src/main.js](../src/main.js)
+- [../src/chatpopover-main.js](../src/chatpopover-main.js)
+
+Route ownership:
+- `src/main.js` owns the main extension boot path
+- `src/chatpopover-main.js` owns the chat popover boot path
+- `src/runtime/entry.js` is the shared bootstrap used by both
+
 Maintained bootstrap code:
 - [../src/runtime](../src/runtime)
   - source-owned browser bootstrap, runtime helpers, style map, and roll wiring
 
-Thin artifact layer:
-- [../assets/index.js](../assets/index.js)
-  - thin compatibility runtime artifact
-  - use only when the maintained source runtime needs bridging into the extension entrypoint
+Owlbear runtime adapter:
+- [../src/runtime/obr-client.js](../src/runtime/obr-client.js)
+  - source-owned message client for the small Owlbear API subset this extension uses
+- [../src/runtime/obr-reference.js](../src/runtime/obr-reference.js)
+  - parses `obrref` from the current URL
 
-Vendored runtime code:
-- [../src/vendor](../src/vendor)
-  - recovered runtime dependencies kept as isolated vendor modules
-  - do not use as the default place for new feature work
+Standard React bridge:
+- [../src/runtime/react-runtime.js](../src/runtime/react-runtime.js)
+  - compatibility wrapper around `react`, `react-dom/client`, and `react/jsx-runtime`
+  - keep using this until the screen factory pattern is replaced
 
 ## Canonical edit targets
 

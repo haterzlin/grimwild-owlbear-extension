@@ -4,12 +4,15 @@ import { createCharacterListScreens } from "../screens/CharacterList.js";
 import createCharacterSheetScreen from "../screens/CharacterSheet.js";
 import { createPathScreens } from "../screens/PathScreen.js";
 import { createPoolsAndChatScreens } from "../screens/PoolsAndChat.js";
-import { createRoot, jsxRuntime, React } from "../vendor/react-runtime.js";
+import { createRoot, jsxRuntime, React } from "./react-runtime.js";
 import resolveObr from "./obr.js";
 import createRollDice from "./rolls.js";
 import classNames from "./class-names.js";
 import styles from "./styles.js";
 import { APP_ASSETS, DEFAULT_PATH_ASSETS } from "./assets.js";
+/**
+ * @typedef {import("../contracts/app.js").AppRouteMode} AppRouteMode
+ */
 
 const DEFAULT_PATH_KEYS = Object.keys(DEFAULT_PATH_ASSETS);
 
@@ -18,75 +21,74 @@ let pathAssets = {
 };
 let pathsById = {};
 
-const obr = resolveObr();
-const rollDice = createRollDice(obr);
+const resolveRouteModeFromLocation = preferredRouteMode => {
+  if (window.location.pathname.startsWith("/chatpopover")) return "chatpopover";
+  return preferredRouteMode;
+};
 
-const { CharacterList, CharacterRow } = createCharacterListScreens({
-  jsxRuntime,
-  obr,
-  styles,
-  classNames,
-  assets: {
-    logo: APP_ASSETS.logo,
-    dividerPrimary: APP_ASSETS.dividerPrimary
-  },
-  getPathAssets: () => pathAssets
-});
+const createRuntimeScreens = obr => {
+  const rollDice = createRollDice(obr);
 
-const CharacterSheet = createCharacterSheetScreen({
-  jsxRuntime,
-  styles,
-  classNames,
-  assets: {
-    dividerPrimary: APP_ASSETS.dividerPrimary,
-    dividerSecondary: APP_ASSETS.dividerSecondary
-  },
-  rollDice
-});
+  const { CharacterList, CharacterRow } = createCharacterListScreens({
+    jsxRuntime,
+    obr,
+    styles,
+    classNames,
+    assets: {
+      logo: APP_ASSETS.logo,
+      dividerPrimary: APP_ASSETS.dividerPrimary
+    },
+    getPathAssets: () => pathAssets
+  });
 
-const { PathScreen } = createPathScreens({
-  jsxRuntime,
-  React,
-  obr,
-  styles,
-  classNames,
-  assets: {
-    dividerPrimary: APP_ASSETS.dividerPrimary,
-    dividerSecondary: APP_ASSETS.dividerSecondary
-  },
-  getPathAssets: () => pathAssets,
-  getPathsById: () => pathsById
-});
+  const CharacterSheet = createCharacterSheetScreen({
+    jsxRuntime,
+    styles,
+    classNames,
+    assets: {
+      dividerPrimary: APP_ASSETS.dividerPrimary,
+      dividerSecondary: APP_ASSETS.dividerSecondary
+    },
+    rollDice
+  });
 
-const { PoolsScreen, ChatScreen } = createPoolsAndChatScreens({
-  jsxRuntime,
-  React,
-  obr,
-  styles,
-  classNames,
-  assets: {
-    dividerPrimary: APP_ASSETS.dividerPrimary,
-    diceFaces: APP_ASSETS.diceFaces,
-    thornFaces: APP_ASSETS.thornFaces
-  },
-  rollDice
-});
+  const { PathScreen } = createPathScreens({
+    jsxRuntime,
+    React,
+    obr,
+    styles,
+    classNames,
+    assets: {
+      dividerPrimary: APP_ASSETS.dividerPrimary,
+      dividerSecondary: APP_ASSETS.dividerSecondary
+    },
+    getPathAssets: () => pathAssets,
+    getPathsById: () => pathsById
+  });
 
-const AppShell = createAppShell({
-  React,
-  jsxRuntime,
-  obr,
-  styles,
-  classNames,
-  screens: {
-    CharacterSheet,
-    PathScreen,
+  const { PoolsScreen, ChatScreen } = createPoolsAndChatScreens({
+    jsxRuntime,
+    React,
+    obr,
+    styles,
+    classNames,
+    assets: {
+      dividerPrimary: APP_ASSETS.dividerPrimary,
+      diceFaces: APP_ASSETS.diceFaces,
+      thornFaces: APP_ASSETS.thornFaces
+    },
+    rollDice
+  });
+
+  return {
     CharacterList,
     CharacterRow,
+    CharacterSheet,
+    PathScreen,
     PoolsScreen,
     ChatScreen
-  }
-});
+  };
+};
 
 async function loadRuntimeData() {
   try {
@@ -102,8 +104,27 @@ async function loadRuntimeData() {
   }
 }
 
-loadRuntimeData().finally(() => {
+/**
+ * @param {{ routeMode: AppRouteMode }} options
+ * @returns {Promise<void>}
+ */
+export async function bootRuntime({ routeMode }) {
+  const obr = resolveObr();
+  const resolvedRouteMode = resolveRouteModeFromLocation(routeMode);
+  const screens = createRuntimeScreens(obr);
+  const AppShell = createAppShell({
+    React,
+    jsxRuntime,
+    obr,
+    styles,
+    classNames,
+    routeMode: resolvedRouteMode,
+    screens
+  });
+
+  await loadRuntimeData();
+
   createRoot(document.getElementById("root")).render(jsxRuntime.jsx(React.StrictMode, {
     children: jsxRuntime.jsx(AppShell, {})
   }));
-});
+}

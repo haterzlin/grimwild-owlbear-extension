@@ -3,6 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
     "test:e2e": "playwright test",
     "test:character-list": "playwright test tests/character-list.spec.js",
     "test:character-sheet": "playwright test tests/character-sheet.spec.js",
@@ -11,6 +14,11 @@
     "test:pools": "playwright test tests/pools.spec.js"
   },
   "devDependencies": {
-    "@playwright/test": "^1.53.0"
+    "@playwright/test": "^1.53.0",
+    "vite": "^7.1.11"
+  },
+  "dependencies": {
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
   }
 }

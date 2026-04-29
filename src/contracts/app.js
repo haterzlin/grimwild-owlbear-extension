@@ -3,6 +3,10 @@
  */
 
 /**
+ * @typedef {"main" | "chatpopover"} AppRouteMode
+ */
+
+/**
  * @typedef {Object} AppShellState
  * @property {boolean} isReady
  * @property {number} unreadCount

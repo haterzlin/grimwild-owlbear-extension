@@ -12,7 +12,6 @@ import {
   APP_SCREENS,
   getVisiblePanels,
   hydrateAppShell,
-  isChatPopoverLocation,
   openCharacterFromList,
   openChatPopover,
   scrollChatboxToEnd,
@@ -29,6 +28,7 @@ import {
  * @property {Object} obr
  * @property {Object} styles
  * @property {(base: string, extras?: Object<string, boolean>) => string} classNames
+ * @property {import("../contracts/app.js").AppRouteMode} routeMode
  * @property {{
  *   CharacterSheet: Function,
  *   PathScreen: Function,
@@ -53,7 +53,8 @@ export default function createAppShell(dependencies) {
     obr,
     styles,
     classNames,
-    screens
+    screens,
+    routeMode
   } = dependencies;
   const { jsx, jsxs, Fragment } = jsxRuntime;
   const {
@@ -69,6 +70,7 @@ export default function createAppShell(dependencies) {
   };
 
   return function AppShell() {
+    const isChatPopover = routeMode === "chatpopover";
     const [isReady, setReady] = React.useState(false);
     const [unreadCount, setUnreadCount] = React.useState(0);
     const [playerName, setPlayerName] = React.useState("");
@@ -81,16 +83,11 @@ export default function createAppShell(dependencies) {
     const [selectedCharacter, setSelectedCharacter] = React.useState(null);
     const [pendingCharacterSaveTimeout, setPendingCharacterSaveTimeout] = React.useState(null);
     const [gmData, setGmData] = React.useState(DEFAULT_GM_DATA);
-    const [isChatPopover, setIsChatPopover] = React.useState(false);
     const [currentScreen, setCurrentScreen] = React.useState(APP_SCREENS.CHAT);
     const [characters, setCharacters] = React.useState([]);
     const [pools, setPools] = React.useState([]);
     const currentScreenRef = React.useRef(currentScreen);
     const selectedCharacterRef = React.useRef(selectedCharacter);
-
-    React.useEffect(() => {
-      setIsChatPopover(isChatPopoverLocation(window.location.href));
-    }, []);
 
     React.useEffect(() => {
       currentScreenRef.current = currentScreen;

@@ -28,22 +28,31 @@ The maintained implementation is the `src/` tree:
 
 ## Runtime layers
 
-The browser-delivered entry path is now:
+The active browser entry flow is now:
 
-- [../assets/index.js](../assets/index.js)
-  - thin compatibility entrypoint loaded by the extension entrypoint
-  - imports the maintained source bootstrap below
+- [../index.html](../index.html)
+  - main extension HTML entry page used by Vite and local serving
+- [../chatpopover/index.html](../chatpopover/index.html)
+  - chat popover HTML entry page used by Vite and local serving
+- [../src/main.js](../src/main.js)
+  - main source entry module
+  - calls the shared runtime bootstrap in `main` mode
+- [../src/chatpopover-main.js](../src/chatpopover-main.js)
+  - chat popover source entry module
+  - calls the shared runtime bootstrap in `chatpopover` mode
 - [../src/runtime/entry.js](../src/runtime/entry.js)
   - maintained source-owned browser bootstrap
   - wires OBR, React runtime, assets, data loading, screen factories, and root render
-- [../src/vendor/react-runtime.js](../src/vendor/react-runtime.js)
-  - vendored recovered React/render runtime
-- [../src/vendor/obr-runtime.js](../src/vendor/obr-runtime.js)
-  - vendored recovered Owlbear client runtime
+  - receives explicit route mode from the entry module instead of inferring it from `window.location`
+- [../src/runtime/react-runtime.js](../src/runtime/react-runtime.js)
+  - standard React compatibility wrapper for the current screen factory shape
+- [../src/runtime/obr-client.js](../src/runtime/obr-client.js)
+  - thin source-owned Owlbear message client for the API subset this extension uses
+- [../src/runtime/obr-reference.js](../src/runtime/obr-reference.js)
+  - `obrref` parser for room/origin discovery
 
 Practical rule:
 - if a change can be implemented in `src/*`, implement it there
-- only edit `assets/index.js` when wiring the maintained runtime into the extension artifact
 
 ## Runtime ownership
 
@@ -91,6 +100,6 @@ Then run:
 
 - `src/*` is the maintained implementation.
 - `src/runtime/*` is the maintained browser bootstrap layer.
-- `src/vendor/*` is vendored runtime code, not the preferred feature-development target.
-- `assets/index.js` is a thin compatibility artifact, not the preferred development target.
+- `src/runtime/obr-client.js` is the live Owlbear integration boundary.
+- `index.html`, `chatpopover/index.html`, `src/main.js`, and `src/chatpopover-main.js` define the active entry flow.
 - Documentation should assume developers can understand the app from `src/*` plus `docs/*` without reading the recovered bundle first.

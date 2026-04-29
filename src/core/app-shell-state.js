@@ -7,8 +7,6 @@ export const APP_SCREENS = {
   CHAT: "chat"
 };
 
-export const isChatPopoverLocation = href => href.indexOf("/chatpopover") > 1;
-
 export const scrollChatboxToEnd = (delay = 100) => {
   setTimeout(() => {
     const chatbox = document.getElementById("chatbox");
