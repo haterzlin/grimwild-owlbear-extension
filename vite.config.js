@@ -26,6 +26,17 @@ const STATIC_COPY_TARGETS = [
   }
 ];
 
+const SHARED_SERVER_OPTIONS = {
+  host: "localhost",
+  port: 8000,
+  strictPort: true,
+  cors: true,
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET"
+  }
+};
+
 const copyStaticTargetsPlugin = () => ({
   name: "grimwild-copy-static-targets",
   closeBundle() {
@@ -57,6 +68,8 @@ export default defineConfig({
   plugins: [
     copyStaticTargetsPlugin()
   ],
+  server: SHARED_SERVER_OPTIONS,
+  preview: SHARED_SERVER_OPTIONS,
   build: {
     outDir: "dist",
     rollupOptions: {

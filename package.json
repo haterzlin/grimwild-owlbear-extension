@@ -14,7 +14,7 @@
     "test:pools": "playwright test tests/pools.spec.js"
   },
   "devDependencies": {
-    "@playwright/test": "^1.53.0",
+    "@playwright/test": "^1.59.1",
     "vite": "^7.1.11"
   },
   "dependencies": {
