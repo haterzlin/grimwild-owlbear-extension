@@ -1,6 +1,6 @@
 # Source Architecture
 
-This document describes the maintained source runtime for the Grimwild recovered extension.
+This document describes the maintained source runtime for the Grimwild extension.
 
 ## Source of truth
 
