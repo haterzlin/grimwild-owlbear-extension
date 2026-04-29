@@ -30,6 +30,11 @@ Shared bootstrap and adapters:
 - [src/runtime/obr-client.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/obr-client.js)
 - [src/runtime/obr-reference.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/obr-reference.js)
 
+Route behavior:
+- `src/main.js` boots the shared runtime in `main` mode
+- `src/chatpopover-main.js` boots the shared runtime in `chatpopover` mode
+- `src/runtime/entry.js` also treats the `/chatpopover` URL path as a compatibility override so the popup still renders correctly when a dev server serves that path through the main HTML entry
+
 UI ownership:
 - top-level shell: [src/app/AppShell.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/app/AppShell.js)
 - character UI: [src/screens/CharacterList.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/CharacterList.js), [src/screens/CharacterSheet.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/CharacterSheet.js)
@@ -90,5 +95,6 @@ npm run test:pools
 - Treat `index.html`, `chatpopover/index.html`, `src/main.js`, and `src/chatpopover-main.js` as the active entry flow.
 - Treat `src/runtime/*` as the maintained browser bootstrap layer.
 - Treat `src/runtime/obr-client.js` as the source-owned Owlbear integration boundary.
+- Treat the `/chatpopover` path check in `src/runtime/entry.js` as an intentional compatibility safeguard, not accidental routing logic.
 - Update `src/runtime/assets.js` and `data/paths/*` together for path content changes.
 - Keep Playwright green after every meaningful change.

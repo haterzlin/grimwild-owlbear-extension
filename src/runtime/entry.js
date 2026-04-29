@@ -21,6 +21,9 @@ let pathAssets = {
 };
 let pathsById = {};
 
+// The entry modules choose the intended route mode, but Vite dev serving can
+// still resolve /chatpopover through the main HTML entry. Keep this path-based
+// override so the popup renders the chat-only shell even in that case.
 const resolveRouteModeFromLocation = preferredRouteMode => {
   if (window.location.pathname.startsWith("/chatpopover")) return "chatpopover";
   return preferredRouteMode;
@@ -109,7 +112,8 @@ async function loadRuntimeData() {
  * @returns {Promise<void>}
  */
 export async function bootRuntime({ routeMode }) {
-  const obr = resolveObr();
+  const obrClient = globalThis.__grimwild_test_obr ? null : resolveObr();
+  const obr = obrClient?.obr ?? globalThis.__grimwild_test_obr;
   const resolvedRouteMode = resolveRouteModeFromLocation(routeMode);
   const screens = createRuntimeScreens(obr);
   const AppShell = createAppShell({
@@ -124,7 +128,13 @@ export async function bootRuntime({ routeMode }) {
 
   await loadRuntimeData();
 
-  createRoot(document.getElementById("root")).render(jsxRuntime.jsx(React.StrictMode, {
+  const root = createRoot(document.getElementById("root"));
+  root.render(jsxRuntime.jsx(React.StrictMode, {
     children: jsxRuntime.jsx(AppShell, {})
   }));
+
+  return () => {
+    root.unmount();
+    obrClient?.messageBus.destroy();
+  };
 }

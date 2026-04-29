@@ -19,10 +19,6 @@ const STATIC_COPY_TARGETS = [
   {
     from: "manifest.json",
     to: "manifest.json"
-  },
-  {
-    from: "test/mock-obr.js",
-    to: "test/mock-obr.js"
   }
 ];
 
