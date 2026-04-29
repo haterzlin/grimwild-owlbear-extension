@@ -1,33 +1,43 @@
 # Grimwild Recovered Extension
 
-This repository now uses a source-first maintenance model.
+This repository is now a normal source-built app. The maintained implementation lives in [src](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src), not in recovered bundle artifacts.
 
-What to maintain:
-- application code in [src](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src)
-- source contracts in [src/contracts](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/contracts)
-- source runtime/core APIs in [src/core](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/core)
-- source screens in [src/screens](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens)
-- path asset manifest in [src/runtime/assets.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/assets.js)
-- external path content in [data/paths](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/data/paths)
+## Source of truth
 
-Runtime boundary:
-- [index.html](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/index.html) and [chatpopover/index.html](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/chatpopover/index.html) are the active browser entry pages
-- [src/main.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/main.js) boots the main extension route explicitly
-- [src/chatpopover-main.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/chatpopover-main.js) boots the chat popover route explicitly
-- [src/runtime/entry.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/entry.js) is the maintained browser bootstrap
-- [src/runtime/react-runtime.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/react-runtime.js) bridges the current screen factories onto standard `react` / `react-dom`
-- [src/runtime/obr-client.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/obr-client.js) is the live Owlbear adapter
+Maintain code in:
+- application shell: [src/app](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/app)
+- contracts: [src/contracts](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/contracts)
+- core runtime APIs: [src/core](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/core)
+- domain logic: [src/domain](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/domain)
+- browser/runtime bootstrap: [src/runtime](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime)
+- screens: [src/screens](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens)
+
+Content authority:
+- path art/id manifest: [src/runtime/assets.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/assets.js)
+- path definitions: [data/paths](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/data/paths)
 
 ## Runtime layout
 
-- Top-level app shell: [src/app/AppShell.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/app/AppShell.js)
-- Source bootstrap: [src/runtime/entry.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/entry.js)
-- Runtime adapters: [src/runtime](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime)
-- Character screens: [src/screens/CharacterList.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/CharacterList.js), [src/screens/CharacterSheet.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/CharacterSheet.js)
-- Path/talent screens: [src/screens/PathScreen.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/PathScreen.js)
-- Pools/chat screens: [src/screens/PoolsAndChat.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/PoolsAndChat.js)
+Active browser entry flow:
+- [index.html](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/index.html)
+- [chatpopover/index.html](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/chatpopover/index.html)
+- [src/main.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/main.js)
+- [src/chatpopover-main.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/chatpopover-main.js)
 
-Source architecture details live in [docs/source-architecture.md](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/docs/source-architecture.md).
+Shared bootstrap and adapters:
+- [src/runtime/entry.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/entry.js)
+- [src/runtime/react-runtime.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/react-runtime.js)
+- [src/runtime/obr-client.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/obr-client.js)
+- [src/runtime/obr-reference.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/obr-reference.js)
+
+UI ownership:
+- top-level shell: [src/app/AppShell.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/app/AppShell.js)
+- character UI: [src/screens/CharacterList.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/CharacterList.js), [src/screens/CharacterSheet.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/CharacterSheet.js)
+- path/talent UI: [src/screens/PathScreen.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/PathScreen.js)
+- pools/chat UI: [src/screens/PoolsAndChat.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/PoolsAndChat.js)
+
+Practical rule:
+- if a change can be implemented in `src/*`, implement it there
 
 ## Local run
 
