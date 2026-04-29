@@ -1,9 +1,9 @@
 {
-  "name": "Grimwild Recovered",
-  "version": "1.0.3",
+  "name": "Grimwild by Alyx",
+  "version": "1.2",
   "manifest_version": 1,
   "action": {
-    "title": "Grimwild Recovered",
+    "title": "Grimwild by Alyx",
     "icon": "/icon.svg",
     "popover": "/",
     "height": 600,
