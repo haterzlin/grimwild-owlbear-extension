@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { attachDebugLogging } from "./helpers/debug.js";
+import { buildLegacyCharacterMetadata, LEGACY_1_2_MESSY_CHARACTERS } from "./fixtures/legacy-1-2-characters.js";
 
 const openPathTabForNewCharacter = async page => {
   await page.goto("/?mockOwlbear=1");
@@ -90,6 +91,27 @@ test.describe("Paths", () => {
 
       await page.getByRole("button", { name: "Collapse Details" }).click();
       await expect(page.getByRole("button", { name: "Expand Details" })).toBeVisible();
+    } finally {
+      await flushDebug();
+    }
+  });
+
+  test("normalizes legacy paladin tracker labels from saved 1.2 data", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      const legacyPaladin = LEGACY_1_2_MESSY_CHARACTERS.find(character => character.path === "paladin");
+      await page.goto("/?mockOwlbear=1");
+
+      await page.evaluate(metadata => {
+        window.__grimwildTestApi.setMetadata(metadata);
+      }, buildLegacyCharacterMetadata([ legacyPaladin ]));
+
+      await page.getByRole("button", { name: "Open" }).click();
+      await page.getByRole("button", { name: "Path" }).click();
+
+      await expect(page.getByText("PALADIN", { exact: true })).toBeVisible();
+      await expect(page.getByText("Tenet #1", { exact: true })).toBeVisible();
+      await expect(page.getByText("Tenent #1", { exact: true })).toHaveCount(0);
     } finally {
       await flushDebug();
     }

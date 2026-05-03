@@ -8,6 +8,7 @@ import {
   mergeCharacterUpdate,
   writeSceneMetadata
 } from "../core/metadata.js";
+import { normalizeCharacterForRules } from "../domain/paths.js";
 import {
   APP_SCREENS,
   getVisiblePanels,
@@ -28,6 +29,7 @@ import {
  * @property {Object} obr
  * @property {Object} styles
  * @property {(base: string, extras?: Object<string, boolean>) => string} classNames
+ * @property {() => Object<string, Object>} [getPathsById]
  * @property {import("../contracts/app.js").AppRouteMode} routeMode
  * @property {{
  *   CharacterSheet: Function,
@@ -54,6 +56,7 @@ export default function createAppShell(dependencies) {
     styles,
     classNames,
     screens,
+    getPathsById = () => ({}),
     routeMode
   } = dependencies;
   const { jsx, jsxs, Fragment } = jsxRuntime;
@@ -97,7 +100,21 @@ export default function createAppShell(dependencies) {
       selectedCharacterRef.current = selectedCharacter;
     }, [selectedCharacter]);
 
-    const loadCharacters = async metadata => getCharactersFromMetadata(metadata);
+    React.useEffect(() => {
+      if (!selectedCharacter) return;
+      if (pendingCharacterSaveTimeout) return;
+
+      const nextSelectedCharacter = characters.find(character => character.id === selectedCharacter.id) ?? null;
+
+      if (!nextSelectedCharacter) {
+        setSelectedCharacter(null);
+        return;
+      }
+
+      if (nextSelectedCharacter !== selectedCharacter) setSelectedCharacter(nextSelectedCharacter);
+    }, [characters, pendingCharacterSaveTimeout, selectedCharacter]);
+
+    const loadCharacters = async metadata => getCharactersFromMetadata(metadata).map(character => normalizeCharacterForRules(character, getPathsById()));
 
     const loadPools = async metadata => getPoolsFromMetadata(metadata);
 
@@ -119,7 +136,7 @@ export default function createAppShell(dependencies) {
       if (!character) return;
 
       const metadata = await obr.scene.getMetadata();
-      writePatch(mergeCharacterUpdate(metadata, character, playerId));
+      writePatch(mergeCharacterUpdate(metadata, normalizeCharacterForRules(character, getPathsById()), playerId));
       setPendingCharacterSaveTimeout(null);
     };
 

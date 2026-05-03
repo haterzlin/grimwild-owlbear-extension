@@ -35,7 +35,7 @@
     },
     {
       "name": "ELDRITCH AFFINITY",
-      "description": "You have spellcasting, as the Sorcery talent (<i>pg. 72</i>). You roll Presence to cast and choose 3 from magic paths and techniques that serve as touchstones. You can't cast potent spells, nor do you risk a wild surge. <b>[PROHIBITED: SORCERER]</b>",
+      "description": "<b>[Prohibited: Sorcerer]</b><br><br>You have spellcasting, as the Sorcery talent (<i>pg. 72)</i>. You roll Presence to cast and choose 3 from magic paths and techniques that serve as touchstones. You can't cast potent spells, nor do you risk a wild surge.",
       "trackers": [
         {
           "name": "Magic Paths & Techniques",

@@ -91,7 +91,7 @@
     },
     {
       "name": "Warsongs",
-      "description": "Each session, you can sing 2 bardsongs (<i>pg. 54</i>). Write down the composition of the only 3 songs you know. <br><br> <b>[PROHIBITED: BARD]</b>",
+      "description": "<b>[Prohibited: Bard]</b><br><br>Each session, you can sing 2 bardsongs (<i>pg. 54)</i>. Write down the composition of the only 3 songs you know.",
       "trackers": [
         {
           "name": "Warsong",

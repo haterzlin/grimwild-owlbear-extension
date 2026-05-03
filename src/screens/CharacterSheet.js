@@ -1,5 +1,5 @@
 const TRAIT_OPTIONS = [ "Brave", "Caring", "Confident", "Curious", "Gentle", "Honest", "Honorable", "Persistent", "Quiet", "Protective", "Rash", "Stubborn" ];
-const DESIRE_OPTIONS = [ "Justice", "Glory", "Harmony", "Honor", "Knowledge", "Love", "Power", "Renown", "Thrills", "Wealth", "Wisdom" ];
+const DESIRE_OPTIONS = [ "Belonging", "Glory", "Harmony", "Honor", "Justice", "Knowledge", "Love", "Power", "Renown", "Thrills", "Wealth", "Wisdom" ];
 const BOND_INTENSITY_OPTIONS = [ "Deep", "Complex", "Growing", "Lowkey", "Playful", "Tense" ];
 const BOND_NATURE_OPTIONS = [ "Affection", "Camaraderie", "Curiosity", "Doubts", "Respect", "Rivalry" ];
 

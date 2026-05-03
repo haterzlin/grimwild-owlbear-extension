@@ -202,11 +202,11 @@ test.describe("Character Sheet", () => {
       const secondDesire = labeledSelect(page, "2 you want", 1);
       const notDesire = labeledSelect(page, "1 you really don't", 0);
 
-      await firstDesire.selectOption("Justice");
+      await firstDesire.selectOption("Belonging");
       await secondDesire.selectOption("Wisdom");
       await notDesire.selectOption("Power");
 
-      await expect(firstDesire).toHaveValue("Justice");
+      await expect(firstDesire).toHaveValue("Belonging");
       await expect(secondDesire).toHaveValue("Wisdom");
       await expect(notDesire).toHaveValue("Power");
     } finally {

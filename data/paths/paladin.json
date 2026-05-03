@@ -31,15 +31,15 @@
         "type": "checkbox"
       },
       {
-        "name": "Tenent #1",
+        "name": "Tenet #1",
         "type": "fieldSmallLong"
       },
       {
-        "name": "Tenent #2",
+        "name": "Tenet #2",
         "type": "fieldSmallLong"
       },
       {
-        "name": "Tenent #3",
+        "name": "Tenet #3",
         "type": "fieldSmallLong"
       }
     ]
@@ -50,7 +50,7 @@
       "description": "At character creation, or over the first few sessions, detail the <b>THREE TENETS</b> that form the core of your oath. Write your own specific tenets (<i>below</i>), or use the table (<i>next page</i>) to create flexible ones that you can refine and explore through play. To write your own tenets:<br><br>◆ <b>Choose a character detail or two</b>, such as a trait, bond, or background.<br>◆ <b>Link it to a short, actionable phrase.</b> It should naturally arise from the fiction occasionally and present you with dilemmas. Work with the GM to ensure this as you write it.<br><br><b>Rank the tenets in order of importance.</b> If they ever conflict, following a higher one avoids violating a lower one.<br><br><b><i>You must uphold your tenets, or risk violation.</i></b> They are absolutes, but <i>they can evolve</i> as it makes sense or best serves the fiction (and game at the table). When you <b>violate</b> a tenet, slash its box. For a second or severe violation, fill in the box—it is in <b>heavy violation</b>.<br><br><b><i>You break a tenet</i></b> when you violate it again while in heavy violation (<i>filled box</i>). You can no longer atone for that tenet. Breaking two tenets makes you an <b>Oathbreaker</b> (<i>below</i>).<br><br><b>Atonement for tenets in violation require great deeds.</b> The deed must outweigh the severity of the violation itself—ask the other players if unsure. Once completed, clear the box.<br><br><b>OATHBREAKER:</b> You lose your Oathsworn core talent, but gain hidden potential. You may choose a new non-core talent or the Warlock's Pact core talent in its place.<br><br><b>Redemption</b> requires an appropriately epic <i>Ritual of Atonement</i> at a sacred place or a mythic deed to atone for your transgressions. Success restores your core talent while allowing you to keep the talent gained from breaking your oath. Redemption is possible only once."
     },
     {
-      "name": "TENET BUILDER ",
+      "name": "TENET BUILDER",
       "description": "<i>[ROLL, THEN CHOOSE AN OPTION. REWRITE FOR CLARITY.]</i><table><tr><th>I SWEAR TO BRING</th><th>TO—FOR THE</th><th>DESPITE—BECAUSE OF</th></tr><tr><td>honor—valor</td><td>forgotten—powerless</td><td>my desire for ~</td></tr><tr><td>justice—revenge</td><td>redeemable—irredeemable</td><td>my trait, ~</td></tr><tr><td>faith—doubt</td><td>reformers—traditionalists</td><td>my arc to ~</td></tr><tr><td>mercy—judgement</td><td>devout—faithless</td><td>my background of ~</td></tr><tr><td>strength—compassion</td><td>evil—defiled</td><td>my bond with ~</td></tr><tr><td>truth—wisdom</td><td>leaders—people</td><td>my lack of ~</td></tr></table>"
     }
   ],

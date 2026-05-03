@@ -122,6 +122,7 @@ export async function bootRuntime({ routeMode }) {
     obr,
     styles,
     classNames,
+    getPathsById: () => pathsById,
     routeMode: resolvedRouteMode,
     screens
   });

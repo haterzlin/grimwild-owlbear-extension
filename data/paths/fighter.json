@@ -25,7 +25,7 @@
   "pathTalent": [
     {
       "name": "ARCANE TRAINING",
-      "description": "You have spellcasting as the Spellcraft talent <i>(pg. 76)</i>. You roll Wits and can cast 3 spells and 1 potent spell per session. You know 3 spell theorems, created with the Spell Crucible, and can learn new spells from scrolls.",
+      "description": "<b>[Prohibited: Wizard]</b><br><br>You have spellcasting as the Spellcraft talent <i>(pg. 76)</i>. You roll Wits and can cast 3 spells and 1 potent spell per session. You know 3 spell theorems, created with the Spell Crucible, and can learn new spells from scrolls.",
       "trackers": [
         {
           "name": "Spells",
