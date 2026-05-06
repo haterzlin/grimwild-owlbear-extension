@@ -1,34 +1,38 @@
 # Grimwild Recovered Extension
 
-This repository is now a normal source-built app. The maintained implementation lives in [src](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src), not in recovered bundle artifacts.
+This repository is now a normal source-built app. The maintained implementation lives in [src](./src), not in recovered bundle artifacts.
+Originaly this was downloaded as minimezed javascript files using network manager in browser when using Owlbear Rodeo original extension built by Alyx. Who is unfortunately not responding to messages. LLM was used to recover files, build tests and clean code to have it readable.
+
+Original application was built with Grimwild rules version 1.2 which was saved in branch [rules-v1.2](../../tree/rules-v1.2)]
+Current branch contains Grimwild rules version 1.4
 
 ## Source of truth
 
 Maintain code in:
-- application shell: [src/app](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/app)
-- contracts: [src/contracts](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/contracts)
-- core runtime APIs: [src/core](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/core)
-- domain logic: [src/domain](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/domain)
-- browser/runtime bootstrap: [src/runtime](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime)
-- screens: [src/screens](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens)
+- application shell: [src/app](./src/app)
+- contracts: [src/contracts](./src/contracts)
+- core runtime APIs: [src/core](./src/core)
+- domain logic: [src/domain](./src/domain)
+- browser/runtime bootstrap: [src/runtime](./src/runtime)
+- screens: [src/screens](./src/screens)
 
 Content authority:
-- path art/id manifest: [src/runtime/assets.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/assets.js)
-- path definitions: [data/paths](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/data/paths)
+- path art/id manifest: [src/runtime/assets.js](./src/runtime/assets.js)
+- path definitions: [data/paths](./data/paths)
 
 ## Runtime layout
 
 Active browser entry flow:
-- [index.html](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/index.html)
-- [chatpopover/index.html](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/chatpopover/index.html)
-- [src/main.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/main.js)
-- [src/chatpopover-main.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/chatpopover-main.js)
+- [index.html](./index.html)
+- [chatpopover/index.html](./chatpopover/index.html)
+- [src/main.js](./src/main.js)
+- [src/chatpopover-main.js](./src/chatpopover-main.js)
 
 Shared bootstrap and adapters:
-- [src/runtime/entry.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/entry.js)
-- [src/runtime/react-runtime.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/react-runtime.js)
-- [src/runtime/obr-client.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/obr-client.js)
-- [src/runtime/obr-reference.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/runtime/obr-reference.js)
+- [src/runtime/entry.js](./src/runtime/entry.js)
+- [src/runtime/react-runtime.js](./src/runtime/react-runtime.js)
+- [src/runtime/obr-client.js](./src/runtime/obr-client.js)
+- [src/runtime/obr-reference.js](./src/runtime/obr-reference.js)
 
 Route behavior:
 - `src/main.js` boots the shared runtime in `main` mode
@@ -36,10 +40,10 @@ Route behavior:
 - `src/runtime/entry.js` also treats the `/chatpopover` URL path as a compatibility override so the popup still renders correctly when a dev server serves that path through the main HTML entry
 
 UI ownership:
-- top-level shell: [src/app/AppShell.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/app/AppShell.js)
-- character UI: [src/screens/CharacterList.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/CharacterList.js), [src/screens/CharacterSheet.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/CharacterSheet.js)
-- path/talent UI: [src/screens/PathScreen.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/PathScreen.js)
-- pools/chat UI: [src/screens/PoolsAndChat.js](/home/lmlich/Dokumenty/rpg/GrimWild/recovered/grimwild-extension/src/screens/PoolsAndChat.js)
+- top-level shell: [src/app/AppShell.js](./src/app/AppShell.js)
+- character UI: [src/screens/CharacterList.js](./src/screens/CharacterList.js), [src/screens/CharacterSheet.js](./src/screens/CharacterSheet.js)
+- path/talent UI: [src/screens/PathScreen.js](./src/screens/PathScreen.js)
+- pools/chat UI: [src/screens/PoolsAndChat.js](./src/screens/PoolsAndChat.js)
 
 Practical rule:
 - if a change can be implemented in `src/*`, implement it there
