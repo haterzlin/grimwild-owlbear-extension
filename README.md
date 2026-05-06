@@ -3,7 +3,7 @@
 This repository is now a normal source-built app. The maintained implementation lives in [src](./src), not in recovered bundle artifacts.
 Originaly this was downloaded as minimezed javascript files using network manager in browser when using Owlbear Rodeo original extension built by Alyx. Who is unfortunately not responding to messages. LLM was used to recover files, build tests and clean code to have it readable.
 
-Original application was built with Grimwild rules version 1.2 which was saved in branch [rules-v1.2](../../tree/rules-v1.2)]
+Original application was built with Grimwild rules version 1.2 which was saved in branch [rules-v1.2](../../tree/rules-v1.2).
 Current branch contains Grimwild rules version 1.4
 
 ## Source of truth
