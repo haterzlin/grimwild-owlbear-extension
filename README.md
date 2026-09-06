@@ -3,8 +3,8 @@
 This repository is now a normal source-built app. The maintained implementation lives in [src](./src), not in recovered bundle artifacts.
 Originaly this was downloaded as minimezed javascript files using network manager in browser when using Owlbear Rodeo original extension built by Alyx. Who is unfortunately not responding to messages. LLM was used to recover files, build tests and clean code to have it readable.
 
-Original application was built with Grimwild rules version 1.2 which was saved in branch [rules-v1.2](../../tree/rules-v1.2).
-Current branch contains Grimwild Community Edition Preview 5.2. Older saved characters are unsupported; create a new character and manually re-enter any information you want to keep.
+Original application was built with Grimwild rules version 1.2, saved in branch [rules-v1.2](../../tree/rules-v1.2). The Grimwild 1.4 version is preserved in branch [rules-v1.4](../../tree/rules-v1.4).
+The current branch contains Grimwild Community Edition Preview 5.2. Older saved characters are unsupported; create a new character and manually re-enter any information you want to keep.
 
 ## Source of truth
 
@@ -15,13 +15,6 @@ Maintain code in:
 - domain logic: [src/domain](./src/domain)
 - browser/runtime bootstrap: [src/runtime](./src/runtime)
 - screens: [src/screens](./src/screens)
-
-Rules and content authority:
-- rules baseline/target: Grimwild 1.4 → Community Edition Preview 5.2
-- primary source: [GWCE P5.2 Pages.pdf](../ce-5/GWCE%20P5.2%20Pages.pdf)
-- tracker/layout cross-check: [Character Sheets (P5.2).pdf](../ce-5/Character%20Sheets%20%28P5.2%29.pdf) and [English HTML sheets](../ce-5/sheet/adventurer.html)
-- source conflicts follow the book-first decisions recorded in [MIGRATION-CE-5.2.md](./MIGRATION-CE-5.2.md), including Artificer `Infusion` and Witch `Hidden Magic`
-- talent effects, resource resets, bonus dice, spell use, and harm progression remain manual table adjudication; the extension stores editable trackers and broadcasts descriptions
 
 Content authority:
 - path art/id manifest: [src/runtime/assets.js](./src/runtime/assets.js)
