@@ -72,7 +72,9 @@ export const buildPoolUpdatePatch = (metadata, pool, lastEdit) => {
 
 export const buildNamedPoolRollEntry = ({ user, dice, poolName, startingValue, remainingValue, outcome }) => {
   const thornEffect = [ poolName, `${startingValue} ➜ ${remainingValue}` ];
-  if (startingValue === remainingValue) thornEffect.push("Take secondary effect");
+  if (startingValue === remainingValue) {
+    thornEffect.push("No drops: task pool may be pushed/pivoted; other pool may use GM Suspense to drop 1d.");
+  }
 
   return {
     id: Date.now(),

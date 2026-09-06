@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { buildNamedPoolRollEntry } from "../src/domain/pools.js";
 import { buildCharacter } from "./helpers/characters.js";
 import { attachDebugLogging } from "./helpers/debug.js";
 
@@ -129,6 +130,17 @@ const namedPoolRow = (page, name) => page.locator(
 );
 
 test.describe("Pools", () => {
+  test("describes conditional choices when a named pool does not drop", () => {
+    expect(buildNamedPoolRollEntry({
+      user: "GM",
+      dice: [ 4 ],
+      poolName: "Task",
+      startingValue: 1,
+      remainingValue: 1,
+      outcome: "Messy"
+    }).thornEffect).toContain("No drops: task pool may be pushed/pivoted; other pool may use GM Suspense to drop 1d.");
+  });
+
   test("renders pools screen and base controls", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {

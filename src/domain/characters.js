@@ -30,6 +30,8 @@ export const createEmptyCharacter = (idFactory = () => Date.now()) => ({
   presenceMark: false,
   bloodied: false,
   rattled: false,
+  desperate: false,
+  weaponStyle: "",
   story1: false,
   story2: false,
   spark1: false,
@@ -54,6 +56,15 @@ export const getCharacterMetadataRecord = metadata => ({
 export const getUnsupportedCharactersFromMetadata = metadata =>
   Object.values(metadata?.[CHARACTER_METADATA_KEY] ?? {})
     .filter(character => !isSupportedCharacter(character));
+
+export const getAttributeRollModifiers = ({ stat, marked, bloodied, rattled, desperate }) => ({
+  thorns:
+    (bloodied && ["brawn", "agility"].includes(stat) ? 1 : 0) +
+    (rattled && ["wits", "presence"].includes(stat) ? 1 : 0) +
+    (desperate ? 1 : 0) +
+    (marked ? 1 : 0),
+  clearsMark: Boolean(marked)
+});
 
 export const buildCharacterCreatePatch = (metadata, character) => {
   const record = getCharacterMetadataRecord(metadata);

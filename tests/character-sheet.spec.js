@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { getAttributeRollModifiers } from "../src/domain/characters.js";
 import { buildCharacter } from "./helpers/characters.js";
 import { attachDebugLogging } from "./helpers/debug.js";
 
@@ -31,6 +32,19 @@ const labeledSelect = (page, label, index = 0) => page.locator(
 );
 
 test.describe("Character Sheet", () => {
+  test("stacks applicable harm, marks, and Desperate modifiers", () => {
+    const cases = [
+      [{ stat: "brawn", marked: true, bloodied: true, rattled: false, desperate: true }, 3],
+      [{ stat: "wits", marked: true, bloodied: true, rattled: false, desperate: false }, 1],
+      [{ stat: "presence", marked: true, bloodied: false, rattled: true, desperate: false }, 2],
+      [{ stat: "agility", marked: false, bloodied: false, rattled: true, desperate: false }, 0]
+    ];
+
+    for (const [input, thorns] of cases) {
+      expect(getAttributeRollModifiers(input)).toEqual({ thorns, clearsMark: input.marked });
+    }
+  });
+
   test("allows all attribute values from 1 to 3", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {
@@ -83,6 +97,7 @@ test.describe("Character Sheet", () => {
 
       const bloodied = conditionRow.locator('input[type="checkbox"]').nth(0);
       const rattled = conditionRow.locator('input[type="checkbox"]').nth(1);
+      const desperate = conditionRow.locator('input[type="checkbox"]').nth(2);
 
       await bloodied.check();
       await expect(bloodied).toBeChecked();
@@ -93,6 +108,29 @@ test.describe("Character Sheet", () => {
       await expect(rattled).toBeChecked();
       await rattled.uncheck();
       await expect(rattled).not.toBeChecked();
+
+      await desperate.check();
+      await expect(desperate).toBeChecked();
+      await desperate.uncheck();
+      await expect(desperate).not.toBeChecked();
+    } finally {
+      await flushDebug();
+    }
+  });
+
+  test("persists Weapon Style and CE roll fields", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openCharacterSheet(page);
+
+      const weaponStyle = page.locator('xpath=//div[normalize-space()="Weapon Style"]/following-sibling::input');
+      await weaponStyle.fill("Longsword and shield");
+      await expect(weaponStyle).toHaveValue("Longsword and shield");
+
+      await expect.poll(async () => page.evaluate(() => {
+        const records = window.__grimwildTestApi.getMetadata()["grimwild.character.extension/metadata"];
+        return Object.values(records)[0]?.weaponStyle;
+      })).toBe("Longsword and shield");
     } finally {
       await flushDebug();
     }
@@ -104,7 +142,7 @@ test.describe("Character Sheet", () => {
       await openCharacterSheet(page);
 
       const storyRow = page.locator("div").filter({
-        has: page.locator("b", { hasText: "Story" })
+        has: page.locator("b", { hasText: "Thread" })
       }).first();
       const sparkRow = page.locator("div").filter({
         has: page.locator("b", { hasText: "Spark" })

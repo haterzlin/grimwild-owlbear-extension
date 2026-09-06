@@ -1,3 +1,5 @@
+import { getAttributeRollModifiers } from "../domain/characters.js";
+
 const TRAIT_OPTIONS = [ "Brave", "Caring", "Confident", "Curious", "Gentle", "Honest", "Honorable", "Persistent", "Quiet", "Protective", "Rash", "Stubborn" ];
 const DESIRE_OPTIONS = [ "Belonging", "Glory", "Harmony", "Honor", "Justice", "Knowledge", "Love", "Power", "Renown", "Thrills", "Wealth", "Wisdom" ];
 const BOND_INTENSITY_OPTIONS = [ "Deep", "Complex", "Growing", "Lowkey", "Playful", "Tense" ];
@@ -162,7 +164,7 @@ export default function createCharacterSheetScreen(dependencies) {
     })
   });
 
-  const AttributeStat = ({ label, onChangeValue, onChangeMark, value, marked, myChat, id, onRoll, player }) => jsxs("div", {
+  const AttributeStat = ({ stat, label, onChangeValue, onChangeMark, value, marked, myChat, id, onRoll, player }) => jsxs("div", {
     className: styles.fieldStatContainer,
     children: [
       jsx("div", {
@@ -197,25 +199,18 @@ export default function createCharacterSheetScreen(dependencies) {
       jsx("button", {
         className: styles.statButton,
         onClick: () => {
-          let thorns = 0;
-
-          if (player.bloodied) {
-            thorns++;
-          } else if (marked && (label === "Brawling" || label === "Agility")) {
-            thorns++;
-            onChangeMark(false);
-          }
-
-          if (player.rattled) {
-            thorns++;
-          } else if (marked && (label === "Wits" || label === "Presence")) {
-            thorns++;
-            onChangeMark(false);
-          }
+          const modifiers = getAttributeRollModifiers({
+            stat,
+            marked,
+            bloodied: player.bloodied,
+            rattled: player.rattled,
+            desperate: player.desperate
+          });
+          if (modifiers.clearsMark) onChangeMark(false);
 
           rollDice({
             diceCount: value,
-            thornsCount: thorns,
+            thornsCount: modifiers.thorns,
             myChat,
             id,
             player: player.name,
@@ -265,6 +260,13 @@ export default function createCharacterSheetScreen(dependencies) {
                     player: value
                   }),
                   value: player.player
+                }),
+                jsx(TextField, {
+                  label: "Weapon Style",
+                  onChange: value => updateField({
+                    weaponStyle: value
+                  }),
+                  value: player.weaponStyle
                 })
               ]
             }),
@@ -300,6 +302,7 @@ export default function createCharacterSheetScreen(dependencies) {
                   className: classNames(styles.fieldRow),
                   children: [
                     jsx(AttributeStat, {
+                      stat: "brawn",
                       label: "Brawn",
                       onChangeMark: value => updateField({
                         brawnMark: value
@@ -318,6 +321,7 @@ export default function createCharacterSheetScreen(dependencies) {
                       player
                     }),
                     jsx(AttributeStat, {
+                      stat: "agility",
                       label: "Agility",
                       onChangeMark: value => updateField({
                         agilityMark: value
@@ -336,6 +340,7 @@ export default function createCharacterSheetScreen(dependencies) {
                       player
                     }),
                     jsx(AttributeStat, {
+                      stat: "wits",
                       label: "Wits",
                       onChangeMark: value => updateField({
                         witsMark: value
@@ -354,6 +359,7 @@ export default function createCharacterSheetScreen(dependencies) {
                       player
                     }),
                     jsx(AttributeStat, {
+                      stat: "presence",
                       label: "Presence",
                       onChangeMark: value => updateField({
                         presenceMark: value
@@ -391,6 +397,14 @@ export default function createCharacterSheetScreen(dependencies) {
                       onChange: () => updateField({
                         rattled: !player.rattled
                       })
+                    }),
+                    "Desperate ",
+                    jsx("input", {
+                      type: "checkbox",
+                      checked: player.desperate,
+                      onChange: () => updateField({
+                        desperate: !player.desperate
+                      })
                     })
                   ]
                 }),
@@ -402,8 +416,12 @@ export default function createCharacterSheetScreen(dependencies) {
                     }),
                     ":",
                     jsx("br", {}),
-                    " Greater Effect (Drop 1) - Secondary Effect- Setup"
+                    " Greater effect, secondary effect, or setup a follow-up"
                   ]
+                }),
+                jsx("div", {
+                  className: styles.statDetail,
+                  children: "Disaster: worst-case consequences; spend Spark to avoid it."
                 })
               ]
             }),
@@ -417,7 +435,7 @@ export default function createCharacterSheetScreen(dependencies) {
                       className: classNames(styles.fieldRow),
                       children: [
                         jsx("b", {
-                          children: "Story"
+                          children: "Thread"
                         }),
                         " ",
                         jsx("input", {

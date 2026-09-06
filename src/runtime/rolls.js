@@ -56,11 +56,14 @@ export default function createRollDice(obr) {
 
     if (odds) thornEffect.push(odds);
     if (outcome === "Critical") thornEffect.push("Add greater effect, secondary effect, or setup a follow-up.");
-    if (outcome === "Disaster") thornEffect.push("Double the risk.");
+    if (outcome === "Disaster") thornEffect.push("Worst-case consequences; spend Spark to avoid it.");
 
     if (typeof setValue === "function") {
       const remainingDiceCount = diceCount - missedDiceCount;
       thornEffect.push(`${diceCount} ➜ ${remainingDiceCount}`);
+      if (remainingDiceCount === diceCount) {
+        thornEffect.push("No drops: task pool may be pushed/pivoted; other pool may use GM Suspense to drop 1d.");
+      }
       setValue(remainingDiceCount);
     }
 

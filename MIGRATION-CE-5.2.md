@@ -1,6 +1,6 @@
 # Migration plan: Grimwild 1.4 → Community Edition Preview 5.2
 
-Status: **Phase 1 complete; Phase 2 implementation not started.**
+Status: **Phase 2 complete; Phase 3 implementation not started.**
 
 Inspected on 2026-09-05 against extension commit `bc33c55`; character-support scope simplified on 2026-09-06. This document is the implementation handoff. Check off phases only after their acceptance checks pass; record deviations and validation results here. Two subagents investigated rules and extension behavior independently. Both returned partial findings before a workspace credit limit stopped them; the lead verified those findings and completed this plan from the local sources.
 
@@ -47,7 +47,7 @@ Implementation decisions recorded in Phase 0, adopting the plan's defaults under
 The maintained flow is [main.js](src/main.js) / [chatpopover-main.js](src/chatpopover-main.js) → [runtime/entry.js](src/runtime/entry.js) → [AppShell.js](src/app/AppShell.js) → existing screens/domain functions. `DEFAULT_PATH_ASSETS` supplies the keys loaded by [data-loader.js](src/core/data-loader.js), so adding a JSON file alone does not make a path selectable. Preserve the `/chatpopover` route compatibility override.
 
 - Catalogue: **12 core paths and 84 non-core talents**, in [data/paths](data/paths). All 12 have seven path talents. Descriptions, optional details, and trackers are data-driven. Existing tracker types are `checkbox`, `field`, `fieldSmall`, `fieldSmallLong`, and `fieldTwo`; reuse them before adding types.
-- Character data: [createEmptyCharacter](src/domain/characters.js) contains the CE `rulesVersion` marker, four stats/marks, Bloodied/Rattled, `story1/2`, `spark1/2`, XP, backgrounds/wises, arcs, traits/desires, bonds, complete selected talent objects, and biography. There is no Desperate field or Weapon Style field yet; those belong to Phase 2.
+- Character data: [createEmptyCharacter](src/domain/characters.js) contains the CE `rulesVersion` marker, four stats/marks, Bloodied/Rattled/Desperate, `story1/2` backing Thread, `spark1/2`, `weaponStyle`, XP, backgrounds/wises, arcs, traits/desires, bonds, complete selected talent objects, and biography.
 - Persistence: [metadata.js](src/core/metadata.js) stores records under the existing character/pool/chat/GM namespaces. [AppShell](src/app/AppShell.js) filters to valid `ce-p5.2` records on load and saves the selected CE record directly after its debounced edit. Unsupported records remain in the scene record map.
 - The former [path normalization](src/domain/paths.js) that matched old tracker names/positions and rewrote saved talents was removed in Phase 1. New talent selections still use `initializeTalent`; saved CE talent and tracker values are not rewritten on load/save.
 - A read-only reproduction with `LEGACY_1_2_MESSY_CHARACTERS` confirmed an existing loss: Paladin `Tenet 1 = "Never abandon a companion"` is consumed by positional checkbox matching, leaving `Tenet #1` blank. [compatibility.spec.js](tests/compatibility.spec.js), test “normalizes messy legacy fixtures…”, fills a replacement before checking and does not catch the lost original value. This is a historical finding, not a required legacy fix under the revised scope; retire that compatibility code and its tests.
@@ -164,13 +164,21 @@ Phase 1 completion (2026-09-06):
 
 ### Phase 2 — Update shared sheet and basic roll behavior
 
-- [ ] Add Thread presentation, Desperate, Weapon Style, and current critical/disaster help.
-- [ ] Correct all four stat-roll harm/mark combinations at the shared attribute-roll boundary. Keep non-stat manual modifiers explicit and do not change GM oracle rolls implicitly.
-- [ ] Correct no-drop guidance for named and custom pools under S2; retain manual push/pivot, marks, and suspense spending.
+- [x] Add Thread presentation, Desperate, Weapon Style, and current critical/disaster help.
+- [x] Correct all four stat-roll harm/mark combinations at the shared attribute-roll boundary. Keep non-stat manual modifiers explicit and do not change GM oracle rolls implicitly.
+- [x] Correct no-drop guidance for named and custom pools under S2; retain manual push/pivot, marks, and suspense spending.
 
 Affected files: [CharacterSheet.js](src/screens/CharacterSheet.js), [runtime/rolls.js](src/runtime/rolls.js), [domain/characters.js](src/domain/characters.js), [domain/pools.js](src/domain/pools.js), [PoolsAndChat.js](src/screens/PoolsAndChat.js), [contracts/entities.js](src/contracts/entities.js), [tests/character-sheet.spec.js](tests/character-sheet.spec.js), [tests/pools.spec.js](tests/pools.spec.js). Adjust existing CSS only if required to fit/access the new controls.
 
 Acceptance: table-driven stat/mark/harm cases, deterministic critical/cut/disaster outcomes, retained XP boundaries, Thread/Weapon Style/Desperate persistence, unchanged GM Story odds, and correct conditional pool help. Test at the existing manifest's **500×600** popover size, including labels and keyboard access. One compact domain check may supplement Playwright for logic not reliably observable through the UI; no mirrored test framework.
+
+Phase 2 completion (2026-09-06):
+
+- Added `desperate` and `weaponStyle` to new CE characters, contracts, and the character sheet. Renamed the visible Story currency to Thread while retaining `story1/2` storage, and updated critical/disaster help to describe greater effect options and Spark as the disaster fallback.
+- Moved stat-roll modifier calculation to one shared `getAttributeRollModifiers` function. Bloodied applies only to Brawn/Agility, Rattled only to Wits/Presence, Desperate adds +1t to every character attribute roll, and a marked rolled stat adds +1t then clears its mark. GM Story rolls remain unchanged; other player modifiers stay manual.
+- Replaced unconditional named-pool “Take secondary effect” output with conditional task-pool push/pivot and other-pool GM Suspense guidance. Custom pool depletion keeps its existing editable reduction behavior and now shows the same guidance when no dice drop.
+- Validation: `npm run test:e2e -- --workers=1` passed **31/31**; `npm run test:character-sheet` passed **11/11**; `npm run test:pools` passed **10/10**; `npm run build` passed. Added focused checks for the stat matrix, CE field persistence, and no-drop guidance.
+- Deviations: no functional deviations. Browser tests require execution outside the sandbox because Vite binding to `127.0.0.1:8000` fails inside it with `listen EPERM`. No later phase was started.
 
 ### Phase 3 — Refresh the twelve existing paths
 

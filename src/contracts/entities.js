@@ -44,6 +44,8 @@
  * @property {boolean} presenceMark
  * @property {boolean} bloodied
  * @property {boolean} rattled
+ * @property {boolean} desperate
+ * @property {string} weaponStyle
  * @property {boolean} story1
  * @property {boolean} story2
  * @property {boolean} spark1
