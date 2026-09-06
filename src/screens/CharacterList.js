@@ -135,9 +135,25 @@ export function createCharacterListScreens(dependencies) {
               justifyContent: "space-between"
             },
             children: [
-              jsx("img", {
-                src: assets.logo,
-                className: styles.logo
+              jsxs("div", {
+                style: {
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center"
+                },
+                children: [
+                  jsx("img", {
+                    src: assets.logo,
+                    className: styles.logo
+                  }),
+                  jsx("div", {
+                    style: {
+                      fontSize: "0.65rem",
+                      marginTop: "-0.15rem"
+                    },
+                    children: "Community Edition"
+                  })
+                ]
               }),
               jsx("div", {
                 className: styles.header,
