@@ -22,6 +22,7 @@ import { scrollChatboxToEnd } from "../core/app-shell-state.js";
  * @property {{ dividerPrimary: string, dividerSecondary: string }} assets
  * @property {() => Object<string, string>} getPathAssets
  * @property {() => Object<string, Object>} getPathsById
+ * @property {() => Object[]} getBackgroundTalents
  */
 
 /**
@@ -43,7 +44,8 @@ export function createPathScreens(dependencies) {
     classNames,
     assets,
     getPathAssets,
-    getPathsById
+    getPathsById,
+    getBackgroundTalents
   } = dependencies;
   const { Fragment, jsx, jsxs } = jsxRuntime;
 
@@ -375,12 +377,12 @@ export function createPathScreens(dependencies) {
     });
   };
 
-  const PathPicker = ({ player, updatePlayer, onSelect }) => {
+  const PathPicker = ({ player, updatePlayer, onSelect, includeBackground = false }) => {
     const pathIds = getPathIds(getPathsById());
 
     return jsx("div", {
       className: styles.pathList,
-      children: pathIds.map(pathId => jsxs("div", {
+      children: [ ...pathIds.map(pathId => jsxs("div", {
         className: styles.pathItem,
         onClick: () => {
           if (updatePlayer) updatePlayer(assignCorePath(player, pathId, getPathsById()));
@@ -396,7 +398,14 @@ export function createPathScreens(dependencies) {
             children: pathId
           })
         ]
-      }, pathId))
+      }, pathId)), includeBackground && jsx("div", {
+        className: styles.pathItem,
+        onClick: () => onSelect("background"),
+        children: jsx("div", {
+          className: styles.header,
+          children: "background"
+        })
+      }, "background") ]
     });
   };
 
@@ -404,8 +413,9 @@ export function createPathScreens(dependencies) {
     if (path === "") return "";
 
     const pathData = getPathData(getPathsById(), path);
+    const talents = path === "background" ? getBackgroundTalents() : pathData?.pathTalent;
 
-    if (!pathData) {
+    if (!pathData && path !== "background") {
       return jsxs(Fragment, {
         children: [
           jsx("div", {
@@ -433,7 +443,7 @@ export function createPathScreens(dependencies) {
           children: [
             jsxs("div", {
               className: styles.header,
-              children: [ "SELECT TALENT FROM ", pathData.name ]
+              children: [ "SELECT TALENT FROM ", path === "background" ? "BACKGROUND" : pathData.name ]
             }),
             jsx("div", {
               style: {
@@ -451,7 +461,7 @@ export function createPathScreens(dependencies) {
         jsx("img", {
           src: assets.dividerSecondary
         }),
-        pathData.pathTalent.map(talent => jsx(TalentCard, {
+        talents.map(talent => jsx(TalentCard, {
           talent,
           isSelected: player.talents.some(selectedTalent => selectedTalent?.name === talent.name),
           onSelect: () => {
@@ -512,6 +522,7 @@ export function createPathScreens(dependencies) {
           }),
           jsx(PathPicker, {
             player,
+            includeBackground: true,
             onSelect: pathId => {
               setSelectedTalentPath(pathId);
             }

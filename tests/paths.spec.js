@@ -48,7 +48,13 @@ test.describe("Paths", () => {
         "rogue",
         "sorcerer",
         "warlock",
-        "wizard"
+        "wizard",
+        "artificer",
+        "psion",
+        "summoner",
+        "swashbuckler",
+        "witch",
+        "adventurer"
       ];
 
       for (const pathName of expectedPaths) {
@@ -76,6 +82,29 @@ test.describe("Paths", () => {
       expect(catalogue.bard.pathTalent.map(talent => talent.name)).toContain("FOLK HERO");
       expect(catalogue.druid.pathTalent.map(talent => talent.name)).toContain("PRIMAL GROWTH");
       expect(catalogue.wizard.pathTalent.map(talent => talent.name)).toContain("SPECIALTY SCHOOL");
+    } finally {
+      await flushDebug();
+    }
+  });
+
+  test("loads Background talents without exposing Background as a core path", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await page.goto("/?mockOwlbear=1");
+      const result = await page.evaluate(async () => ({
+        paths: await Promise.all(["artificer", "psion", "summoner", "swashbuckler", "witch", "adventurer"].map(async id => await (await fetch(`/data/paths/${id}.json`)).json())),
+        background: await (await fetch("/data/background-talents.json")).json()
+      }));
+      expect(result.paths).toHaveLength(6);
+      expect(result.paths.filter(path => path.pathTalent.length === 7)).toHaveLength(5);
+      expect(result.paths.find(path => path.name === "ADVENTURER").pathTalent).toHaveLength(0);
+      expect(result.background).toHaveLength(11);
+
+      await page.getByRole("button", { name: "Add Character" }).click();
+      await page.getByRole("button", { name: "Open" }).click();
+      await page.getByRole("button", { name: "Path" }).click();
+      await expect(page.getByText("SELECT CORE PATH")).toBeVisible();
+      await expect(page.getByText("background", { exact: true })).toHaveCount(0);
     } finally {
       await flushDebug();
     }

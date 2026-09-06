@@ -1,6 +1,6 @@
 # Migration plan: Grimwild 1.4 → Community Edition Preview 5.2
 
-Status: **Phase 3 complete; Phase 4 implementation not started.**
+Status: **Phase 4 complete; Phase 5 implementation not started.**
 
 Inspected on 2026-09-05 against extension commit `bc33c55`; character-support scope simplified on 2026-09-06. This document is the implementation handoff. Check off phases only after their acceptance checks pass; record deviations and validation results here. Two subagents investigated rules and extension behavior independently. Both returned partial findings before a workspace credit limit stopped them; the lead verified those findings and completed this plan from the local sources.
 
@@ -46,7 +46,7 @@ Implementation decisions recorded in Phase 0, adopting the plan's defaults under
 
 The maintained flow is [main.js](src/main.js) / [chatpopover-main.js](src/chatpopover-main.js) → [runtime/entry.js](src/runtime/entry.js) → [AppShell.js](src/app/AppShell.js) → existing screens/domain functions. `DEFAULT_PATH_ASSETS` supplies the keys loaded by [data-loader.js](src/core/data-loader.js), so adding a JSON file alone does not make a path selectable. Preserve the `/chatpopover` route compatibility override.
 
-- Catalogue: **12 core paths and 84 non-core talents**, in [data/paths](data/paths). All 12 have seven path talents. Descriptions, optional details, and trackers are data-driven. Existing tracker types are `checkbox`, `field`, `fieldSmall`, `fieldSmallLong`, and `fieldTwo`; reuse them before adding types.
+- Catalogue: **18 core paths, 119 named path talents, and 11 Background talents**, in [data/paths](data/paths) and [data/background-talents.json](data/background-talents.json). Seventeen named paths have seven path talents; Adventurer is talent-only. Descriptions, optional details, and trackers are data-driven. Existing tracker types are `checkbox`, `field`, `fieldSmall`, `fieldSmallLong`, and `fieldTwo`; reuse them before adding types.
 - Character data: [createEmptyCharacter](src/domain/characters.js) contains the CE `rulesVersion` marker, four stats/marks, Bloodied/Rattled/Desperate, `story1/2` backing Thread, `spark1/2`, `weaponStyle`, XP, backgrounds/wises, arcs, traits/desires, bonds, complete selected talent objects, and biography.
 - Persistence: [metadata.js](src/core/metadata.js) stores records under the existing character/pool/chat/GM namespaces. [AppShell](src/app/AppShell.js) filters to valid `ce-p5.2` records on load and saves the selected CE record directly after its debounced edit. Unsupported records remain in the scene record map.
 - The former [path normalization](src/domain/paths.js) that matched old tracker names/positions and rewrote saved talents was removed in Phase 1. New talent selections still use `initializeTalent`; saved CE talent and tracker values are not rewritten on load/save.
@@ -201,13 +201,21 @@ Treat this as a staged implementation, not a partially released mixed-rules cata
 
 ### Phase 4 — Add remaining paths and Background talents
 
-- [ ] Add Artificer, Psion, Summoner, Swashbuckler, Witch, and Adventurer JSON; register core paths and intentional art fallbacks.
-- [ ] Load Background talents as a talent-only collection and reuse the current picker/cards. Do not make it a core path.
-- [ ] Give new resources/choices editable trackers suitable for their meaning, including uncapped Panache, burned words, instability, vassal damage, arcana, and bonus Thread. Check visual layouts against PDF/HTML without copying conflicting names.
+- [x] Add Artificer, Psion, Summoner, Swashbuckler, Witch, and Adventurer JSON; register core paths and intentional art fallbacks.
+- [x] Load Background talents as a talent-only collection and reuse the current picker/cards. Do not make it a core path.
+- [x] Give new resources/choices editable trackers suitable for their meaning, including uncapped Panache, burned words, instability, vassal damage, arcana, and bonus Thread. Check visual layouts against PDF/HTML without copying conflicting names.
 
 Affected files: six new `data/paths/*.json` files, proposed `data/background-talents.json`, [runtime/assets.js](src/runtime/assets.js), [core/data-loader.js](src/core/data-loader.js), [runtime/entry.js](src/runtime/entry.js), [domain/paths.js](src/domain/paths.js), [PathScreen.js](src/screens/PathScreen.js), [tests/paths.spec.js](tests/paths.spec.js), [tests/talents.spec.js](tests/talents.spec.js), [tests/character-sheet.spec.js](tests/character-sheet.spec.js).
 
 Acceptance: 18 core options; 119 book path-talent entries plus 11 Background entries; Adventurer has no fabricated talent list. All options load in the production build, display without missing images, assign/save/reload, allow cross-path talent picks, and broadcast descriptions. Background never appears as a core choice. Panache can exceed starting allowance. Psion/Witch/Summoner controls preserve distinct meanings. Document manual dice/effect handling; do not claim these abilities are automatically resolved.
+
+Phase 4 completion (2026-09-06):
+
+- Added the five remaining book paths and sheet-sourced Adventurer. The catalogue now has 18 core options, 119 named path talents, and 11 Background talents. Artificer uses the book's `INFUSION` name despite the HTML sheet's `INGENUITY` label; Witch uses the book's `HIDDEN MAGIC` name while retaining the sheet's `Words of Power` tracker label.
+- Added `/data/background-talents.json` and loaded it separately from core paths. The existing picker/cards handle Background choices, and Background is excluded from core path assignment. New path resources use editable existing tracker types; their effects, resets, bonus dice, and limits remain manual.
+- Added explicit existing-art fallbacks for the six new path IDs, so every picker entry has an image URL without adding an art dependency.
+- Validation: `npm run test:paths -- --workers=1` passed **7/7**; `npm run test:talents -- --workers=1` passed **5/5**; `npm run test:e2e -- --workers=1 --reporter=line` passed **35/35**; `npm run build` passed. A JSON audit confirmed 18 path files, 119 path talents, 11 Background talents, and supported tracker types.
+- Deviations: Artificer tracker layouts are compact editable fields rather than the printable sheet's visual arcana layout; Panache, instability, burned words, vassal harm, and bonus dice are not automatically resolved. Fallback art is intentionally reused from existing paths. The real Owlbear/multiplayer check remains Phase 5 work.
 
 ### Phase 5 — Verify migration end to end and prepare release
 
@@ -226,4 +234,4 @@ Implement phases in order: **0 → 1 → 2 → 3 → 4 → 5**. After the shared
 
 Suggested implementation instruction: “Implement Phase N of `MIGRATION-CE-5.2.md`. Verify its assumptions against the current code and cited PDFs, preserve existing work, run the listed checks, and update this document with results and deviations. Do not start later phases unless needed for that phase's acceptance.”
 
-The migration is done when current catalogue/automated basic behavior match the chosen P5.2 sources, new CE characters save/reload correctly, older characters are excluded without being overwritten, all intended sheet options are usable, and tests plus the real-scene check pass. Narrative adjudication and the explicitly listed manual talent mechanics remain manual by design. Phase 3 is complete; later phases remain outstanding.
+The migration is done when current catalogue/automated basic behavior match the chosen P5.2 sources, new CE characters save/reload correctly, older characters are excluded without being overwritten, all intended sheet options are usable, and tests plus the real-scene check pass. Narrative adjudication and the explicitly listed manual talent mechanics remain manual by design. Phase 4 is complete; later phases remain outstanding.

@@ -97,6 +97,27 @@ test.describe("Talents", () => {
     }
   });
 
+  test("can add a Background talent without making Background a core path", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openPathTabWithCorePath(page, "bard");
+      await page.getByRole("button", { name: "Add Talent" }).click();
+      await page.getByText("background", { exact: true }).click();
+      await expect(page.getByText("SELECT TALENT FROM BACKGROUND")).toBeVisible();
+      await talentCard(page, "AQUATIC").getByRole("button", { name: "Add Talent" }).click();
+
+      await expect
+        .poll(async () => page.evaluate(() => {
+          const metadata = window.__grimwildTestApi.getMetadata()["grimwild.character.extension/metadata"];
+          const characters = Object.values(metadata);
+          return characters.length === 1 && characters[0].talents.some(talent => talent.name === "AQUATIC");
+        }))
+        .toBeTruthy();
+    } finally {
+      await flushDebug();
+    }
+  });
+
   test("can remove an added talent", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {

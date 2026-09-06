@@ -10,7 +10,13 @@ export const DEFAULT_PATH_ASSETS = {
   rogue: "/assets/rogue.webp",
   sorcerer: "/assets/sorcerer.webp",
   warlock: "/assets/warlock.webp",
-  wizard: "/assets/wizard.webp"
+  wizard: "/assets/wizard.webp",
+  artificer: "/assets/wizard.webp",
+  psion: "/assets/cleric.webp",
+  summoner: "/assets/warlock.webp",
+  swashbuckler: "/assets/rogue.webp",
+  witch: "/assets/druid.webp",
+  adventurer: "/assets/fighter.webp"
 };
 
 export const APP_ASSETS = {

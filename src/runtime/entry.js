@@ -20,6 +20,7 @@ let pathAssets = {
   ...DEFAULT_PATH_ASSETS
 };
 let pathsById = {};
+let backgroundTalents = [];
 
 // The entry modules choose the intended route mode, but Vite dev serving can
 // still resolve /chatpopover through the main HTML entry. Keep this path-based
@@ -66,7 +67,8 @@ const createRuntimeScreens = obr => {
       dividerSecondary: APP_ASSETS.dividerSecondary
     },
     getPathAssets: () => pathAssets,
-    getPathsById: () => pathsById
+    getPathsById: () => pathsById,
+    getBackgroundTalents: () => backgroundTalents
   });
 
   const { PoolsScreen, ChatScreen } = createPoolsAndChatScreens({
@@ -96,12 +98,14 @@ const createRuntimeScreens = obr => {
 async function loadRuntimeData() {
   try {
     const {
-      paths: externalPaths
+      paths: externalPaths,
+      backgroundTalents: externalBackgroundTalents
     } = await loadExternalData({
       pathKeys: DEFAULT_PATH_KEYS
     });
 
     if (externalPaths && Object.keys(externalPaths).length > 0) pathsById = externalPaths;
+    backgroundTalents = externalBackgroundTalents;
   } catch (error) {
     console.warn("Failed to load external Grimwild path data.", error);
   }
