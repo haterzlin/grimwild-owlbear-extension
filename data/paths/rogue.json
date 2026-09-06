@@ -4,10 +4,10 @@
   "quote": "You live and operate in the margins, striking unseen and disappearing before anyone knows you were there.",
   "coreTalent": {
     "name": "EXPERTISE",
-    "description": "Choose a skillset below as your expertise:<br><br> <b>Skullduggery:</b> Take +1d at stealth, picking locks, lying, and sleight of hand.<br><br> <b>Assassination:</b> Take +1d at stealth, tracking people, opening strikes, and disguises.<br><br> Each session, you have a <i>3d Contingency</i> resource pool, always planning ahead. You can roll the pool as bonus dice after any roll that falls within your expertise.<br><br> <b>GROWTH:</b> Every 2 levels, increase Contingency by 1d.",
+    "description": "Choose three skills below as your skill set. Take +1d when using a chosen skill. Each session, you have a 4d Competence pool to represent your focus under pressure. You can roll it as bonus dice after any of the chosen skills. Above board: duel - evade - investigate - persuade - track - traverse. Below table: ambush - forgery & disguise - lying - sabotage - sleight of hand - stealth. [Growth: At levels 3 and 6, gain +1d Competence per session and +1 skill.]",
     "trackers": [
       {
-        "name": "Contingency",
+        "name": "Comp.",
         "type": "field"
       }
     ]
@@ -25,64 +25,46 @@
   "pathTalent": [
     {
       "name": "ACCORDING TO PLAN",
-      "description": "You gain 1 story per session and can spend story to flashback to utilizing subterfuge in a way that's immediately relevant, like swiping some keys, paying off a guard, or preparing an escape route. Make a montage roll, taking +1d for Expertise. The GM always takes suspense in place of an impact move.",
+      "description": "You gain 1 thread per session and can spend thread to flashback, establishing how you planned for the current situation. Make a montage roll, taking +1d if it fell within your expertise. The GM must take suspense in place of an impact move.",
       "trackers": [
         {
-          "name": "Story",
+          "name": "Thread",
           "type": "checkbox"
         }
       ]
+    },
+    {
+      "name": "DISTRACTION",
+      "description": "On a perfect, you can setup an ally and pass them the spotlight, even if the GM wants to spend suspense."
     },
     {
       "name": "ELDRITCH AFFINITY",
-      "description": "<b>[Prohibited: Sorcerer]</b><br><br>You have spellcasting, as the Sorcery talent (<i>pg. 72)</i>. You roll Presence to cast and choose 3 from magic paths and techniques that serve as touchstones. You can't cast potent spells, nor do you risk a wild surge.",
-      "trackers": [
-        {
-          "name": "Magic Paths & Techniques",
-          "type": "fieldSmallLong"
-        }
-      ]
+      "description": "You have spellcasting, as the Sorcery talent. You roll Presence to cast and choose 3 from magic paths and techniques. You can't cast potent spells, nor do you risk a magical twist. [Prohibited: Sorcerer] Magic Paths & Techniques"
     },
     {
       "name": "LURKER",
-      "description": "On a perfect sneaking past or secretly observing sentient creatures, they: <i>let a secret slip—give you a golden opportunity</i>. If caught sneaking, you can <b>push yourself</b> to stay completely still and avoid detection, but must leave the area immediately after.",
-      "trackers": [
-        {
-          "name": "Push",
-          "type": "checkbox"
-        }
-      ]
+      "description": "On a perfect sneaking past or secretly observing sentient creatures, they: let a secret slip - give you a golden opportunity. If caught sneaking, you can push yourself to stay completely still and avoid detection, but must leave the area immediately after."
     },
     {
       "name": "OPPORTUNIST",
-      "description": "When someone nearby rolls defense, you take +1d on an immediate follow-up. On a critical by a nearby ally, you can <b>push yourself</b> to add another critical bonus.",
-      "trackers": [
-        {
-          "name": "Push",
-          "type": "checkbox"
-        }
-      ]
+      "description": "When someone nearby rolls defense, you take +1d on an immediate follow-up. On a critical by a nearby ally, you can push yourself to add a critical bonus."
     },
     {
       "name": "POISONER",
-      "description": "Each session, you have a <b>4d Poisons</b> resource pool. You have access to the following poisons: <i>hallucinations—knockout—memory loss—nausea—paralysis—truth serum</i>. They each take a bit of time to work and are most effective if ingested.",
+      "description": "Each session, you have a 4d Poisons resource pool. You have access to the following poisons: hallucinations - knockout - memory loss - nausea - paralytic - truth serum. They each take a bit of time to work and are most effective if ingested.",
       "trackers": [
         {
-          "name": "Poisons",
+          "name": "Power",
           "type": "field"
         }
       ]
     },
     {
-      "name": "TRAP SENSE",
-      "description": "You always get a <b>hint</b> or <b>reveal</b> on vigilance against traps. When you avoid or disable a trap, <b>take spark</b>."
-    },
-    {
       "name": "WEASEL",
-      "description": "If caught in a lie or red-handed, you can <b>push yourself</b> to weasel your way out of the situation—for now. You get an exit, but they definitely realize what happened soon after.",
+      "description": "Once per session, if caught in a lie or red-handed, you can weasel your way out - for now. Make a story roll to see if they realize their mistake later. You can push yourself to do it again.",
       "trackers": [
         {
-          "name": "Push",
+          "name": "Use",
           "type": "checkbox"
         }
       ]

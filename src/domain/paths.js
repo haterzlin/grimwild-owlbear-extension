@@ -76,7 +76,9 @@ export const updateCoreTalentTracker = (player, tracker, trackerIndex) => {
 
 export const addTalentToCharacter = (player, talent) => ({
   ...player,
-  talents: [ ...player.talents, initializeTalent(talent) ]
+  talents: player.talents.some(selectedTalent => selectedTalent?.name === talent?.name)
+    ? player.talents
+    : [ ...player.talents, initializeTalent(talent) ]
 });
 
 export const removeTalentAtIndex = (player, talentIndex) => ({

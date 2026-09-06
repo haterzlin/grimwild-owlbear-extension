@@ -4,11 +4,11 @@
   "quote": "You become one with your weapon, and through it, you find your real purpose in this life.",
   "coreTalent": {
     "name": "WEAPON MASTERY",
-    "description": "Choose a fighting style that you have mastered: <i>brawling—dual-wielding—one-handed weapons—ranged weapons—thrown weapons—two-handed weapons</i>. You have a <b>mastery die</b>, a special d6. When you fight in your style, take +1d (<i>the mastery die</i>) on the roll. If the mastery die is a 6, it counts as a critical. If it's already a critical, <b>take spark</b>.<br><br><b>GROWTH:</b> Every 3 levels, your mastery die increases by +1d.",
+    "description": "Choose a fighting style you have mastered: brawling - dual-wielding - one-handed - ranged - two-handed. When you fight, defend, or assist in your style, take +1d. Each scene, you have 2 mastery to spend when using this style to add a critical effect. [Growth: At levels 3 and 6, gain +1 Mastery per scene.] Example Maneuvers: blind - disarm - knockdown - pin down - pull - push - sunder - unnerve.",
     "trackers": [
       {
-        "name": "Fighting Style",
-        "type": "fieldSmall"
+        "name": "Mastery",
+        "type": "field"
       }
     ]
   },
@@ -25,69 +25,47 @@
   "pathTalent": [
     {
       "name": "ARCANE TRAINING",
-      "description": "<b>[Prohibited: Wizard]</b><br><br>You have spellcasting as the Spellcraft talent <i>(pg. 76)</i>. You roll Wits and can cast 3 spells and 1 potent spell per session. You know 3 spell theorems, created with the Spell Crucible, and can learn new spells from scrolls.",
+      "description": "You have spellcasting as the Spellcraft talent. You can cast 3 spells and 1 potent spell per session. You know 3 spell theorems, created with the Spell Crucible, and can learn new spells from scrolls. [Prohibited: Wizard]",
       "trackers": [
         {
-          "name": "Spells",
+          "name": "Spell",
           "type": "checkbox"
-        },
-        {
-          "name": "",
-          "type": "checkbox"
-        },
-        {
-          "name": "",
-          "type": "checkbox"
-        },
-        {
-          "name": "Potent",
-          "type": "checkbox"
-        },
-        {
-          "name": "Theorems",
-          "type": "fieldSmallLong"
         }
       ]
     },
     {
       "name": "BULWARK",
-      "description": "Each session, you have a <b>3d Bulwark</b> resource pool from armor or other defenses. When you get bloodied or dropped from physical damage, roll the pool. If dice remain, ignore the damage.",
+      "description": "Each session, you have a 2d Bulwark resource pool from armor or other defenses. When you take physical harm, you can roll the pool to ignore the damage.",
       "trackers": [
         {
-          "name": "Bulwark",
+          "name": "Power",
           "type": "field"
         }
       ]
     },
     {
       "name": "CONTROL",
-      "description": "You can <b>push yourself</b> to declare a zone that enemies cannot cross without dealing with you. If they attempt to move past you, you can <b>interrupt</b> them. On a perfect, <b>take spark</b>.",
+      "description": "Once per session, you can declare a zone that enemies cannot cross without dealing with you. If they attempt to move past you, you can interrupt them. On a perfect, take spark. You can push yourself to do it again.",
       "trackers": [
         {
-          "name": "Push",
+          "name": "Use",
           "type": "checkbox"
         }
       ]
     },
     {
       "name": "GOT YOUR BACK",
-      "description": "You can <b>push yourself</b> to assist an ally after they roll a grim. The ally can also roll 1d. On a perfect, you both <b>take spark</b>.",
+      "description": "Once per session, you can assist an ally after they roll a grim. The ally can also roll 1d. On a perfect, you both take spark. You can push yourself to do it again.",
       "trackers": [
         {
-          "name": "Push",
+          "name": "Use",
           "type": "checkbox"
         }
       ]
     },
     {
       "name": "MEASURED TONES",
-      "description": "When you speak in measured tones, people always stop and listen—you can declare <b>tame stakes</b> if desired. Unless completely surprised, you can <b>push yourself</b> to <b>interrupt</b> an impact move initiating aggression. If you change their mind, <b>take spark</b>.",
-      "trackers": [
-        {
-          "name": "Push",
-          "type": "checkbox"
-        }
-      ]
+      "description": "When you speak in measured tones, people always stop and listen - you can declare low stakes if desired. Unless completely surprised, you can push yourself to interrupt an impact move initiating aggression. If you change their mind, take spark."
     },
     {
       "name": "SWIFT RECOVERY",
@@ -95,10 +73,10 @@
     },
     {
       "name": "TACTICIAN",
-      "description": "During an intense action sequence, you can <b>push yourself</b> to tag 3 scene elements right away and 1 later in the sequence. When an ally interacts with a tagged element, you assist without risk on the roll. If no roll is needed, they <b>take spark</b>.",
+      "description": "Once per session during an intense action sequence, you tag 3 scene elements right away, and 1 later in the sequence. When an ally interacts with a tagged element, you assist without risk on the roll. If no roll is needed, they take spark. You can push yourself to do it again.",
       "trackers": [
         {
-          "name": "Push",
+          "name": "Use",
           "type": "checkbox"
         }
       ]

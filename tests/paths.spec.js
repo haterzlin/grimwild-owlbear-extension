@@ -1,4 +1,6 @@
 import { expect, test } from "@playwright/test";
+import { addTalentToCharacter } from "../src/domain/paths.js";
+import { buildCharacter } from "./helpers/characters.js";
 import { attachDebugLogging } from "./helpers/debug.js";
 
 const openPathTabForNewCharacter = async page => {
@@ -23,7 +25,7 @@ test.describe("Paths", () => {
       await expect(page.getByText("CORE PATH", { exact: true })).toBeVisible();
       await expect(page.getByText("BARD", { exact: true })).toBeVisible();
       await expect(page.getByText("CORE TALENT")).toBeVisible();
-      await expect(page.getByText("BARDSONG", { exact: true })).toBeVisible();
+      await expect(page.getByText("INSPIRATION", { exact: true })).toBeVisible();
     } finally {
       await flushDebug();
     }
@@ -55,6 +57,37 @@ test.describe("Paths", () => {
     } finally {
       await flushDebug();
     }
+  });
+
+  test("loads the CE catalogue with seven talents per existing path", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await page.goto("/?mockOwlbear=1");
+      const catalogue = await page.evaluate(async () => {
+        const ids = ["bard", "berserker", "cleric", "druid", "fighter", "monk", "paladin", "ranger", "rogue", "sorcerer", "warlock", "wizard"];
+        return Object.fromEntries(await Promise.all(ids.map(async id => [id, await (await fetch(`/data/paths/${id}.json`)).json()])));
+      });
+
+      expect(Object.keys(catalogue)).toHaveLength(12);
+      for (const path of Object.values(catalogue)) {
+        expect(path.pathTalent).toHaveLength(7);
+        expect(path.coreTalent.name).toBeTruthy();
+      }
+      expect(catalogue.bard.pathTalent.map(talent => talent.name)).toContain("FOLK HERO");
+      expect(catalogue.druid.pathTalent.map(talent => talent.name)).toContain("PRIMAL GROWTH");
+      expect(catalogue.wizard.pathTalent.map(talent => talent.name)).toContain("SPECIALTY SCHOOL");
+    } finally {
+      await flushDebug();
+    }
+  });
+
+  test("does not add a duplicate talent but allows a cross-path talent", () => {
+    const player = buildCharacter({ talents: [{ name: "BARDIC LORE" }] });
+    const duplicate = addTalentToCharacter(player, { name: "BARDIC LORE" });
+    const crossPath = addTalentToCharacter(player, { name: "ALCHEMIST" });
+
+    expect(duplicate.talents).toHaveLength(1);
+    expect(crossPath.talents.map(talent => talent.name)).toEqual(["BARDIC LORE", "ALCHEMIST"]);
   });
 
   test("can change the core path", async ({ page }, testInfo) => {

@@ -1,6 +1,6 @@
 # Migration plan: Grimwild 1.4 → Community Edition Preview 5.2
 
-Status: **Phase 2 complete; Phase 3 implementation not started.**
+Status: **Phase 3 complete; Phase 4 implementation not started.**
 
 Inspected on 2026-09-05 against extension commit `bc33c55`; character-support scope simplified on 2026-09-06. This document is the implementation handoff. Check off phases only after their acceptance checks pass; record deviations and validation results here. Two subagents investigated rules and extension behavior independently. Both returned partial findings before a workspace credit limit stopped them; the lead verified those findings and completed this plan from the local sources.
 
@@ -182,13 +182,20 @@ Phase 2 completion (2026-09-06):
 
 ### Phase 3 — Refresh the twelve existing paths
 
-- [ ] Update all twelve JSON files against the two book pages per path, including details/other text and trackers, using section 4's inventory.
-- [ ] Initialize fresh CE trackers for every core/talent; place Herbalism and Familiar under Witch when that path is added. No old-to-new mappings.
-- [ ] Add duplicate-selection protection if S9 is adopted, while retaining cross-path selection.
+- [x] Update all twelve JSON files against the two book pages per path, including details/other text and trackers, using section 4's inventory.
+- [x] Initialize fresh CE trackers for every core/talent; place Herbalism and Familiar under Witch when that path is added. No old-to-new mappings.
+- [x] Add duplicate-selection protection if S9 is adopted, while retaining cross-path selection.
 
 Affected files: [data/paths](data/paths), [domain/paths.js](src/domain/paths.js), [PathScreen.js](src/screens/PathScreen.js), [tests/paths.spec.js](tests/paths.spec.js), [tests/talents.spec.js](tests/talents.spec.js), [tests/character-sheet.spec.js](tests/character-sheet.spec.js).
 
 Acceptance: each existing path assigns the correct CE core; its seven current talents and growth text match source; every populated tracker type persists and broadcasts correctly. Exercise fresh Bard/Fighter/Cleric/Warlock creation and CE tracker persistence explicitly. Tests expecting old names or counts change only where the source requires it. No silent stat changes from changed talent text.
+
+Phase 3 completion (2026-09-06):
+
+- Refreshed all twelve existing path JSON files from the pinned Community Edition Preview 5.2 path sheets. Each path now has its CE core, seven current talents, CE descriptions, and fresh core/talent tracker definitions; obsolete catalogue names and mappings were removed. The existing details/other extension blocks were retained where the source sheets do not provide an equivalent block.
+- Added a shared duplicate-name guard in `addTalentToCharacter` and disabled already-selected entries in the picker. Cross-path talent selection remains available.
+- Validation: `npm run test:e2e -- --workers=1` passed **33/33**; `npm run build` passed. The content audit passed for twelve path files, seven talents per path, current core names, and supported tracker types. The browser suite includes fresh path assignment and tracker persistence coverage.
+- Deviations: refreshed source descriptions are plain text, so HTML emphasis and table formatting are flattened. Optional `details`/`other` text was preserved from the extension where P5.2 path sheets have no corresponding section. Browser tests require execution outside the sandbox because Vite binding to `127.0.0.1:8000` fails inside it with `listen EPERM`. Witch and the remaining new paths are deferred to Phase 4.
 
 Treat this as a staged implementation, not a partially released mixed-rules catalogue. Ship the CE release only after all planned templates and checks are complete.
 
@@ -219,4 +226,4 @@ Implement phases in order: **0 → 1 → 2 → 3 → 4 → 5**. After the shared
 
 Suggested implementation instruction: “Implement Phase N of `MIGRATION-CE-5.2.md`. Verify its assumptions against the current code and cited PDFs, preserve existing work, run the listed checks, and update this document with results and deviations. Do not start later phases unless needed for that phase's acceptance.”
 
-The migration is done when current catalogue/automated basic behavior match the chosen P5.2 sources, new CE characters save/reload correctly, older characters are excluded without being overwritten, all intended sheet options are usable, and tests plus the real-scene check pass. Narrative adjudication and the explicitly listed manual talent mechanics remain manual by design. Phase 1 is complete; later phases remain outstanding.
+The migration is done when current catalogue/automated basic behavior match the chosen P5.2 sources, new CE characters save/reload correctly, older characters are excluded without being overwritten, all intended sheet options are usable, and tests plus the real-scene check pass. Narrative adjudication and the explicitly listed manual talent mechanics remain manual by design. Phase 3 is complete; later phases remain outstanding.

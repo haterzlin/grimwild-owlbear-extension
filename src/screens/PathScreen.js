@@ -51,7 +51,7 @@ export function createPathScreens(dependencies) {
     writeSceneMetadata(obr.scene, patch);
   };
 
-  const TalentCard = ({ talent, onSelect, onRemove, onChangeTracker, onBroadcast }) => {
+  const TalentCard = ({ talent, onSelect, onRemove, onChangeTracker, onBroadcast, isSelected }) => {
     const renderCompactTracker = (tracker, trackerIndex) => {
       if (tracker.type === "checkbox") {
         return jsx("input", {
@@ -240,10 +240,11 @@ export function createPathScreens(dependencies) {
               src: assets.dividerSecondary
             }),
             jsx("button", {
+              disabled: isSelected,
               onClick: () => {
                 onSelect();
               },
-              children: "Add Talent"
+              children: isSelected ? "Already selected" : "Add Talent"
             })
           ]
         })
@@ -452,6 +453,7 @@ export function createPathScreens(dependencies) {
         }),
         pathData.pathTalent.map(talent => jsx(TalentCard, {
           talent,
+          isSelected: player.talents.some(selectedTalent => selectedTalent?.name === talent.name),
           onSelect: () => {
             updatePlayer(addTalentToCharacter(player, talent));
             onClose();

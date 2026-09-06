@@ -4,18 +4,10 @@
   "quote": "You have made a pact with a greater being—power in exchange for service, a pact that may prove to be a double-edged sword.",
   "coreTalent": {
     "name": "PACT",
-    "description": "Create your patron <i>(below)</i>, a powerful otherworldly being you've made a pact with to gain <b>gifts</b> in exchange for <b>obligations</b>.<br><br><b>Gifts:</b> Your patron actively or passively meddles in your affairs. Before each session, roll 2d and write these results down as Gifts. During the session, you can replace <i>any</i> rolled d6 <i>(by anyone)</i> with one of your gift results, then erase the Gift.<br><br>You can also cast cantrips with your patron's trappings as touchstones, useful as <i>set dressing</i> and <i>cantrip utility</i> <i>(pg. 18)</i>. <b>You gain a bonus talent</b>, and each of your talents is infused with their trappings.<br><br><b>Obligations:</b> Each patron has different demands. You have an extra story arc to represent their demands. Some patrons expect meaningful progress, while others ask only for the lightest of service. You define what this means. Before each session, discuss this story arc. Your patron has an <b>8d Patience</b> pool. Roll it if your patron was not satisfied with your progress last session. At 0d, your patron will give you a visit in some form to <i>clear up the issue</i>, replenishing the pool.<br><br><b>GROWTH:</b> Every 3 levels, gain a bonus talent, but decrease max Patience by 2d.",
+    "description": "You have magic bestowed by a patron, allowing you to make a story roll (usually 3d) to wield their magic as a weapon, or ask to channel a potent magical effect using their nature as the touchstone. They gift you an Eldritch Talent - a changeable path talent manifesting with your patron's trappings. Given time to commune, you can change an Eldritch Talent. You also have an 8d Patience pool, representing service to your fickle patron's desires. Roll the pool when you ask for a potent magical effect, change an Eldritch Talent, or otherwise displease them. At 0d, your patron will give you a visit to clear up the issue, then the pool resets. [Growth: At levels 3 and 6, gain +1 Eldritch Talent.]",
     "trackers": [
       {
         "name": "Patience",
-        "type": "field"
-      },
-      {
-        "name": "Gifts",
-        "type": "field"
-      },
-      {
-        "name": "",
         "type": "field"
       }
     ]
@@ -28,50 +20,38 @@
   ],
   "pathTalent": [
     {
-      "name": "ELDRITCH WEAPONRY",
-      "description": "On a perfect when using <i>cantrip utility</i> as a weapon, you can <b>push yourself</b> to also inflict a spell-level effect with your patron's trappings as the touchstone. This effect can’t deal more damage—the cantrip already covers that.",
+      "name": "AFFLICTION",
+      "description": "Once a session, you can place your hands on another to heal your harm by transferring the injury. Allies can roll defense to resist this effect. Talk with your GM about transferring other maladies, such as conditions.",
       "trackers": [
         {
-          "name": "Push",
+          "name": "Use",
           "type": "checkbox"
         }
       ]
     },
     {
-      "name": "HEX",
-      "description": "You can roll Presence to hex someone with: <i>dread—clumsiness—confusion—forgetfulness—misfortune—sleepiness</i>. Decide when it takes effect: <i>now—soon—much later—specific trigger</i>. This is a cosmic effect. It's magic, but not fully under your control."
+      "name": "MAGUS",
+      "description": "You can use your weapon as a touchstone, and add a magical weapon style, such as: flaming - returning - seeking. On a perfect with this weapon, you can push yourself to add a secondary effect based on the magical style. Given time, you can change the style."
     },
     {
       "name": "KNOWING GAZE",
-      "description": "When given time, you can stare into someone's eyes and learn: <i>their greatest desire—what they're hiding—what they want to protect—who they serve</i>. This is <b>highly disconcerting</b> and only works on someone once. You can <b>push yourself</b> to do this on the spot.",
-      "trackers": [
-        {
-          "name": "Push",
-          "type": "checkbox"
-        }
-      ]
+      "description": "When given time, you can stare into someone's eyes and learn: the price of their loyalty - their biggest fear - their greatest desire - their next move - what they're hiding - whom they serve. This gaze only works on someone once. You can push yourself to do this on the spot."
     },
     {
       "name": "OTHERWORLDLY FORM",
-      "description": "You can turn into a floating, dispersed form, flavored after your patron's trappings <i>(swarm of bats, blowing leaves)</i>. Choose three things you can do in this form: <i>appear barely visible—fly high in the sky—interact with objects—move swiftly—slip through small gaps—speak</i>."
+      "description": "You can turn into a floating, dispersed form, flavored after your patron's trappings. Choose three things you can do in this form: appear barely visible - fly high in the sky - interact with objects - move swiftly - slip through small gaps - speak."
     },
     {
-      "name": "RITUALIST",
-      "description": "You take +1d when working towards overcoming a ritual's challenge and can replace any one of a ritual's anchors with yourself."
+      "name": "BLOOD RITUALS",
+      "description": "Take +1d on a ritual's invocation and replace any one of its anchors with yourself. When you complete a ritual in this way, take spark."
     },
     {
       "name": "VISIONS",
-      "description": "You can roll Presence to ask your patron for forbidden knowledge, like <i>tightly held secrets or that which should not be known</i>. Ask the GM a specific question. The answer may be cryptic or twisted to suit your patron’s desires, but it will never be an outright lie. On a messy or grim, roll the Patience pool."
+      "description": "You can open your mind to seek forbidden knowledge. Ask the GM a specific question. The answer may be cryptic or twisted, but it will never be a lie. Make a defense roll against rattled after the answer."
     },
     {
       "name": "WAYFARER",
-      "description": "You can <b>push yourself</b> to teleport. The further or less familiar the destination, the less precise the teleport is. The maximum range is two days' ride away. Anything within clear eyesight with no obstruction requires no roll, otherwise make a story roll. You can bring others, taking +1 per person.",
-      "trackers": [
-        {
-          "name": "Push",
-          "type": "checkbox"
-        }
-      ]
+      "description": "You can push yourself to teleport. The further or less familiar, the less precise. Max range is two days' ride away. Make a story roll if you can't see the destination or take allies you touch with you."
     }
   ],
   "other": null

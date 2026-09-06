@@ -4,22 +4,34 @@
   "quote": "You wield arcane power through precise knowledge, casting spells from an ever-expanding repertoire, your studies endless.",
   "coreTalent": {
     "name": "SPELLCRAFT",
-    "description": "You have spellcasting ability. You roll Wits to cast and the spell theorem you are casting serves as its touchstone. You know 4 spell theorems inscribed in your spellbook, created using the Spell Crucible <i>(below)</i>. Each session, you can cast 4 spells and 2 potent spells. You choose which spell theorem to use when you cast.<br><br>You can learn new spell theorems from studying and experimenting with scrolls, which you might find as treasure or obtain from other wizards. This consumes the scroll.<br><br><b>GROWTH:</b> Every 2 levels, increase the castings of spells and potent spells per session by 1 and create 1 new spell theorem with the Spell Crucible.",
+    "description": "You have spellcasting ability. You roll Wits to cast and the spell theorem you are casting serves as its touchstone. Each session, you can cast 4 spells and 2 potent spells. You choose which spell theorem to use when you cast, interpreting it as you see fit. Spells cast with no risk require no roll and don't count against your limited number per session, unless potent. You begin with 5 spell theorems and can freely learn new ones from studying and experimenting with scrolls, consuming them. [Growth: At level 2, 4 and 6, gain +1 spell and potent spell per session, +1 spell theorem.]",
     "trackers": [
       {
         "name": "Spells",
         "type": "field"
       },
       {
-        "name": "Potent Spells",
+        "name": "Potent",
         "type": "field"
       },
       {
-        "name": "Theorems",
+        "name": "Theorem",
         "type": "fieldSmallLong"
       },
       {
-        "name": "Theorems",
+        "name": "Theorem",
+        "type": "fieldSmallLong"
+      },
+      {
+        "name": "Theorem",
+        "type": "fieldSmallLong"
+      },
+      {
+        "name": "Theorem",
+        "type": "fieldSmallLong"
+      },
+      {
+        "name": "Theorem",
         "type": "fieldSmallLong"
       }
     ]
@@ -37,55 +49,49 @@
   "pathTalent": [
     {
       "name": "ALCHEMIST",
-      "description": "Each session, you have a <b>4d Potions</b> resource pool. You can have a minor potion and roll the pool, or drop 1 and roll for a major potion. You know recipes for your spell theorems, plus two more rolled on the Spell Crucible. Learn new recipes by sacrificing potions.",
+      "description": "Each session, you have a 4d Potions resource pool. You can have a trivial potion and roll the pool, or drop 1 and roll for a minor potion. You know recipes for your spell theorems, plus two more. Learn new recipes by sacrificing potions.",
       "trackers": [
         {
-          "name": "Potions",
+          "name": "Power",
           "type": "field"
         }
       ]
     },
     {
-      "name": "ARCANE SPECIALTY",
-      "description": "Choose your specialty school. All of your spell theorems now have it plus another school. When casting, choose which school to use. On a critical with your specialty school, <b>take spark</b>."
+      "name": "ARCHIVIST",
+      "description": "You gain 2 minor, and 1 major arcana that you've either found or created. When you roll an arcana's power pool, you drop 1 fewer die unless it's the last."
     },
     {
-      "name": "ARCANIST",
-      "description": "Take +1d when rolling an arcana's pool and ignore the first die that would be dropped. You also gain <b>3 minor arcana</b> and <b>1 major arcana</b> that you've either created or found."
+      "name": "COMPONENT POUCH",
+      "description": "Each session, you have a 2d Components pool to help focus your magic. When you get a messy or grim on spellcasting, you can roll the pool to increase a die result by 1 (3→4). Describe what reagent helped.",
+      "trackers": [
+        {
+          "name": "Power",
+          "type": "field"
+        }
+      ]
     },
     {
       "name": "COLLEAGUES",
-      "description": "In every city, some towns, and the occasional dungeon, you can find a <i>powerful, eccentric</i> wizardly colleague who owes you a favor—or maybe you owe them one. If you go out of your way to meet and catch up, <b>take spark</b>."
+      "description": "In every city, some towns, and the occasional dungeon, you can find a powerful, eccentric wizardly colleague who owes you a favor or maybe you owe them one. If you go out of your way to meet and catch up, take spark, and they may trade theorem research with you."
     },
     {
-      "name": "FAMILIAR",
-      "description": "You manifest a small magical creature, an extension of yourself. You can communicate telepathically and send it on simple tasks, making a story roll to see how it goes. By entering a trance, you can use its senses. You can also <b>push yourself</b> to cast a spell through it. If your familiar takes damage, it vanishes and reappears at the start of the next session.",
-      "trackers": [
-        {
-          "name": "Push",
-          "type": "checkbox"
-        }
-      ]
+      "name": "COUNTERMAGIC",
+      "description": "Each session, you have a 2d power pool you can use to interrupt hostile magic. On a perfect, you can turn the magic back on the source."
     },
     {
       "name": "MASTERED THEOREM",
-      "description": "Choose one of your spell theorems. You take +1d when casting it and gain 1 extra <b>potent spell</b> casting of it per session. Your name becomes linked to it and it begins to spread in popularity throughout wizardry—track its spread with campaign pools.",
+      "description": "Choose one of your spell theorems. You take +1d when casting it and gain 1 extra potent spell casting of it per session. Your name becomes linked to it, and it begins to spread in popularity throughout wizardry. Track it with campaign pools.",
       "trackers": [
         {
-          "name": "Potent",
+          "name": "Use",
           "type": "checkbox"
         }
       ]
     },
     {
-      "name": "PREPARED SPELL",
-      "description": "You gain 1 story per session and can spend story to flashback to casting a spell with specific triggers. If you need to roll a montage to get access to a place, the GM always takes suspense in place of an impact move. Roll for the spell's effectiveness now.",
-      "trackers": [
-        {
-          "name": "Story",
-          "type": "checkbox"
-        }
-      ]
+      "name": "SPECIALTY SCHOOL",
+      "description": "Choose the arcane school of your focus. All of your spell theorems now have it plus another school. When casting, choose which school to use. When you get a critical with this arcane school, take spark."
     }
   ],
   "other": null

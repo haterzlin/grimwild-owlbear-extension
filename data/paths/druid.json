@@ -4,7 +4,7 @@
   "quote": "You embrace and embody the untamed power of the natural world, transforming into beasts and channeling the spirit of the wild.",
   "coreTalent": {
     "name": "WILD SHAPE",
-    "description": "You can shift into the form of any beast you're familiar with. You have a <b>4d Wild Shape</b> resource pool, rolled when you shift—at 0d, you fail to turn into that form. The pool replenishes after each scene.<br><br>You take on the form's physical qualities and feral instincts. Move your stat points around to represent this, with a min. of 1 and max. of 3 in a stat. You lose access to any talent related to your own physical form.<br><br>Some forms are more difficult to shift into. For each <b>wild talent</b> (max 2) a form has, drop 1d from the pool before rolling it. These are things like <i>aquatic, smaller than a cat, bigger than a bear, venomous,</i> and <i>flight</i>. It can also be a specific talent from a path, or anything that would require a heritage talent. The GM judges the <b>gray zone</b>.<br><br><b>GROWTH:</b> Every 2 levels, increase your Wild Shape pool by 1d.",
+    "description": "Shift into any familiar beast form by using a 2d Wild Shape resource pool, replenishing each scene. You take on the form's physical qualities and feral instincts, moving stat points to represent this (min 1, max 3). You lose access to your own physical talents. Drop 1d before rolling for each wild talent, such as: aquatic - smaller than a cat - bigger than a bear - flight - a thematic path talent. [Growth: At levels 3 and 6, gain +1d to your Wild Shape pool per scene.]",
     "trackers": [
       {
         "name": "Wild Shape",
@@ -24,38 +24,36 @@
   ],
   "pathTalent": [
     {
-      "name": "AWAKEN",
-      "description": "Once per scene, you may awaken a living natural feature—plants, animals, insects, fungi, or the like—within or nearby the scene. It gains awareness and purpose, forming a <b>3d power pool</b> you can direct, guided by its nature. One time only, you can make this a ritual-level effect."
-    },
-    {
-      "name": "HERBALISM",
-      "description": "Before each session, use the Herbalism Crucible to make two herb names (<i>snakeberry, blastbane</i>). You have <i>1 minor potion of one and 1 major potion of the other</i>. The name is the touchstone. They lose effect after the session. One time only, you can have 1 mythic potion (<i>choose after rolling</i>).<br><br><table><tr><td>choke</td><td>star</td><td>sun</td><td>dream</td><td>mist</td><td>zap</td></tr><tr><td>sticky</td><td>stone</td><td>moon</td><td>feather</td><td>soot</td><td>blast</td></tr><tr><td>wool</td><td>dust</td><td>devil</td><td>wild</td><td>freeze</td><td>blood</td></tr><tr><td>smoke</td><td>snake</td><td>honey</td><td>mirror</td><td>sting</td><td>ink</td></tr><tr><td>shriek</td><td>mimic</td><td>goat</td><td>worm</td><td>steel</td><td>skunk</td></tr><tr><td>giggle</td><td>needle</td><td>night</td><td>swell</td><td>faerie</td><td>dragon</td></tr></table><br><table><tr><td>cap</td><td>lily</td><td>thistle</td><td>pod</td><td>stem</td><td>petal</td></tr><tr><td>wort</td><td>reed</td><td>bell</td><td>bud</td><td>shoot</td><td>bean</td></tr><tr><td>rose</td><td>flower</td><td>leaf</td><td>tongue</td><td>bark</td><td>tuber</td></tr><tr><td>bush</td><td>root</td><td>wood</td><td>berry</td><td>funnel</td><td>vine</td></tr><tr><td>shroom</td><td>spine</td><td>grass</td><td>lace</td><td>moss</td><td>seed</td></tr><tr><td>sprout</td><td>shade</td><td>thorn</td><td>bane</td><td>branch</td><td>weed</td></tr></table>",
+      "name": "AUGURY",
+      "description": "You can read the world around you and interpret its signs. Before each session, roll 2d and record the results. These are your Omens. During the session, you can replace any rolled d6 (by anyone) with an omen result, then erase it.",
       "trackers": [
         {
-          "name": "Herb 1",
-          "type": "fieldSmall"
-        },
-        {
-          "name": "",
+          "name": "Use",
           "type": "checkbox"
-        },
+        }
+      ]
+    },
+    {
+      "name": "AWAKEN",
+      "description": "Once per scene, you may awaken a living natural feature - plants, animals, fungi, or the like - within or nearby the scene. It gains awareness and purpose, forming a 3d power pool you can direct, guided by its nature. One time only, you can make this a ritual-level effect."
+    },
+    {
+      "name": "PRIMAL GROWTH",
+      "description": "You can move through any natural terrain quickly and without issue. Once per session you can grow, wither, or shape: crops - dense foliage - entangling vines - fungi - poisonous spores. You can push yourself to do it again. You don't need anchors on plant or harvest rituals.",
+      "trackers": [
         {
-          "name": "Herb 2",
-          "type": "fieldSmall"
-        },
-        {
-          "name": "",
+          "name": "Use",
           "type": "checkbox"
         }
       ]
     },
     {
       "name": "KINDRED SPIRITS",
-      "description": "You can speak with animals and spirits of the wild, their personalities shaped by their instincts. <b>You are known to them</b>—when you meet, roll their bond with you <i>(pg. 14)</i> or spend story to establish it. When you call, those nearby will answer."
+      "description": "You can speak with all manner of wild things. When you meet, they know of you. Roll their bond with you or spend thread to establish it. When you call, those nearby will answer. You always sense the presence of hidden dangers in places teeming with wildlife."
     },
     {
       "name": "PRIMORDIAL BONDS",
-      "description": "You have a bond with each of the primordial elements, <b>Air, Earth, Fire,</b> and <b>Water</b>. Roll the bonds <i>(pg. 14)</i>, then change one to <b>deep</b>. You have spellcasting, rolling Presence to call on an element, which serves as the touchstone. You can call on each element once per session, or twice if your bond is <b>deep</b>. You can mark two usages of a single element to cast a potent spell. You can combine usages of two elements to take +1d and use both as a touchstone. Bonds change, <i>for better or worse</i>—pursue great deeds and rituals to <b>deepen</b> them.",
+      "description": "You have spellcasting ability, using raw elemental power (Fire, Earth, Air, or Water) as the touchstone, and casting spells with Presence. On a critical using an element, charge it. Spend it to cast a potent spell with that element.",
       "trackers": [
         {
           "name": "Air",
@@ -81,18 +79,14 @@
     },
     {
       "name": "TRUE SHAPE",
-      "description": "Choose 1 beast form. If it has no wild talents, you can shift into it without rolling wild shape, even at 0d. If it has wild talents, you drop 1d less than normal when you shift."
-    },
-    {
-      "name": "VERDANT WHISPERS",
-      "description": "You can commune with plants, their personalities as odd and unique as their forms. <b>Roll Wits to decipher their messages</b>, as they remember all but speak in ways truly hard to understand. You always get a <b>hint</b> or <b>reveal</b> on vigilance in places teeming with plant life."
+      "description": "Choose 1 beast form. If it has no wild talents, you can shift into it without using a wild shape pool. If it has wild talents, you drop 1d less than normal when you shift into it."
     },
     {
       "name": "WINDCALLER",
-      "description": "Your voice carries on the winds over great distances. You can <b>push yourself</b> to summon or dismiss, but not control: <i>dense fog—diving temperatures—heavy rain—snowfall—strong winds—thunder</i>. You can perform weather rituals without ritual anchors.",
+      "description": "Your voice carries on the winds over great distances. Once per session, you can summon or dismiss, but not control: dense fog - extreme temperatures - heavy rain - snowfall - storms - strong winds. You can push yourself to do it again. You can perform weather rituals without anchors.",
       "trackers": [
         {
-          "name": "Push",
+          "name": "Use",
           "type": "checkbox"
         }
       ]

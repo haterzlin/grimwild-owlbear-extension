@@ -63,7 +63,7 @@ test.describe("Talents", () => {
             return lastDescription ? lastDescription.description : null;
           });
         })
-        .toBe("You gain any 3 wises and 1 extra story per session. You take +1d on any story rolls pertaining to what you know or story details you add.");
+        .toBe("You gain any 3 wises and 1 extra thread per session. You take +1d on any story rolls pertaining to what you know or story details you add.");
     } finally {
       await flushDebug();
     }

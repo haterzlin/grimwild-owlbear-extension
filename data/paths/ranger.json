@@ -3,28 +3,12 @@
   "description": "ALSO: Beastmaster, Pathfinder, Trapper",
   "quote": "You stalk relentlessly, moving unseen through the wilderness, tracking your prey with deadly precision, and striking them at their weakest point.",
   "coreTalent": {
-    "name": "HUNTER’S MARK",
-    "description": "Twice per session, you can declare a weakness in a non-humanoid creature. Describe what you know or see, tagging it with a <b>2d Weakness</b> pool. When anyone targets the weakness specifically, you roll the pool as bonus dice on their roll. As it depletes, the creature learns to hide its weakness, causing it to shift its behavior. <b>Take spark</b> when a Weakness die rolls a perfect (not the overall result).<br><br><b>Prowess:</b> Take +1d at stealth, traversal, setting traps, and tracking.<br><br><b>Growth:</b> Every 2 levels, you can use Hunter's Mark one more time per session.",
+    "name": "QUARRY",
+    "description": "Twice per session, you can designate a target as your Quarry - the focus of your hunt. Until the end of the session, you have a 2d Quarry pool rolled as bonus dice to research or locate them, and when anyone attacks or defends against them. When a Quarry die rolls a '6', that PC takes spark. Prowler: You take +1d when using stealth, traversal, and traps in familiar terrain. [Growth: At levels 3 and 6, gain +1d Quarry pool.]",
     "trackers": [
       {
-        "name": "Weakness",
-        "type": "checkbox"
-      },
-      {
-        "name": "",
-        "type": "checkbox"
-      },
-      {
-        "name": "",
-        "type": "checkbox"
-      },
-      {
-        "name": "",
-        "type": "checkbox"
-      },
-      {
-        "name": "",
-        "type": "checkbox"
+        "name": "Quarry",
+        "type": "field"
       }
     ]
   },
@@ -41,49 +25,43 @@
   "pathTalent": [
     {
       "name": "ANIMAL COMPANION",
-      "description": "You're accompanied by a fiercely loyal animal. Each PC adds a reciprocal bond with it. Choose <b>3 tricks</b> that it knows and <b>2 flaws</b> that it has:<br><br><b>Tricks:</b> <i>distract—fight—guard—perform—rescue—retrieve—scout—search—track—warn.</i><br><b>Flaws:</b> <i>aggressive—clumsy—grumpy—insatiable—jumpy—noisy—overprotective—scary—unruly.</i><br><br>You roll 3d for anything it knows a trick for and 1d on everything else. It has only two damage boxes, <b>marked</b> (for any mark) and <b>hurt</b> (for bloodied or rattled). You can always have it exit a scene when hurt. If lost, you can bond with a new animal or select a new talent.<br><br><i>Special:</i> You can take this talent again to grant it 3 more tricks and another marked box."
+      "description": "You're accompanied by a fiercely loyal animal. Each PC adds a reciprocal bond with it. Choose 3 tricks and 2 flaws. You roll 3d for its tricks and 1d otherwise. It has only two damage boxes, marked (for any mark) and hurt (for any harm). It can always exit a scene when hurt. If lost, you can bond with a new animal. Tricks: distract - fight - guard - perform - rescue - retrieve - scout - search - track - warn. Flaws: aggressive - clumsy - grumpy - insatiable - jumpy - noisy - overprotective - scary - unruly.",
+      "trackers": [
+        {
+          "name": "Mark",
+          "type": "checkbox"
+        }
+      ]
     },
     {
       "name": "KEEN SENSES",
-      "description": "Your senses are twice as sharp as normal. You can pull off <i>potent feats of tracking</i> and can always get a <b>hint</b> or <b>reveal</b> on vigilance against living creatures."
+      "description": "Your senses are twice as sharp as normal. You can pull off potent feats of tracking and you always notice the presence of living creatures near you, though details are unclear."
     },
     {
       "name": "RELENTLESS",
-      "description": "You can pull off <i>potent feats of traversal</i> and can always move at full speed, unhindered by what's in your way."
+      "description": "You can pull off potent feats of traversal and can always move at full speed, unhindered by what's in your way."
     },
     {
       "name": "SCOUT AHEAD",
-      "description": "You gain 1 story per session and can spend story to flashback to scouting ahead and: <i>sabotage something—set a trap—set up an <b>interrupt</b>—survey the area (ask 2 questions)—take out a danger</i>. Make a montage roll, taking +1d for prowess. The GM always takes suspense in place of an impact move.",
+      "description": "You gain 1 thread per session and can spend thread to flashback to scouting ahead and: sabotage something - set a trap - survey the area (ask 2 questions) - take out a danger - set up an interrupt. Make a 3d montage roll. The GM always takes suspense in place of an impact move.",
       "trackers": [
         {
-          "name": "Story",
+          "name": "Thread",
           "type": "checkbox"
         }
       ]
     },
     {
       "name": "SEASONED HUNTER",
-      "description": "You always know where a monster's lair will be. Once per session, you can tell all to Look Out! and declare how a monstrous challenge spends 1 of its suspense on a move to attack your party. Anyone involved takes +1d on a defense roll and follow-up action rolls.",
-      "trackers": [
-        {
-          "name": "Look Out!",
-          "type": "checkbox"
-        }
-      ]
+      "description": "You can push yourself to tell your allies to Look Out! and goad the GM into spending suspense on a move you declare to attack your party. Anyone involved takes +1d on a defense roll and follow-up action rolls."
     },
     {
       "name": "SHARPSHOOTER",
-      "description": "When given time, you can pull off <i>potent feats of ranged precision</i>, like shooting <i>just beyond maximum range</i> or into <i>near complete cover</i>. You can also <b>push yourself</b> to do it on the spot.",
-      "trackers": [
-        {
-          "name": "Push",
-          "type": "checkbox"
-        }
-      ]
+      "description": "When given time, you can pull off potent feats of ranged precision. You can push yourself to do it on the spot."
     },
     {
       "name": "TROPHIES",
-      "description": "When you play a key part in slaying a <i>powerful monster</i>, you can harvest a <b>trophy</b> from it. This acts as a wand (pg. 23) that only you can use. <b>Minor trophies</b> require no roll to harvest. <b>Major trophies</b> require a Wits action roll. The monster’s name, ability, and body part are the touchstone. You also gain one <b>major trophy</b> when you take this—detail it. Some examples:<br><br>▶ <i>Eye of the Basilisk:</i> 4d Stoneflesh wand. A minor wand slows someone. A major wand turns them to a statue.<br>▶ <i>Horns of a Minotaur:</i> 4d Powerful Charge wand. A minor wand is a speed boost. A major wand gives potency.<br>▶ <i>Heart of a Troll:</i> 4d Regeneration wand. A minor wand removes small ailments. A major wand removes marks."
+      "description": "When you play a key part in slaying a powerful monster, you can take a trophy from it. This acts as a major expendable arcana. Use the monster's name, ability, and a function as the touchstones. You also gain 1 major expendable arcana - detail it."
     }
   ],
   "other": null

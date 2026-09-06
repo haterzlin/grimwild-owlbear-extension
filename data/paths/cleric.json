@@ -4,7 +4,7 @@
   "quote": "You serve as a conduit for the divine, channeling holy power to safeguard the faithful and do your god's bidding.",
   "coreTalent": {
     "name": "CHANNEL DIVINITY",
-    "description": "Your god grants you spellcasting ability. You roll a domain pool to cast and that domain pool and your god's epithet serve as touchstones.<br><br>Create your god (<i>below</i>). You have <b>1 major domain</b>, a 6d power pool, and <b>2 minor domains</b>, each a 4d power pool. These pools replenish each session. You can drop 1d and roll the domain to cast a <b>potent spell</b>.<br><br><b>GROWTH:</b> Every 2 levels, increase one domain pool by 1d (max 8d).",
+    "description": "You can call upon your deity to channel their magic. You roll a rite pool to cast spells, and that pool and your god's title serve as touchstones. Your major rite is a 6d power pool, and your minor rites are 4d power pools. They replenish each session. You can drop 1d and roll to cast a potent spell. Spells without risk are automatically successful, unless potent. [Growth: At levels 3 and 6, gain +1d each rite power pool.]",
     "trackers": [
       {
         "name": "Major",
@@ -29,28 +29,28 @@
   "pathTalent": [
     {
       "name": "BLESSED",
-      "description": "Once per session, you can re-roll a roll you just made as your god attempts to intervene. The re-roll is made without any thorns on it. On a perfect, <b>take spark</b>.",
+      "description": "Once per session, you can re-roll a roll you just made as your god attempts to intervene. The re-roll is made without any thorns on it. On a perfect, take spark.",
       "trackers": [
         {
-          "name": "Used",
+          "name": "Use",
           "type": "checkbox"
         }
       ]
     },
     {
       "name": "DEVOUT",
-      "description": "Intelligent creatures recognize you as a person of deep honesty and only your most hated enemies would treat you with a lack of respect or doubt your word. You are never seriously injured or killed by an enemy, unless they have no choice. Any creature with speech will always hear you out. This aura is upheld by your unwavering commitment—you must <b>push yourself</b> to act in bad faith <i>(no free activation)</i>."
+      "description": "Intelligent creatures recognize you as a person of deep honesty and only your most hated enemies would treat you with a lack of respect or doubt your word. You are never seriously injured or killed by an enemy, unless they have no choice. Any creature with speech will always hear you out. This aura is upheld by your unwavering commitment - you must push yourself to act in bad faith."
     },
     {
       "name": "HEALER",
-      "description": "You take +1d when you heal someone, with magic or treatment. On a critical, both of you <b>take spark</b>."
+      "description": "You take +1d when you heal someone, with magic or treatment. On a critical, both of you take spark. One time only, you can bring back the recently dead. Common sense takes precedent."
     },
     {
       "name": "IRON WILL",
-      "description": "Each session, you have a <b>3d Iron Will</b> resource pool. When you get rattled or take vex, roll the pool. If dice remain, ignore the damage. If the situation allows for it, you can also lash out at the cause or a bystander and: <i>instill dread in their heart—sow doubt in their mind</i>.",
+      "description": "Each session, you have a 2d Iron Will resource pool. When you get rattled or take vex, roll the pool to ignore it. If the situation allows for it, you can also lash out at the cause or a bystander and: instill dread in their heart - sow doubt in their mind.",
       "trackers": [
         {
-          "name": "Iron Will",
+          "name": "Power",
           "type": "field"
         }
       ]
@@ -61,21 +61,11 @@
     },
     {
       "name": "SERMONS",
-      "description": "When given time, you can pull off <b>potent feats of persuasion in the name of your beliefs</b>, like <i>commanding a crowd to bring the duke for judgment or showing the goblins the glory of your god</i>. You can also <b>push yourself</b> to do it on the spot. One time only, you can make this a ritual-level act.",
-      "trackers": [
-        {
-          "name": "Push",
-          "type": "checkbox"
-        },
-        {
-          "name": "Ritual",
-          "type": "checkbox"
-        }
-      ]
+      "description": "When given time, you can pull off a potent feat of persuasion in the name of your beliefs, like commanding a crowd to bring the duke for judgment or showing the goblins the glory of your god. You can also push yourself to do it on the spot. One time only, you can make this a ritual-level effect."
     },
     {
       "name": "SHEPHERD",
-      "description": "When you assist an ally on a defense roll that would leave them rattled or with vex, you can <b>invoke your bond</b> to take +1d on the roll. On a perfect, you both <b>take spark</b>."
+      "description": "When you assist an ally on a defense roll that would leave them rattled or with vex, you can invoke your bond to take +1d on the roll. On a perfect, you both take spark."
     }
   ],
   "other": "<b>HOLY SYMBOL [ADVICE]</b>: Deities and the religions that grow around them will almost universally express their following with a recognizable symbol. Draw your own on your sheet using those below as inspiration, or choose one of these!"
