@@ -461,21 +461,6 @@ export default function createCharacterSheetScreen(dependencies) {
                     })
                   ]
                 }),
-                jsxs("div", {
-                  className: styles.statDetail,
-                  children: [
-                    jsx("b", {
-                      children: "Critical"
-                    }),
-                    ":",
-                    jsx("br", {}),
-                    " Greater effect, secondary effect, or setup a follow-up"
-                  ]
-                }),
-                jsx("div", {
-                  className: styles.statDetail,
-                  children: "Disaster: worst-case consequences; spend Spark to avoid it."
-                })
               ]
             }),
             jsxs("div", {
