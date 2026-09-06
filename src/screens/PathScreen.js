@@ -393,7 +393,7 @@ export function createPathScreens(dependencies) {
   };
 
   const PathPicker = ({ player, updatePlayer, onSelect, includeBackground = false }) => {
-    const pathIds = getPathIds(getPathsById());
+    const pathIds = getPathIds(getPathsById()).sort((left, right) => left.localeCompare(right));
 
     return jsx("div", {
       className: styles.pathList,
