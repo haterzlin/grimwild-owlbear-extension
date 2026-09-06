@@ -300,6 +300,11 @@ export default function createCharacterSheetScreen(dependencies) {
               children: [
                 jsxs("div", {
                   className: classNames(styles.fieldRow),
+                  style: {
+                    display: "grid",
+                    gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+                    gap: "0.25rem"
+                  },
                   children: [
                     jsx(AttributeStat, {
                       stat: "brawn",
@@ -380,36 +385,79 @@ export default function createCharacterSheetScreen(dependencies) {
                   ]
                 }),
                 jsxs("div", {
-                  className: classNames(styles.fieldRow),
+                  style: {
+                    display: "grid",
+                    gridTemplateColumns: "1fr auto 1fr",
+                    alignItems: "start",
+                    gap: "0.5rem",
+                    padding: "0.25rem 0.5rem 0"
+                  },
                   children: [
-                    "Bloodied ",
-                    jsx("input", {
-                      type: "checkbox",
-                      checked: player.bloodied,
-                      onChange: () => updateField({
-                        bloodied: !player.bloodied
-                      })
+                    jsxs("div", {
+                      style: {
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "0.25rem",
+                        transform: "translate(1.25rem, -0.35rem)"
+                      },
+                      children: [
+                        jsx("input", {
+                          type: "checkbox",
+                          checked: player.bloodied,
+                          onChange: () => updateField({
+                            bloodied: !player.bloodied
+                          })
+                        }),
+                        jsx("div", {
+                          className: styles.fieldStatLabel,
+                          children: "Bloodied"
+                        })
+                      ]
                     }),
-                    "Rattled ",
-                    jsx("input", {
-                      type: "checkbox",
-                      checked: player.rattled,
-                      onChange: () => updateField({
-                        rattled: !player.rattled
-                      })
+                    jsxs("div", {
+                      style: {
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "0.25rem",
+                        transform: "translateY(1.5rem)"
+                      },
+                      children: [
+                        jsx("input", {
+                          type: "checkbox",
+                          checked: player.desperate,
+                          onChange: () => updateField({
+                            desperate: !player.desperate
+                          })
+                        }),
+                        jsx("div", {
+                          className: styles.fieldStatLabel,
+                          children: "Desperate"
+                        })
+                      ]
                     }),
-                  ]
-                }),
-                jsxs("div", {
-                  className: classNames(styles.fieldRow),
-                  children: [
-                    "Desperate ",
-                    jsx("input", {
-                      type: "checkbox",
-                      checked: player.desperate,
-                      onChange: () => updateField({
-                        desperate: !player.desperate
-                      })
+                    jsxs("div", {
+                      style: {
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "0.25rem",
+                        transform: "translate(-1.25rem, -0.35rem)"
+                      },
+                      children: [
+                        jsx("input", {
+                          type: "checkbox",
+                          checked: player.rattled,
+                          onChange: () => updateField({
+                            rattled: !player.rattled
+                          })
+                        }),
+                        jsx("div", {
+                          className: styles.fieldStatLabel,
+                          children: "Rattled"
+                        })
+                      ]
                     })
                   ]
                 }),
