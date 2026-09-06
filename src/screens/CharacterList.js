@@ -105,7 +105,7 @@ export function createCharacterListScreens(dependencies) {
     });
   };
 
-  const CharacterList = ({ playerList, onOpen }) => {
+  const CharacterList = ({ playerList, hasUnsupportedCharacters, onOpen }) => {
     const handleCreateCharacter = async () => {
       const character = createEmptyCharacter();
       const metadata = await obr.scene.getMetadata();
@@ -156,6 +156,9 @@ export function createCharacterListScreens(dependencies) {
           }),
           jsx("img", {
             src: assets.dividerPrimary
+          }),
+          hasUnsupportedCharacters && jsx("div", {
+            children: "Some saved characters are unsupported. Recreate them for CE Preview 5.2."
           }),
           playerList.map(player => jsx(CharacterRow, {
             player,

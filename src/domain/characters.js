@@ -1,7 +1,14 @@
-import { CHARACTER_METADATA_KEY } from "../core/metadata.js";
+import {
+  CHARACTER_METADATA_KEY,
+  CE_RULES_VERSION,
+  isSupportedCharacter
+} from "../core/metadata.js";
+
+export { CE_RULES_VERSION, isSupportedCharacter };
 
 export const createEmptyCharacter = (idFactory = () => Date.now()) => ({
   id: idFactory(),
+  rulesVersion: CE_RULES_VERSION,
   name: "",
   path: "",
   player: "",
@@ -44,9 +51,13 @@ export const getCharacterMetadataRecord = metadata => ({
   ...(metadata?.[CHARACTER_METADATA_KEY] ?? {})
 });
 
+export const getUnsupportedCharactersFromMetadata = metadata =>
+  Object.values(metadata?.[CHARACTER_METADATA_KEY] ?? {})
+    .filter(character => !isSupportedCharacter(character));
+
 export const buildCharacterCreatePatch = (metadata, character) => {
   const record = getCharacterMetadataRecord(metadata);
-  record[character.id] = character;
+  if (isSupportedCharacter(character)) record[character.id] = character;
   return {
     [CHARACTER_METADATA_KEY]: record
   };

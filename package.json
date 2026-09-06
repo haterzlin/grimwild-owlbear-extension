@@ -9,7 +9,6 @@
     "test:e2e": "playwright test",
     "test:character-list": "playwright test tests/character-list.spec.js",
     "test:character-sheet": "playwright test tests/character-sheet.spec.js",
-    "test:compatibility": "playwright test tests/compatibility.spec.js",
     "test:paths": "playwright test tests/paths.spec.js",
     "test:talents": "playwright test tests/talents.spec.js",
     "test:pools": "playwright test tests/pools.spec.js"

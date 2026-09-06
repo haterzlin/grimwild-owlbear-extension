@@ -8,7 +8,6 @@ import {
   mergeCharacterUpdate,
   writeSceneMetadata
 } from "../core/metadata.js";
-import { normalizeCharacterForRules } from "../domain/paths.js";
 import {
   APP_SCREENS,
   getVisiblePanels,
@@ -20,6 +19,7 @@ import {
   showPoolsScreen,
   syncAppShellFromMetadata
 } from "../core/app-shell-state.js";
+import { getUnsupportedCharactersFromMetadata, isSupportedCharacter } from "../domain/characters.js";
 
 /**
  * @typedef {Object} AppShellDependencies
@@ -88,6 +88,7 @@ export default function createAppShell(dependencies) {
     const [gmData, setGmData] = React.useState(DEFAULT_GM_DATA);
     const [currentScreen, setCurrentScreen] = React.useState(APP_SCREENS.CHAT);
     const [characters, setCharacters] = React.useState([]);
+    const [hasUnsupportedCharacters, setHasUnsupportedCharacters] = React.useState(false);
     const [pools, setPools] = React.useState([]);
     const currentScreenRef = React.useRef(currentScreen);
     const selectedCharacterRef = React.useRef(selectedCharacter);
@@ -114,7 +115,10 @@ export default function createAppShell(dependencies) {
       if (nextSelectedCharacter !== selectedCharacter) setSelectedCharacter(nextSelectedCharacter);
     }, [characters, pendingCharacterSaveTimeout, selectedCharacter]);
 
-    const loadCharacters = async metadata => getCharactersFromMetadata(metadata).map(character => normalizeCharacterForRules(character, getPathsById()));
+    const loadCharacters = async metadata => {
+      setHasUnsupportedCharacters(getUnsupportedCharactersFromMetadata(metadata).length > 0);
+      return getCharactersFromMetadata(metadata).filter(isSupportedCharacter);
+    };
 
     const loadPools = async metadata => getPoolsFromMetadata(metadata);
 
@@ -136,7 +140,7 @@ export default function createAppShell(dependencies) {
       if (!character) return;
 
       const metadata = await obr.scene.getMetadata();
-      writePatch(mergeCharacterUpdate(metadata, normalizeCharacterForRules(character, getPathsById()), playerId));
+      writePatch(mergeCharacterUpdate(metadata, character, playerId));
       setPendingCharacterSaveTimeout(null);
     };
 
@@ -435,6 +439,7 @@ export default function createAppShell(dependencies) {
         }),
         visiblePanels.showCharacterList && jsx(CharacterList, {
           playerList: characters,
+          hasUnsupportedCharacters,
           onOpen: character => {
             openCharacterFromList(setCurrentScreen, setSelectedCharacter, character);
           }

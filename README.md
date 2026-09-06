@@ -88,7 +88,6 @@ Focused suites:
 ```bash
 npm run test:character-list
 npm run test:character-sheet
-npm run test:compatibility
 npm run test:paths
 npm run test:talents
 npm run test:pools

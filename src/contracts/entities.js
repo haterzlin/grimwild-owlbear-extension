@@ -1,6 +1,7 @@
 /**
  * @typedef {Object} GrimwildBond
  * @property {number} id
+ * @property {string} rulesVersion
  * @property {string} name
  * @property {string} intensity
  * @property {string} nature

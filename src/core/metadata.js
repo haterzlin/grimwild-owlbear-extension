@@ -1,8 +1,20 @@
 export const CHARACTER_METADATA_KEY = "grimwild.character.extension/metadata";
+export const CE_RULES_VERSION = "ce-p5.2";
 export const POOL_METADATA_KEY = "grimwild.pool.extension/metadata";
 export const CHAT_METADATA_KEY = "grimwild.extension/metadata";
 export const GM_METADATA_KEY = "grimwild.gm.extension/metadata";
 export const DATE_METADATA_KEY = "grimwild.date.extension/metadata";
+
+export const isSupportedCharacter = character => Boolean(
+  character && typeof character === "object" &&
+  character.rulesVersion === CE_RULES_VERSION &&
+  Number.isInteger(character.id) &&
+  typeof character.name === "string" &&
+  typeof character.path === "string" &&
+  Array.isArray(character.bonds) &&
+  Array.isArray(character.talents) &&
+  (character.coreTalent === null || typeof character.coreTalent === "object")
+);
 
 export const DEFAULT_GM_DATA = {
   suspense: "0"
@@ -43,10 +55,12 @@ export const mergeCharacterUpdate = (metadata, character, lastEdit) => {
     ...(metadata?.[CHARACTER_METADATA_KEY] ?? {})
   };
 
-  currentCharacters[character.id] = {
-    ...character,
-    lastEdit
-  };
+  if (isSupportedCharacter(character)) {
+    currentCharacters[character.id] = {
+      ...character,
+      lastEdit
+    };
+  }
 
   return {
     [CHARACTER_METADATA_KEY]: currentCharacters
