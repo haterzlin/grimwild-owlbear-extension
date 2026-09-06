@@ -7,6 +7,7 @@ test.describe("Character List", () => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {
       await page.goto("/?mockOwlbear=1");
+      await expect(page.getByText("CHARACTER LIST", { exact: true })).toBeVisible();
 
       await page.evaluate(character => {
         window.__grimwildTestApi.setCharacters([ character ]);
