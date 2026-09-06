@@ -54,6 +54,21 @@ export function createPathScreens(dependencies) {
   };
 
   const TalentCard = ({ talent, onSelect, onRemove, onChangeTracker, onBroadcast, isSelected }) => {
+    const compactTrackerGroups = [];
+    talent.trackers?.forEach((tracker, trackerIndex) => {
+      if (tracker.type === "fieldSmallLong") return;
+
+      let group = compactTrackerGroups.find(candidate => candidate.name === tracker.name);
+      if (!group) {
+        group = {
+          name: tracker.name,
+          trackers: []
+        };
+        compactTrackerGroups.push(group);
+      }
+      group.trackers.push({ tracker, trackerIndex });
+    });
+
     const renderCompactTracker = (tracker, trackerIndex) => {
       if (tracker.type === "checkbox") {
         return jsx("input", {
@@ -202,7 +217,7 @@ export function createPathScreens(dependencies) {
                 gap: 0
               },
               children: [
-                talent.trackers?.map((tracker, trackerIndex) => tracker.type === "fieldSmallLong" ? "" : jsxs("div", {
+                compactTrackerGroups.map(group => jsxs("div", {
                   className: styles.fieldStatContainerSmallRow,
                   children: [
                     jsx("div", {
@@ -210,17 +225,17 @@ export function createPathScreens(dependencies) {
                       style: {
                         marginLeft: "0.25rem"
                       },
-                      children: tracker.name
+                      children: group.name
                     }),
                     jsx("div", {
                       className: styles.fieldRowNoSpread,
                       style: {
                         gap: "0.25rem"
                       },
-                      children: renderCompactTracker(tracker, trackerIndex)
+                      children: group.trackers.map(({ tracker, trackerIndex }) => renderCompactTracker(tracker, trackerIndex))
                     })
                   ]
-                }, tracker.name + trackerIndex)),
+                }, group.name)),
                 jsx("div", {
                   style: {
                     marginLeft: "auto"

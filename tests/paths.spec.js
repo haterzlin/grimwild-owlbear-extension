@@ -26,6 +26,7 @@ test.describe("Paths", () => {
       await expect(page.getByText("BARD", { exact: true })).toBeVisible();
       await expect(page.getByText("CORE TALENT")).toBeVisible();
       await expect(page.getByText("INSPIRATION", { exact: true })).toBeVisible();
+      await expect(page.getByText("Inspiration", { exact: true })).toHaveCount(1);
     } finally {
       await flushDebug();
     }
