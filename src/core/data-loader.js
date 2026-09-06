@@ -1,6 +1,7 @@
 export const loadExternalData = async ({
   pathKeys = [],
   backgroundUrl = "/data/background-talents.json",
+  pathDetailsUrl = "/data/path-details.json",
   pathsBaseUrl = "/data/paths"
 } = {}) => {
   const pathResponses = await Promise.all(pathKeys.map(async pathKey => {
@@ -15,6 +16,15 @@ export const loadExternalData = async ({
   }));
 
   const paths = Object.fromEntries(pathResponses.filter(([, pathData]) => pathData && typeof pathData === "object"));
+  try {
+    const response = await fetch(pathDetailsUrl);
+    if (response.ok) {
+      const detailsByPath = await response.json();
+      for (const [pathKey, details] of Object.entries(detailsByPath)) {
+        if (paths[pathKey] && Array.isArray(details)) paths[pathKey] = { ...paths[pathKey], details };
+      }
+    }
+  } catch {}
   let backgroundTalents = [];
   try {
     const response = await fetch(backgroundUrl);

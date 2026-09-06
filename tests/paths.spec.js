@@ -158,4 +158,17 @@ test.describe("Paths", () => {
     }
   });
 
+  test("loads supplemental details for Witch", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openPathTabForNewCharacter(page);
+      await page.getByText("witch", { exact: true }).click();
+      await page.getByRole("button", { name: "Expand Details" }).click();
+      await expect(page.getByText("AFFLICTIONS", { exact: true })).toBeVisible();
+      await expect(page.getByText("THE LANGUAGE", { exact: true })).toBeVisible();
+    } finally {
+      await flushDebug();
+    }
+  });
+
 });
