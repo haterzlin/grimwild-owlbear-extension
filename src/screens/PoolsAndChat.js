@@ -322,8 +322,10 @@ export function createPoolsAndChatScreens(dependencies) {
           children: jsxs("div", {
             className: classNames(styles.fieldRow),
             style: {
-              alignItems: "flex-end",
-              justifyContent: "space-between"
+              display: "grid",
+              gridTemplateColumns: "minmax(9rem, 1fr) minmax(7rem, 1.2fr) minmax(10rem, 1.4fr)",
+              gap: "0.5rem",
+              alignItems: "start"
             },
             children: [
               jsxs("div", {
@@ -331,14 +333,20 @@ export function createPoolsAndChatScreens(dependencies) {
                 style: {
                   alignItems: "center",
                   flexGrow: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  height: 78,
-                  width: 150
+                  flexDirection: "column",
+                  gap: "0.5rem",
+                  height: "auto",
+                  width: "auto",
+                  gridColumn: "1"
                 },
                 children: [
                   jsxs("div", {
                     className: styles.fieldStatContainerSmall,
+                    style: {
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: "0.5rem"
+                    },
                     children: [
                       jsx("b", {
                         children: "Suspense"
@@ -356,15 +364,16 @@ export function createPoolsAndChatScreens(dependencies) {
                   jsxs("div", {
                     className: styles.fieldStatContainerSmall,
                     style: {
-                      marginLeft: 6
+                      flexDirection: "row",
+                      gap: "0.25rem"
                     },
                     children: [
                       jsx("button", {
                         onClick: () => {
-                          broadcastPcTarget();
+                        broadcastPcTarget();
                         },
                         style: {
-                          width: "4.2rem"
+                          width: "2.1rem"
                         },
                         children: "PC"
                       }),
@@ -385,7 +394,10 @@ export function createPoolsAndChatScreens(dependencies) {
                 className: styles.statContainer,
                 style: {
                   alignItems: "center",
-                  justifyContent: "space-between"
+                  justifyContent: "space-between",
+                  gridColumn: "2",
+                  minWidth: 0,
+                  minHeight: 78
                 },
                 children: [
                   jsx("b", {
@@ -394,7 +406,8 @@ export function createPoolsAndChatScreens(dependencies) {
                   jsxs("div", {
                     className: styles.fieldStatContainerSmall,
                     style: {
-                      marginLeft: 8
+                      marginLeft: 8,
+                      gap: "0.25rem"
                     },
                     children: [
                       jsx("button", {
@@ -451,13 +464,19 @@ export function createPoolsAndChatScreens(dependencies) {
                 style: {
                   alignItems: "center",
                   flexGrow: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  height: 78
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                  gap: "0.5rem",
+                  height: "auto",
+                  minWidth: 0,
+                  gridColumn: "3"
                 },
                 children: [
                   jsxs("div", {
                     className: styles.fieldStatContainerSmall,
+                    style: {
+                      minWidth: 0
+                    },
                     children: [
                       jsx("b", {
                         children: "Dice"
@@ -481,6 +500,9 @@ export function createPoolsAndChatScreens(dependencies) {
                   }),
                   jsxs("div", {
                     className: styles.fieldStatContainerSmall,
+                    style: {
+                      minWidth: 0
+                    },
                     children: [
                       jsx("b", {
                         children: "Thorns"
@@ -504,6 +526,11 @@ export function createPoolsAndChatScreens(dependencies) {
                   }),
                   jsxs("div", {
                     className: styles.fieldStatContainerSmall,
+                    style: {
+                      gridColumn: "1 / -1",
+                      flexDirection: "row",
+                      gap: "0.25rem"
+                    },
                     children: [
                       jsx("button", {
                         onClick: () => {

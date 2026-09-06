@@ -180,22 +180,6 @@ export default function createCharacterSheetScreen(dependencies) {
         },
         value
       }),
-      jsxs("div", {
-        className: styles.fieldStatContainerSmall,
-        children: [
-          jsx("div", {
-            className: styles.fieldStatLabel,
-            children: "Marked"
-          }),
-          jsx("input", {
-            type: "checkbox",
-            checked: marked,
-            onChange: () => {
-              onChangeMark(!marked);
-            }
-          })
-        ]
-      }),
       jsx("button", {
         className: styles.statButton,
         onClick: () => {
@@ -219,7 +203,23 @@ export default function createCharacterSheetScreen(dependencies) {
           onRoll();
         },
         children: "Roll"
-      })
+      }),
+      jsxs("div", {
+        className: styles.fieldStatContainerSmall,
+        children: [
+          jsx("div", {
+            className: styles.fieldStatLabel,
+            children: "Marked"
+          }),
+          jsx("input", {
+            type: "checkbox",
+            checked: marked,
+            onChange: () => {
+              onChangeMark(!marked);
+            }
+          })
+        ]
+      }),
     ]
   });
 
@@ -398,6 +398,11 @@ export default function createCharacterSheetScreen(dependencies) {
                         rattled: !player.rattled
                       })
                     }),
+                  ]
+                }),
+                jsxs("div", {
+                  className: classNames(styles.fieldRow),
+                  children: [
                     "Desperate ",
                     jsx("input", {
                       type: "checkbox",

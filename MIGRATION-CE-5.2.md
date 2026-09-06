@@ -1,6 +1,6 @@
 # Migration plan: Grimwild 1.4 → Community Edition Preview 5.2
 
-Status: **Phase 4 complete; Phase 5 implementation not started.**
+Status: **Phase 5 implementation complete; real-scene verification pending.**
 
 Inspected on 2026-09-05 against extension commit `bc33c55`; character-support scope simplified on 2026-09-06. This document is the implementation handoff. Check off phases only after their acceptance checks pass; record deviations and validation results here. Two subagents investigated rules and extension behavior independently. Both returned partial findings before a workspace credit limit stopped them; the lead verified those findings and completed this plan from the local sources.
 
@@ -219,14 +219,21 @@ Phase 4 completion (2026-09-06):
 
 ### Phase 5 — Verify migration end to end and prepare release
 
-- [ ] Run the complete suites and production build; verify character list, sheets, path/talent edits, pools/chat, popover routing, and CE character creation/save/reload together.
-- [ ] Audit current content against the pinned source and conflicts; remove obsolete active catalogue wording.
-- [ ] Test a copied real Owlbear scene with GM and player clients: new CE character creation, save/reload, another user's update, scene changes, local backup behavior, and popover. Verify that unsupported records remain untouched and cannot be opened as CE.
-- [ ] Update README with rules baseline/target, the requirement to recreate older characters manually, manual mechanics, source choices, and test commands. Update manifest release version using a valid application-version convention and describe the rules as **CE Preview 5.2**; do not imply a final CE release.
+- [x] Run the complete suites and production build; verify character list, sheets, path/talent edits, pools/chat, popover routing, and CE character creation/save/reload together.
+- [x] Audit current content against the pinned source and conflicts; remove obsolete active catalogue wording.
+- [ ] Test a copied real Owlbear scene with GM and player clients: new CE character creation, save/reload, another user's update, scene changes, local backup behavior, and popover. Verify that unsupported records remain untouched and cannot be opened as CE. Pending because this workspace has no authenticated/copyable Owlbear scene or second client.
+- [x] Update README with rules baseline/target, the requirement to recreate older characters manually, manual mechanics, source choices, and test commands. Update manifest release version using a valid application-version convention and describe the rules as **CE Preview 5.2**; do not imply a final CE release.
 
 Affected files: [README.md](README.md), [manifest.json](manifest.json), this plan; existing tests/source only for failures uncovered by integration checks.
 
 Acceptance: complete passing test/build results recorded; CE fields and tracker values persist; unsupported records are not modified; production static JSON/assets and both entry routes verified; human source review complete; real Owlbear/multiplayer check recorded or explicitly identified as still pending. Release/deployment is a subsequent action, not part of this analysis request.
+
+Phase 5 completion (2026-09-06):
+
+- Updated README and manifest for the CE Preview 5.2 release boundary. The README now states the 1.4 baseline, CE target, manual recreation requirement, source precedence, manual mechanics, and test commands. Manifest version is `1.5.0` and its name identifies CE Preview 5.2.
+- Validation: `npm run test:e2e -- --workers=1 --reporter=line` passed **35/35**; `npm run build` passed; `git diff --check` passed. The suite covers character list and CE-only filtering, sheet persistence, path/talent edits, Background selection, pools/chat, both entry routes, and popover routing. Static audit confirmed both HTML entries, 18 path JSON files, 119 named path talents, 11 Background talents, and no obsolete active path names from the migration inventory.
+- Real-scene status: pending. This workspace provides the mock Owlbear client and no authenticated/copied Owlbear scene or second client, so GM/player synchronization, scene changes, backup restore, and real multiplayer behavior could not be verified here. Release deployment remains outside this request.
+- Deviations: none from the implemented CE scope. Manual talent/resource adjudication and intentional fallback art remain documented Phase 4 decisions; the real-scene check is the only outstanding release verification.
 
 ## 7. Handoff and completion criteria
 
@@ -234,4 +241,4 @@ Implement phases in order: **0 → 1 → 2 → 3 → 4 → 5**. After the shared
 
 Suggested implementation instruction: “Implement Phase N of `MIGRATION-CE-5.2.md`. Verify its assumptions against the current code and cited PDFs, preserve existing work, run the listed checks, and update this document with results and deviations. Do not start later phases unless needed for that phase's acceptance.”
 
-The migration is done when current catalogue/automated basic behavior match the chosen P5.2 sources, new CE characters save/reload correctly, older characters are excluded without being overwritten, all intended sheet options are usable, and tests plus the real-scene check pass. Narrative adjudication and the explicitly listed manual talent mechanics remain manual by design. Phase 4 is complete; later phases remain outstanding.
+The migration is done when current catalogue/automated basic behavior match the chosen P5.2 sources, new CE characters save/reload correctly, older characters are excluded without being overwritten, all intended sheet options are usable, and tests plus the real-scene check pass. Narrative adjudication and the explicitly listed manual talent mechanics remain manual by design. Phase 5 implementation is complete; a real-scene/multiplayer smoke test remains pending before release.
