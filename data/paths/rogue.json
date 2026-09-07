@@ -4,7 +4,7 @@
   "quote": "You live and operate in the margins, striking unseen and disappearing before anyone knows you were there.",
   "coreTalent": {
     "name": "EXPERTISE",
-    "description": "Choose three skills below as your skill set. Take +1d when using a chosen skill. Each session, you have a 4d Competence pool to represent your focus under pressure. You can roll it as bonus dice after any of the chosen skills. Above board: duel - evade - investigate - persuade - track - traverse. Below table: ambush - forgery & disguise - lying - sabotage - sleight of hand - stealth. [Growth: At levels 3 and 6, gain +1d Competence per session and +1 skill.]",
+    "description": "Choose three skills below as your skill set. Take +1d when using a chosen skill. Each session, you have 2 Competence to represent your focus under pressure. You can spend 1 to pull off a potent feat within your skill set. Above board: blend in - charm - investigate - negotiate - network - parkour. Below table: ambush - deception - dismantle - provoke - sleight of hand - stealth. [Growth: At levels 3 and 6, gain +1 Competence per session and +1 skill.]",
     "trackers": [
       {
         "name": "Comp.",
@@ -24,8 +24,8 @@
   ],
   "pathTalent": [
     {
-      "name": "ACCORDING TO PLAN",
-      "description": "You gain 1 thread per session and can spend thread to flashback, establishing how you planned for the current situation. Make a montage roll, taking +1d if it fell within your expertise. The GM must take suspense in place of an impact move.",
+      "name": "MASTERMIND",
+      "description": "You gain 1 thread per session and can spend thread to flashback to employing subterfuge or clever preparation to: make a contact - plant a decoy - prepare reinforcements - set up an interrupt - swipe or stash a useful item. Make a 3d montage roll. The GM must take suspense in place of an impact move.",
       "trackers": [
         {
           "name": "Thread",

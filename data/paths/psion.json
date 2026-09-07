@@ -1,1 +1,71 @@
-{"name":"PSION","description":"ALSO: Mentalist","quote":"Your mind reaches beyond the limits of the flesh.","coreTalent":{"name":"AWAKENED MIND","description":"You have spellcasting ability. Choose two bastions below which act as the touchstone for your psionic magic. You can cast spells using Wits, and can make them potent by adding instability, eventually adding increasing thorns to your future spellcasting rolls. You can't cast potent spells once adding +2t from instability. Thorns from instability can't be ignored and reset at the beginning of each session. You gain more slots that don't add instability with growth. [Growth: At levels 3 and 6, gain +1 instability slot at 0d, and +1 bastion.]","trackers":[{"name":"Instability","type":"field"}]},"details":[],"pathTalent":[{"name":"ECHO","description":"Once per session, you can create a duplicate as a 3d power pool. It is a second version of you, acting as you with shared knowledge, ability, and resources. You can drop 1d of its pool to have it: assist you - trade places with you.","trackers":[{"name":"Use","type":"checkbox"}]},{"name":"FORESIGHT","description":"You can catch small glimpses of the future. Once per session, you can describe a brief course of action while in a calm situation, and the GM will tell you the result. If there's risk, make a montage roll to see how it would play out. Afterward, you can decide whether to take the action.","trackers":[{"name":"Use","type":"checkbox"}]},{"name":"MIND BLAST","description":"On a critical on a bastion roll, you don't add instability, instead clearing one. This causes mental collateral damage around you: confusion - hallucinations - headaches - panic. One time only, you can make this a ritual-level effect, affecting all within miles."},{"name":"PSYCHIC WARRIOR","description":"You're able to turn your psychic volatility against others. You can create weapons made from pure willpower, using them with Wits. You take +1d to follow up with them when you: take vex - increase your instability level."},{"name":"READER","description":"You gain 1 thread per session and can spend thread when you first meet someone to know their foremost surface thought - they are like an open book to you. If you follow-up on it, it counts as a setup.","trackers":[{"name":"Thread","type":"checkbox"}]},{"name":"TUMULTUOUS MIND","description":"Your fractured mind bleeds into the consciousness of others. The GM judges an NPC's response, or you can spend thread to set it: agitated - confused - paranoid - forgetful. Once per session, when you would take vex, a nearby creature must take it instead."},{"name":"SHIFT FORM","description":"Each session, you have a 2d Shifter resource pool. You can roll the pool to alter your features and form, though you keep the same basic shape.","trackers":[{"name":"Shift","type":"field"}]}],"other":null}
+{
+  "name": "PSION",
+  "description": "ALSO: Mentalist",
+  "quote": "Your mind reaches beyond the limits of the flesh.",
+  "coreTalent": {
+    "name": "AWAKENED MIND",
+      "description": "You have spellcasting ability. Choose two bastions below which act as the touchstone for your psionic magic. You can cast spells using Wits, and can make them potent by adding instability, eventually adding increasing thorns to your future spellcasting rolls. You can't cast potent spells once adding +2t from instability. Thorns from instability can't be ignored and reset at the beginning of each session. You gain more slots that don't add instability with growth. [Growth: At levels 3, and 6, you gain +1 instability slot at 0t, and +1 bastion.]",
+    "trackers": [
+      {
+        "name": "Instability",
+        "type": "field"
+      }
+    ]
+  },
+  "details": [],
+  "pathTalent": [
+    {
+      "name": "ECHO",
+      "description": "Once per session, you can create a duplicate as a 3d power pool. It is a second version of you, acting as you with shared knowledge, ability, and resources. You can drop 1d of its pool to have it: assist you - trade places with you.",
+      "trackers": [
+        {
+          "name": "Use",
+          "type": "checkbox"
+        }
+      ]
+    },
+    {
+      "name": "FORESIGHT",
+      "description": "You can catch small glimpses of the future. Once per session, you can describe a brief course of action while in a calm situation, and the GM will tell you the result. If there's risk, make a montage roll to see how it would play out. Afterward, you can decide whether to take the action.",
+      "trackers": [
+        {
+          "name": "Use",
+          "type": "checkbox"
+        }
+      ]
+    },
+    {
+      "name": "MIND BLAST",
+      "description": "On a critical on a bastion roll, you don't add instability, instead clearing one. This causes mental collateral damage around you: confusion - hallucinations - headaches - panic. One time only, you can make this a ritual-level effect, affecting all within miles."
+    },
+    {
+      "name": "PSYCHIC WARRIOR",
+      "description": "You're able to turn your psychic volatility against others. You can freely create weapons made from pure willpower, using them with Wits. You take +1d to follow up with them when you: take vex or rattled - increase your instability."
+    },
+    {
+      "name": "READER",
+      "description": "You gain 1 thread per session and can spend thread when you first meet someone to know their foremost surface thought - they are like an open book to you. If you follow-up on it, it counts as a setup.",
+      "trackers": [
+        {
+          "name": "Thread",
+          "type": "checkbox"
+        }
+      ]
+    },
+    {
+      "name": "TUMULTUOUS MIND",
+      "description": "Your fractured mind bleeds into the consciousness of others. The GM judges an NPC's response, or you can spend thread to set it: agitated - confused - paranoid - forgetful. Once per session, when you would take vex, a nearby creature must take it instead."
+    },
+    {
+      "name": "SHIFT FORM",
+      "description": "Each session, you have a 2d Shifter resource pool. You can roll the pool to alter your features and appearance, though you keep the same basic shape.",
+      "trackers": [
+        {
+          "name": "Shift",
+          "type": "field"
+        }
+      ]
+    }
+  ],
+  "other": null
+}

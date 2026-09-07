@@ -111,6 +111,37 @@ test.describe("Paths", () => {
     }
   });
 
+  test("loads the Preview 5.3 catalogue changes", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await page.goto("/?mockOwlbear=1");
+      const result = await page.evaluate(async () => {
+        const ids = ["bard", "berserker", "cleric", "druid", "fighter", "monk", "paladin", "ranger", "rogue", "sorcerer", "warlock", "wizard", "artificer", "psion", "summoner", "swashbuckler", "witch", "adventurer"];
+        const paths = Object.fromEntries(await Promise.all(ids.map(async id => [id, await (await fetch(`/data/paths/${id}.json`)).json()])));
+        const details = await (await fetch("/data/path-details.json")).json();
+        return { paths, details };
+      });
+
+      expect(Object.keys(result.paths)).toHaveLength(18);
+      expect(Object.values(result.paths).filter(path => path.pathTalent.length === 7)).toHaveLength(17);
+      expect(result.paths.artificer.coreTalent.description).toContain("created 3 major arcana");
+      expect(result.paths.artificer.pathTalent.find(talent => talent.name === "ANIMATE OBJECTS").description).toContain("retrieve");
+      expect(result.paths.druid.pathTalent.find(talent => talent.name === "KINDRED SPIRITS").description).toContain("story roll for their attitude");
+      expect(result.paths.paladin.details.find(detail => detail.name === "SWEAR YOUR OATH").description).toContain("Adventurer's Talented");
+      expect(result.paths.psion.coreTalent.description).toContain("0t");
+      expect(result.paths.ranger.coreTalent.description).toContain("special d6");
+      expect(result.paths.rogue.pathTalent.map(talent => talent.name)).toContain("MASTERMIND");
+      expect(result.paths.rogue.pathTalent.map(talent => talent.name)).not.toContain("ACCORDING TO PLAN");
+      expect(result.paths.sorcerer.pathTalent.find(talent => talent.name === "WRATH").description).toContain("next action");
+      expect(result.paths.warlock.pathTalent.find(talent => talent.name === "MAGUS").description).toContain("Once per session");
+      expect(result.paths.witch.pathTalent.find(talent => talent.name === "WONDER MAGNET").description).toContain("any action");
+      expect(result.details.artificer[0].description).toContain("refresh every session");
+      expect(result.details.summoner.find(detail => detail.name === "FALLOUT").description).toContain("On a perfect");
+    } finally {
+      await flushDebug();
+    }
+  });
+
   test("does not add a duplicate talent but allows a cross-path talent", () => {
     const player = buildCharacter({ talents: [{ name: "BARDIC LORE" }] });
     const duplicate = addTalentToCharacter(player, { name: "BARDIC LORE" });

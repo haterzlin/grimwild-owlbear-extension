@@ -1,1 +1,75 @@
-{"name":"ARTIFICER","description":"ALSO: Enchanter, Tinkerer, Inventor","quote":"You shape the world with your creations, blending ingenuity, craftsmanship, and magic to forge and enchant wonders.","coreTalent":{"name":"INFUSION","description":"You harness the power of creativity. You know 6 touchstones from the arcana crucibles (and all functions), and have created 2 major arcana using them. Anyone can use them with the most relevant stat (as arcana), though it always carries risk for those other than you. Given time, you can: rebuild them using any other touchstones you know - pull off a potent feat of mechanical ingenuity. You can push yourself to do it on the spot. Engineer: Take +1d at creating, repairing, or destroying mechanisms and arcana. You can also deconstruct arcana to learn their touchstones, destroying them in the process. [Growth: At levels 2, 4, and 6, gain +1 major arcana and +2 learned touchstones.]","trackers":[{"name":"Major Arcana","type":"field"},{"name":"Touchstones","type":"field"}]},"details":[],"pathTalent":[{"name":"ANIMATE OBJECTS","description":"Given time, you can bestow a semblance of life into objects, giving them a 2d Animated power pool. They can only act within their nature or with simple one-word commands. They can roll 1d of their power pool to assist you. You can reliably command up to three of these at a time, with others following their nature.","trackers":[{"name":"Animated","type":"field"}]},{"name":"ARTIFICIAL PARTS","description":"You have enhanced replacement body parts. Choose 3 benefits for them: built-in weapon - detachable - independent - keen sense - storage - strong. Each perk can be activated once per session to take +1d on a related roll. They also have a drawback: noisy - horrifying - unreliable - power source."},{"name":"GRENADES","description":"Each session, you have a 3d Grenades resource pool. You have access to the following bombs: entangle - force - fiery - gravity - obscuring - stun. These grenades affect multiple targets or an area.","trackers":[{"name":"Grenades","type":"field"}]},{"name":"MAGNUM OPUS","description":"You're in the process of creating a mythic arcana. It has a 6d power pool as normal, but before each session, roll 3 random touchstones. Each time, you can choose 1 touchstone to lock in, never rolling for it again."},{"name":"MISCHIEF MAKER","description":"You can overload arcana to create a potent effect with it. Make a 2d story roll as the magic goes haywire. Add +1t to the story roll each time you use this, clearing them each session.","trackers":[{"name":"Mischief","type":"checkbox"}]},{"name":"TRAP MAKING","description":"Given time, you can set potent traps, with an effect based on the style: blade - collapse - entangle - fire - poison - alarm. Push yourself to deploy a trap on the spot. On a perfect when triggered, take spark."},{"name":"WANDSLINGER","description":"You have a specialized wand and can use it to fire the following bolts of magic using Wits: acid burst - force blast - ice shard - inferno bolt - static charge - stun beam. Once per session, you can cause a secondary effect (as a critical) related to the type.","trackers":[{"name":"Use","type":"checkbox"}]}],"other":null}
+{
+  "name": "ARTIFICER",
+  "description": "ALSO: Enchanter, Tinkerer, Inventor",
+  "quote": "You shape the world with your creations, blending ingenuity, craftsmanship, and magic to forge and enchant wonders.",
+  "coreTalent": {
+    "name": "INFUSION",
+      "description": "You harness the power of creativity. You know 6 touchstones from the arcana crucibles (and all functions), and have created 3 major arcana using them. Anyone can use them with the most relevant stat (as arcana), though it always carries risk for those other than you. Given time, you can: disassemble and rebuild them using any touchstones you know - pull off a potent feat of mechanical ingenuity. You can push yourself to do it on the spot. Engineer: Take +1d at creating, repairing, or destroying mechanisms and arcana. You can also deconstruct arcana to learn their touchstones, destroying them in the process. [Growth: At levels 2, 4, and 6, you can create +1 major arcana and learn 2 touchstones.] Arcana doesn't regain uses when rebuilt, but those that expand vantage can still do so.",
+    "trackers": [
+      {
+        "name": "Major Arcana",
+        "type": "field"
+      },
+      {
+        "name": "Touchstones",
+        "type": "field"
+      }
+    ]
+  },
+  "details": [],
+  "pathTalent": [
+    {
+      "name": "ANIMATE OBJECTS",
+      "description": "Given time, you can bestow a semblance of life into objects, giving them a 2d Animated power pool, and controlling them with simple one-word commands such as retrieve. They can roll 1d of their power pool to assist you. You can reliably command up to three of these at a time, with others following their nature.",
+      "trackers": [
+        {
+          "name": "Animated",
+          "type": "field"
+        }
+      ]
+    },
+    {
+      "name": "ARTIFICIAL PARTS",
+      "description": "You have enhanced replacement body parts. Choose 3 benefits for them: built-in weapon - detachable - independent - keen sense - storage - strong. Each perk can be activated once per session to take +1d on a related roll. They also have a drawback: noisy - horrifying - unreliable - power source."
+    },
+    {
+      "name": "GRENADES",
+      "description": "Each session, you have a 3d Grenades resource pool. You have access to the following bombs: entangle - force - fiery - gravity - obscuring - stun. These grenades affect multiple targets or an area.",
+      "trackers": [
+        {
+          "name": "Grenades",
+          "type": "field"
+        }
+      ]
+    },
+    {
+      "name": "MAGNUM OPUS",
+      "description": "You're in the process of creating a mythic arcana. It has a 6d power pool as normal, but before each session, roll 3 random touchstones. Each time, you can choose 1 touchstone to lock in, never rolling for it again."
+    },
+    {
+      "name": "MISCHIEF MAKER",
+      "description": "You can overload arcana to create a potent effect with it. Make a 2d story roll as the magic goes haywire. Add +1t to the story roll each time you use this, clearing them each session.",
+      "trackers": [
+        {
+          "name": "Mischief",
+          "type": "checkbox"
+        }
+      ]
+    },
+    {
+      "name": "TRAP MAKING",
+      "description": "Given time, you can set potent traps, with an effect based on the style: blade - collapse - entangle - fire - poison - alarm. Push yourself to deploy a trap on the spot. On a perfect when triggered, take spark."
+    },
+    {
+      "name": "WANDSLINGER",
+      "description": "You have a specialized wand and can use it to fire the following bolts of magic using Wits: acid burst - force blast - ice shard - inferno bolt - static charge - stun beam. Once per session, you can cause a secondary effect (as a critical) related to the type.",
+      "trackers": [
+        {
+          "name": "Use",
+          "type": "checkbox"
+        }
+      ]
+    }
+  ],
+  "other": null
+}

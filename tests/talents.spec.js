@@ -69,6 +69,25 @@ test.describe("Talents", () => {
     }
   });
 
+  test("broadcasts the renamed Preview 5.3 talent", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openPathTabWithCorePath(page, "rogue");
+      await page.getByRole("button", { name: "Add Talent" }).click();
+      await page.getByText("rogue").click();
+      await talentCard(page, "MASTERMIND").getByRole("button", { name: "➤" }).click();
+
+      await expect
+        .poll(async () => page.evaluate(() => {
+          const chatMetadata = window.__grimwildTestApi.getMetadata()["grimwild.extension/metadata"];
+          return Object.values(chatMetadata).flat().filter(entry => entry.description).at(-1)?.description;
+        }))
+        .toContain("Make a 3d montage roll");
+    } finally {
+      await flushDebug();
+    }
+  });
+
   test("can add a talent from a different path than the core path", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {

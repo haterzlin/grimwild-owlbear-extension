@@ -58,7 +58,7 @@
     },
     {
       "name": "WRATH",
-      "description": "When a nearby ally takes harm or is dropped, you take +1d and potency on your next spell, if you immediately lash out."
+      "description": "When a nearby ally takes harm or is dropped, you take +1d and potency on your next action, if you immediately lash out."
     }
   ],
   "other": null

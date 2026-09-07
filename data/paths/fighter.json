@@ -45,7 +45,7 @@
     },
     {
       "name": "CONTROL",
-      "description": "Once per session, you can declare a zone that enemies cannot cross without dealing with you. If they attempt to move past you, you can interrupt them. On a perfect, take spark. You can push yourself to do it again.",
+      "description": "Once per session, you can declare a zone that enemies cannot cross without dealing with you. If they attempt to move past you, you can interrupt them. On a perfect, take spark. You can push yourself to do it again. Some foes are too large to control, but you may get a parting shot, move with them, or hinder them in another way.",
       "trackers": [
         {
           "name": "Use",

@@ -4,7 +4,7 @@
   "quote": "You stalk relentlessly, moving unseen through the wilderness, tracking your prey with deadly precision, and striking them at their weakest point.",
   "coreTalent": {
     "name": "QUARRY",
-    "description": "Twice per session, you can designate a target as your Quarry - the focus of your hunt. Until the end of the session, you have a 2d Quarry pool rolled as bonus dice to research or locate them, and when anyone attacks or defends against them. When a Quarry die rolls a '6', that PC takes spark. Prowler: You take +1d when using stealth, traversal, and traps in familiar terrain. [Growth: At levels 3 and 6, gain +1d Quarry pool.]",
+    "description": "Once per session, you can choose a foe as your Quarry - the focus of your hunt. You have a Quarry die, a special d6. When you or an ally attempts to research, locate, or attack your quarry, add your quarry die to the roll. If a quarry die rolls a '6', you can add a critical effect. Survivalist: You take +1d when scouting, wrangling animals, placing traps, and on defense rolls against environmental hazards. [Growth: At levels 3 and 6, choose +1 Quarry per session.]",
     "trackers": [
       {
         "name": "Quarry",
@@ -25,7 +25,7 @@
   "pathTalent": [
     {
       "name": "ANIMAL COMPANION",
-      "description": "You're accompanied by a fiercely loyal animal. Each PC adds a reciprocal bond with it. Choose 3 tricks and 2 flaws. You roll 3d for its tricks and 1d otherwise. It has only two damage boxes, marked (for any mark) and hurt (for any harm). It can always exit a scene when hurt. If lost, you can bond with a new animal. Tricks: distract - fight - guard - perform - rescue - retrieve - scout - search - track - warn. Flaws: aggressive - clumsy - grumpy - insatiable - jumpy - noisy - overprotective - scary - unruly.",
+      "description": "You're accompanied by a fiercely loyal animal. Each PC adds a reciprocal bond with it. Choose 3 tricks and 2 flaws. You roll 3d for its tricks and 1d otherwise. It has only two damage boxes, marked (for any mark) and hurt (for any harm). It can always exit a scene when hurt. If lost, you can bond with a new animal. The GM may let you take this again for 3 extra tricks and another hurt damage box. Tricks: distract - fight - guard - perform - rescue - retrieve - scout - search - track - warn. Flaws: aggressive - clumsy - grumpy - insatiable - jumpy - noisy - overprotective - scary - unruly.",
       "trackers": [
         {
           "name": "Mark",
@@ -43,7 +43,7 @@
     },
     {
       "name": "SCOUT AHEAD",
-      "description": "You gain 1 thread per session and can spend thread to flashback to scouting ahead and: sabotage something - set a trap - survey the area (ask 2 questions) - take out a danger - set up an interrupt. Make a 3d montage roll. The GM always takes suspense in place of an impact move.",
+      "description": "You gain 1 thread per session and can spend thread to flashback to scouting ahead and: find an escape route - sabotage something - set a trap - survey the area (ask 2 questions) - take out a danger. Make a 3d montage roll. The GM always takes suspense in place of an impact move.",
       "trackers": [
         {
           "name": "Thread",
