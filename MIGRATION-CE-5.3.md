@@ -1,6 +1,6 @@
 # Migration plan: Grimwild CE Preview 5.2 → Preview 5.3
 
-Status: **Phases 1–2 complete; phases 3–4 not started**. Baseline inspected on 2026-09-06 at commit `1ddd776` (`move explanations from sheet to log`).
+Status: **Phases 1–3 complete; phase 4 not started**. Baseline inspected on 2026-09-06 at commit `1ddd776` (`move explanations from sheet to log`).
 
 Keep the current architecture, manual resource tracking, catalogue, and Playwright tests. Do not add dependencies, a general talent automation engine, or saved-character conversion. This follows the earlier decision to **not support older character versions**, including 5.2 after the cutover.
 
@@ -151,6 +151,17 @@ Affected files: `src/core/metadata.js`, `src/screens/CharacterList.js`, `manifes
 - Exercise create, update, reload, and supported-character deletion while asserting unsupported records and other metadata remain intact.
 
 Acceptance: only structurally valid current-version characters are editable; new saves carry `ce-p5.3`; the warning names 5.3; there is no migration path or silent deletion. Run `npm run test:character-list` and the full suite.
+
+**Status: complete (2026-09-07).** Cut the rules marker over to `ce-p5.3`, updated the manifest to CE Preview 5.3 / `5.3.0`, and updated the README and unsupported-character warning. Extended compatibility coverage for valid 5.3, explicit 5.2, older, future-version, and malformed records, plus supported create/update/reopen/delete behavior.
+
+Validation:
+
+- `npm run test:character-list -- --reporter=line`: **passed, 3/3**.
+- `npm run test:e2e -- --reporter=line`: **passed, 41/41**.
+- `npm run build`: **passed** (Vite 7.3.2, 53 modules).
+- Compatibility coverage confirms only structurally valid `ce-p5.3` records are editable, new records receive `ce-p5.3`, unsupported records remain intact, and pools/chat/GM metadata survive character operations.
+
+Deviations: no source or compatibility-policy deviations. The mock runtime cannot preserve scene metadata across a full browser process reload; automated coverage therefore uses close/reopen and metadata synchronization. A real copied-scene reload remains part of Phase 4 smoke testing.
 
 ### Phase 4 — Release verification and handoff
 

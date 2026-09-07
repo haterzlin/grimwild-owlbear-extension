@@ -4,7 +4,7 @@ This repository is now a normal source-built app. The maintained implementation 
 Originaly this was downloaded as minimezed javascript files using network manager in browser when using Owlbear Rodeo original extension built by Alyx. Who is unfortunately not responding to messages. LLM was used to recover files, build tests and clean code to have it readable.
 
 Original application was built with Grimwild rules version 1.2, saved in branch [rules-v1.2](../../tree/rules-v1.2). The Grimwild 1.4 version is preserved in branch [rules-v1.4](../../tree/rules-v1.4).
-The current branch contains Grimwild Community Edition Preview 5.2. Older saved characters are unsupported; create a new character and manually re-enter any information you want to keep.
+The current branch contains Grimwild Community Edition Preview 5.3. Older saved characters are unsupported; create a new character and manually re-enter any information you want to keep.
 
 ## Source of truth
 

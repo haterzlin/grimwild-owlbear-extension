@@ -174,7 +174,7 @@ export function createCharacterListScreens(dependencies) {
             src: assets.dividerPrimary
           }),
           hasUnsupportedCharacters && jsx("div", {
-            children: "Some saved characters are unsupported. Recreate them for CE Preview 5.2."
+            children: "Some saved characters are unsupported. Recreate them for CE Preview 5.3."
           }),
           playerList.map(player => jsx(CharacterRow, {
             player,

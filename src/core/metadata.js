@@ -1,5 +1,5 @@
 export const CHARACTER_METADATA_KEY = "grimwild.character.extension/metadata";
-export const CE_RULES_VERSION = "ce-p5.2";
+export const CE_RULES_VERSION = "ce-p5.3";
 export const POOL_METADATA_KEY = "grimwild.pool.extension/metadata";
 export const CHAT_METADATA_KEY = "grimwild.extension/metadata";
 export const GM_METADATA_KEY = "grimwild.gm.extension/metadata";
