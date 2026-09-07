@@ -1,6 +1,6 @@
 # Migration plan: Grimwild CE Preview 5.2 → Preview 5.3
 
-Status: **Phases 1–3 complete; phase 4 not started**. Baseline inspected on 2026-09-06 at commit `1ddd776` (`move explanations from sheet to log`).
+Status: **Phases 1–4 automated verification complete; release blocked on real-Owlbear smoke testing**. Baseline inspected on 2026-09-06 at commit `1ddd776` (`move explanations from sheet to log`).
 
 Keep the current architecture, manual resource tracking, catalogue, and Playwright tests. Do not add dependencies, a general talent automation engine, or saved-character conversion. This follows the earlier decision to **not support older character versions**, including 5.2 after the cutover.
 
@@ -173,6 +173,17 @@ Affected files: existing tests only for uncovered regression cases, README and t
 - Record each phase's completion, command results, source deviations, and remaining manual limitations here. Publish only after review; this plan does not authorize deployment.
 
 Acceptance: all automated checks pass; real-OBR smoke results are recorded or explicitly remain a release blocker; reviewer accepts the manual-workflow limitations.
+
+**Status: automated verification complete (2026-09-07); release blocker remains.** The final tree was checked through the full Playwright suite and production build. The shipped `dist` tree was inspected directly for the 5.3 manifest, all 18 path files, effective path details, assets, and stale 5.2 references. No additional code or test framework was needed for this release verification phase.
+
+Validation:
+
+- `npm run test:e2e -- --reporter=line`: **passed, 41/41**.
+- `npm run build`: **passed** (Vite 7.3.2, 53 modules).
+- Shipped-artifact assertions: **passed**; `dist/manifest.json` reports CE Preview 5.3 / `5.3.0`, all 18 path files and `path-details.json` are present, assets are present, and no `ce-p5.2`, Preview 5.2, or `5.2.0` references occur in `dist`.
+- `git diff --check`: **passed**.
+
+Deviation/release blocker: no copied Owlbear scene was available for the required real-OBR GM/player smoke test. The following remain unverified in a live scene: unsupported 5.2 warning, new-character creation, Ranger/Rogue/Warlock trackers, broadcasts and ordinary rolls, manual Quarry resolution, companion training notes, pools/chat, save/reopen, and preservation of other records. Do not publish until that smoke test is recorded and accepted.
 
 ## 6. Planning validation
 
