@@ -88,6 +88,48 @@ test.describe("Talents", () => {
     }
   });
 
+  test("initializes and persists Phase 2 resource and companion trackers", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openPathTabWithCorePath(page, "ranger");
+      await expect(page.getByText(/Roll the Quarry die separately as a custom 1d/)).toBeVisible();
+
+      const quarry = page.locator('xpath=//div[normalize-space()="Quarry" and not(.//input)]/parent::div//input');
+      const uses = page.locator('xpath=//div[normalize-space()="Uses" and not(.//input)]/parent::div//input');
+      await quarry.fill("Goblin king");
+      await uses.nth(0).fill("1");
+      await uses.nth(1).fill("2");
+
+      await page.getByRole("button", { name: "Add Talent" }).click();
+      await page.getByText("ranger").click();
+      await talentCard(page, "ANIMAL COMPANION").getByRole("button", { name: "Add Talent" }).click();
+      const companion = talentCard(page, "ANIMAL COMPANION");
+      await companion.locator("input").nth(0).fill("scout, warn, retrieve");
+      await companion.locator("input").nth(1).fill("jumpy, noisy");
+      await companion.locator("input").nth(3).fill("1");
+      await companion.locator("input").nth(4).fill("2");
+
+      await expect.poll(async () => page.evaluate(() => {
+        const metadata = window.__grimwildTestApi.getMetadata()["grimwild.character.extension/metadata"];
+        const character = Object.values(metadata)[0];
+        const companionTalent = character?.talents.find(talent => talent.name === "ANIMAL COMPANION");
+        return {
+          quarry: character?.coreTalent?.trackers?.[0]?.value1,
+          uses: character?.coreTalent?.trackers?.[1]?.value2,
+          hurtCapacity: companionTalent?.trackers?.[1]?.value2,
+          tricks: companionTalent?.trackers?.[2]?.value1
+        };
+      })).toEqual({
+        quarry: "Goblin king",
+        uses: "2",
+        hurtCapacity: "2",
+        tricks: "scout, warn, retrieve"
+      });
+    } finally {
+      await flushDebug();
+    }
+  });
+
   test("can add a talent from a different path than the core path", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {

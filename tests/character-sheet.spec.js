@@ -118,12 +118,12 @@ test.describe("Character Sheet", () => {
     }
   });
 
-  test("persists Weapon Style and CE roll fields", async ({ page }, testInfo) => {
+  test("persists optional Weapon Style and CE roll fields", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {
       await openCharacterSheet(page);
 
-      const weaponStyle = page.locator('xpath=//div[normalize-space()="Weapon Style"]/following-sibling::input');
+      const weaponStyle = page.locator('xpath=//div[normalize-space()="Weapon Style (optional)"]/following-sibling::input');
       await weaponStyle.fill("Longsword and shield");
       await expect(weaponStyle).toHaveValue("Longsword and shield");
 

@@ -1,6 +1,6 @@
 # Migration plan: Grimwild CE Preview 5.2 → Preview 5.3
 
-Status: **Phase 1 complete; phases 2–4 not started**. Baseline inspected on 2026-09-06 at commit `1ddd776` (`move explanations from sheet to log`).
+Status: **Phases 1–2 complete; phases 3–4 not started**. Baseline inspected on 2026-09-06 at commit `1ddd776` (`move explanations from sheet to log`).
 
 Keep the current architecture, manual resource tracking, catalogue, and Playwright tests. Do not add dependencies, a general talent automation engine, or saved-character conversion. This follows the earlier decision to **not support older character versions**, including 5.2 after the cutover.
 
@@ -129,6 +129,18 @@ Affected files: Ranger/Rogue/Warlock JSON; `src/screens/CharacterSheet.js`, `src
 - Correct disaster and critical guidance without changing dice math or auto-adjusting Spark.
 
 Acceptance: changed trackers initialize independently and persist after reload; ordinary duplicate protection remains; companion base and upgraded damage capacity are representable. A manual Quarry example with action dice `[4]` and Quarry `[6]` is explained as a perfect with an added critical effect, not automatically a critical. Deterministic roll tests verify disaster guidance, unchanged thorn cuts/critical immunity, and no unexpected resource writes. Run `npm run test:character-sheet`, `npm run test:talents`, and `npm run test:pools`.
+
+**Status: complete (2026-09-07).** Added current/max tracker fields for Quarry uses, Competence, and companion hurt capacity; editable Quarry target, companion tricks/flaws, and Magus trait fields; and a Magus use checkbox. The existing single-companion and duplicate-talent flows remain unchanged. Weapon Style is explicitly optional. Roll guidance now says to take Spark for a disaster and when no critical bonus comes to mind, while criticals remain unaffected by thorn cuts.
+
+Validation:
+
+- `npm run test:character-sheet -- --reporter=line`: **passed, 11/11**.
+- `npm run test:talents -- --reporter=line`: **passed, 7/7**; focused tracker rerun also passed after the final Quarry text assertion.
+- `npm run test:pools -- --reporter=line`: **passed, 11/11**; focused deterministic roll rerun also passed after the final no-resource-write assertion.
+- `npm run build`: **passed** (Vite 7.3.2, 53 modules).
+- Deterministic roll coverage confirms `[6, 6]` with an `[8]` thorn remains Critical, and `[1]` with an `[8]` thorn becomes Disaster with the corrected Spark guidance.
+
+Deviations: no source or rules deviations. The automated mock Owlbear page resets its in-memory scene on a full browser reload, so tracker coverage verifies initialization and scene-metadata persistence during the test session; true cross-process reload persistence remains part of the Phase 4 real-Owlbear smoke test.
 
 ### Phase 3 — Cut over version and compatibility messaging
 

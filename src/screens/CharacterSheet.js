@@ -262,7 +262,7 @@ export default function createCharacterSheetScreen(dependencies) {
                   value: player.player
                 }),
                 jsx(TextField, {
-                  label: "Weapon Style",
+                  label: "Weapon Style (optional)",
                   onChange: value => updateField({
                     weaponStyle: value
                   }),

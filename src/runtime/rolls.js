@@ -55,8 +55,11 @@ export default function createRollDice(obr) {
     }
 
     if (odds) thornEffect.push(odds);
-    if (outcome === "Critical") thornEffect.push("Add greater effect, secondary effect, or setup a follow-up.");
-    if (outcome === "Disaster") thornEffect.push("Worst-case consequences; spend Spark to avoid it.");
+    if (outcome === "Critical") {
+      thornEffect.push("Add greater effect, secondary effect, or setup a follow-up.");
+      thornEffect.push("If no bonus comes to mind, take Spark.");
+    }
+    if (outcome === "Disaster") thornEffect.push("Worst-case consequences; take Spark.");
 
     if (typeof setValue === "function") {
       const remainingDiceCount = diceCount - missedDiceCount;

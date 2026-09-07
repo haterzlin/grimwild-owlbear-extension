@@ -31,7 +31,17 @@
     },
     {
       "name": "MAGUS",
-      "description": "You weave blade and magic together. Once per session, you can enchant your weapon, giving it a trait such as: flaming - pulverizing - seeking. While using it, you can end the enchantment to produce a potent effect with it. You can add your weapon as a touchstone on spells."
+      "description": "You weave blade and magic together. Once per session, you can enchant your weapon, giving it a trait such as: flaming - pulverizing - seeking. While using it, you can end the enchantment to produce a potent effect with it. You can add your weapon as a touchstone on spells.",
+      "trackers": [
+        {
+          "name": "Use",
+          "type": "checkbox"
+        },
+        {
+          "name": "Trait",
+          "type": "fieldSmallLong"
+        }
+      ]
     },
     {
       "name": "KNOWING GAZE",

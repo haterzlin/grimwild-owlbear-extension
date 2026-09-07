@@ -4,11 +4,17 @@
   "quote": "You stalk relentlessly, moving unseen through the wilderness, tracking your prey with deadly precision, and striking them at their weakest point.",
   "coreTalent": {
     "name": "QUARRY",
-    "description": "Once per session, you can choose a foe as your Quarry - the focus of your hunt. You have a Quarry die, a special d6. When you or an ally attempts to research, locate, or attack your quarry, add your quarry die to the roll. If a quarry die rolls a '6', you can add a critical effect. Survivalist: You take +1d when scouting, wrangling animals, placing traps, and on defense rolls against environmental hazards. [Growth: At levels 3 and 6, choose +1 Quarry per session.]",
+    "description": "Once per session, you can choose a foe as your Quarry - the focus of your hunt. You have a Quarry die, a special d6. When you or an ally attempts to research, locate, or attack your quarry, add your quarry die to the roll. If a quarry die rolls a '6', you can add a critical effect. Roll the Quarry die separately as a custom 1d; its normal result is not the combined action result. For example, action dice [4] and Quarry [6] is a perfect with an added critical effect, not automatically a critical. Survivalist: You take +1d when scouting, wrangling animals, placing traps, and on defense rolls against environmental hazards. [Growth: At levels 3 and 6, choose +1 Quarry per session.]",
     "trackers": [
       {
         "name": "Quarry",
-        "type": "field"
+        "type": "fieldSmallLong"
+      },
+      {
+        "name": "Uses",
+        "type": "fieldTwo",
+        "value1": "0",
+        "value2": "1"
       }
     ]
   },
@@ -30,6 +36,20 @@
         {
           "name": "Mark",
           "type": "checkbox"
+        },
+        {
+          "name": "Hurt",
+          "type": "fieldTwo",
+          "value1": "0",
+          "value2": "1"
+        },
+        {
+          "name": "Tricks",
+          "type": "fieldSmallLong"
+        },
+        {
+          "name": "Flaws",
+          "type": "fieldSmallLong"
         }
       ]
     },

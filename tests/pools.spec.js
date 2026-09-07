@@ -243,7 +243,6 @@ test.describe("Pools", () => {
 
       const diceInput = customDiceInput(page);
       const thornsInput = customThornsInput(page);
-
       await diceInput.fill("2");
       await thornsInput.fill("1");
 
@@ -262,6 +261,44 @@ test.describe("Pools", () => {
           diceCount: 2,
           thornsCount: 1
         });
+    } finally {
+      await flushDebug();
+    }
+  });
+
+  test("keeps criticals immune to thorn cuts and reports Spark guidance", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openPoolsTab(page);
+      const diceInput = customDiceInput(page);
+      const thornsInput = customThornsInput(page);
+      const gmMetadataBefore = await page.evaluate(() => window.__grimwildTestApi.getMetadata()["grimwild.gm.extension/metadata"]);
+
+      await page.evaluate(() => {
+        const results = [0.999, 0.999, 0.999];
+        Math.random = () => results.shift() ?? 0;
+      });
+      await diceInput.fill("2");
+      await thornsInput.fill("1");
+      await page.getByRole("button", { name: "Roll", exact: true }).click();
+      await expect.poll(async () => lastRoll(page)).toMatchObject({ outcome: "Critical" });
+      await expect.poll(async () => (await lastRoll(page)).thornEffect).toEqual(expect.arrayContaining([
+        "Add greater effect, secondary effect, or setup a follow-up.",
+        "If no bonus comes to mind, take Spark."
+      ]));
+
+      await page.evaluate(() => {
+        const results = [0.1, 0.99];
+        Math.random = () => results.shift() ?? 0;
+      });
+      await diceInput.fill("1");
+      await thornsInput.fill("1");
+      await page.getByRole("button", { name: "Roll", exact: true }).click();
+      await expect.poll(async () => lastRoll(page)).toMatchObject({ outcome: "Disaster" });
+      await expect.poll(async () => (await lastRoll(page)).thornEffect).toEqual(expect.arrayContaining([
+        "Worst-case consequences; take Spark."
+      ]));
+      await expect.poll(async () => page.evaluate(() => window.__grimwildTestApi.getMetadata()["grimwild.gm.extension/metadata"])).toEqual(gmMetadataBefore);
     } finally {
       await flushDebug();
     }
