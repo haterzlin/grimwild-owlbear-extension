@@ -163,6 +163,9 @@ select {
   padding:.5rem;
   border:1.25px #4c3b29 solid
 }
+input[type=checkbox] {
+  cursor:pointer
+}
 ._fieldStat_1momg_197 {
   all:unset;
   border-radius:.25rem;
