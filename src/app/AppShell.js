@@ -102,6 +102,8 @@ export default function createAppShell(dependencies) {
     const selectedCharacterRef = React.useRef(selectedCharacter);
     const characterUpdateSequence = React.useRef(0);
     const latestCharacterUpdate = React.useRef(null);
+    const lastChatEntryId = React.useRef(null);
+    const didInitializeChat = React.useRef(false);
 
     React.useEffect(() => {
       currentScreenRef.current = currentScreen;
@@ -320,8 +322,21 @@ export default function createAppShell(dependencies) {
       if (!isReady) return;
 
       (async () => {
-        const hasNewestEntry = chatEntries[chatEntries.length - 1];
-        if (!hasNewestEntry) return;
+        const newestEntry = chatEntries[chatEntries.length - 1];
+        if (!newestEntry) {
+          didInitializeChat.current = true;
+          lastChatEntryId.current = null;
+          return;
+        }
+
+        if (!didInitializeChat.current) {
+          didInitializeChat.current = true;
+          lastChatEntryId.current = newestEntry.id;
+          return;
+        }
+
+        if (newestEntry.id === lastChatEntryId.current) return;
+        lastChatEntryId.current = newestEntry.id;
 
         if (!await obr.action.isOpen() || currentScreen !== APP_SCREENS.CHAT) {
           setUnreadCount(count => count + 1);

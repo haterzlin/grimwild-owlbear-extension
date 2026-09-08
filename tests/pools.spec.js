@@ -161,6 +161,42 @@ test.describe("Pools", () => {
     }
   });
 
+  test("shows another player's chat message and does not recount it when navigating", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openPoolsTab(page);
+
+      await page.evaluate(() => {
+        const metadata = window.__grimwildTestApi.getMetadata();
+        window.__grimwildTestApi.setMetadata({
+          "grimwild.extension/metadata": {
+            ...metadata["grimwild.extension/metadata"],
+            "other-player": [
+              {
+                id: 1234567890,
+                user: "Other Player",
+                message: "Hello from another player"
+              }
+            ]
+          }
+        });
+      });
+
+      const chatButton = page.getByRole("button", { name: "Chat (1)", exact: true });
+      await expect(chatButton).toBeVisible();
+      await chatButton.click();
+      await expect(page.getByText("Hello from another player", { exact: true })).toBeVisible();
+
+      await page.getByRole("button", { name: "Path", exact: true }).click();
+      await expect(page.getByText("SELECT CORE PATH", { exact: true })).toBeVisible();
+      await page.getByRole("button", { name: "Pools", exact: true }).click();
+      await expect(page.getByText("Pools", { exact: true }).first()).toBeVisible();
+      await expect(page.getByRole("button", { name: "Chat", exact: true })).toBeVisible();
+    } finally {
+      await flushDebug();
+    }
+  });
+
   test("story roll sends chat entry with correct odds and dice count", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {
