@@ -135,10 +135,6 @@ export const buildConvertedCharacter = (oldCharacter, {
   };
 };
 
-export const getUnsupportedCharactersFromMetadata = metadata =>
-  Object.values(metadata?.[CHARACTER_METADATA_KEY] ?? {})
-    .filter(character => !isSupportedCharacter(character));
-
 export const getAttributeRollModifiers = ({ stat, marked, bloodied, rattled, desperate }) => ({
   thorns:
     (bloodied && ["brawn", "agility"].includes(stat) ? 1 : 0) +

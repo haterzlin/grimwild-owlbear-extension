@@ -122,7 +122,7 @@ test.describe("Character List", () => {
         window.__grimwildTestApi.setCharacters(characters);
       }, [ supported, unsupported, oldPreview, malformed ]);
 
-      await expect(page.getByText("Some saved characters are unsupported. Recreate them for CE Preview 5.3.")).toBeVisible();
+      await expect(page.getByText("Some saved characters are unsupported. Recreate them for CE Preview 5.3.")).toHaveCount(0);
       await expect(page.locator('input[value="CE Character"]')).toBeVisible();
       await expect(page.locator('input[value="Old Character"]')).toHaveCount(0);
       await expect(page.locator('input[value="Old Preview Character"]')).toHaveCount(0);
@@ -212,8 +212,8 @@ test.describe("Character List", () => {
         });
       }, oldCharacter);
 
-      await expect(page.getByRole("button", { name: "Importovat „Conan“ do CE 5.3" })).toBeVisible();
-      await page.getByRole("button", { name: "Importovat „Conan“ do CE 5.3" }).click();
+      await expect(page.getByRole("button", { name: "Import" })).toBeVisible();
+      await page.getByRole("button", { name: "Import" }).click();
 
       await expect.poll(async () => page.evaluate(() => {
         const records = window.__grimwildTestApi.getMetadata()["grimwild.character.extension/metadata"];
@@ -229,16 +229,16 @@ test.describe("Character List", () => {
       const firstConverted = Object.values(records).find(character => character.convertedFrom === 11);
       expect(records[11]).toEqual(oldCharacter);
       expect(Object.values(records)).toHaveLength(2);
-      expect(page.getByRole("button", { name: "Importovat „Conan“ do CE 5.3" })).toHaveCount(0);
+      expect(page.getByRole("button", { name: "Import" })).toHaveCount(0);
       expect(metadata["grimwild.pool.extension/metadata"]).toEqual({ pool: { id: "pool" } });
       expect(metadata["grimwild.extension/metadata"]).toEqual({ chat: [{ id: 1, description: "keep" }] });
       expect(metadata["grimwild.gm.extension/metadata"]).toEqual({ suspense: "3" });
 
       page.once("dialog", dialog => dialog.accept());
       await page.locator('input[value="Conan"]').locator("xpath=ancestor::div[contains(@class,\"_characterRow_\")]").getByRole("button", { name: "×" }).click();
-      await expect(page.getByRole("button", { name: "Importovat „Conan“ do CE 5.3" })).toBeVisible();
+      await expect(page.getByRole("button", { name: "Import" })).toBeVisible();
 
-      await page.getByRole("button", { name: "Importovat „Conan“ do CE 5.3" }).click();
+      await page.getByRole("button", { name: "Import" }).click();
       await expect.poll(async () => page.evaluate(() => {
         const characterMetadata = window.__grimwildTestApi.getMetadata()["grimwild.character.extension/metadata"];
         return Object.values(characterMetadata).find(character => character.convertedFrom === 11)?.id;

@@ -96,7 +96,6 @@ export default function createAppShell(dependencies) {
     const [gmData, setGmData] = React.useState(DEFAULT_GM_DATA);
     const [currentScreen, setCurrentScreen] = React.useState(APP_SCREENS.CHAT);
     const [characters, setCharacters] = React.useState([]);
-    const [hasUnsupportedCharacters, setHasUnsupportedCharacters] = React.useState(false);
     const [pools, setPools] = React.useState([]);
     const currentScreenRef = React.useRef(currentScreen);
     const selectedCharacterRef = React.useRef(selectedCharacter);
@@ -141,7 +140,6 @@ export default function createAppShell(dependencies) {
         const pathId = pathsById[character.path] ? character.path : character.path?.toLowerCase();
         return Boolean(pathsById[pathId]);
       });
-      setHasUnsupportedCharacters(groups.hiddenCharacters.length > 0);
       return [ ...groups.supportedCharacters, ...importableCharacters ];
     };
 
@@ -490,7 +488,6 @@ export default function createAppShell(dependencies) {
         }),
         visiblePanels.showCharacterList && jsx(CharacterList, {
           playerList: characters,
-          hasUnsupportedCharacters,
           onOpen: character => {
             openCharacterFromList(setCurrentScreen, setSelectedCharacter, character);
           }

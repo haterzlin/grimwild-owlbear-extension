@@ -90,13 +90,12 @@ export function createCharacterListScreens(dependencies) {
           isLegacy ? jsx("button", {
             className: styles.statButton,
             style: {
-              width: 240,
               marginLeft: "auto"
             },
             onClick: () => {
               onImport();
             },
-            children: `Importovat „${viewModel.name}“ do CE 5.3`
+            children: "Import"
           }) : jsx("button", {
             className: styles.statButton,
             style: {
@@ -124,7 +123,7 @@ export function createCharacterListScreens(dependencies) {
     });
   };
 
-  const CharacterList = ({ playerList, hasUnsupportedCharacters, onOpen }) => {
+  const CharacterList = ({ playerList, onOpen }) => {
     const handleCreateCharacter = async () => {
       const character = createEmptyCharacter();
       const metadata = await obr.scene.getMetadata();
@@ -201,9 +200,6 @@ export function createCharacterListScreens(dependencies) {
           }),
           jsx("img", {
             src: assets.dividerPrimary
-          }),
-          hasUnsupportedCharacters && jsx("div", {
-            children: "Some saved characters are unsupported. Recreate them for CE Preview 5.3."
           }),
           playerList.map(player => jsx(CharacterRow, {
             player,
