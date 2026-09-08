@@ -21,6 +21,14 @@ import {
 } from "../core/app-shell-state.js";
 import { getUnsupportedCharactersFromMetadata, isSupportedCharacter } from "../domain/characters.js";
 
+const characterSnapshot = character => {
+  if (!character) return null;
+  const { lastEdit, ...snapshot } = character;
+  return snapshot;
+};
+
+const charactersMatch = (left, right) => JSON.stringify(characterSnapshot(left)) === JSON.stringify(characterSnapshot(right));
+
 /**
  * @typedef {Object} AppShellDependencies
  * @property {typeof import("../contracts/index.js")} [contracts]
@@ -92,6 +100,8 @@ export default function createAppShell(dependencies) {
     const [pools, setPools] = React.useState([]);
     const currentScreenRef = React.useRef(currentScreen);
     const selectedCharacterRef = React.useRef(selectedCharacter);
+    const characterUpdateSequence = React.useRef(0);
+    const latestCharacterUpdate = React.useRef(null);
 
     React.useEffect(() => {
       currentScreenRef.current = currentScreen;
@@ -107,12 +117,19 @@ export default function createAppShell(dependencies) {
 
       const nextSelectedCharacter = characters.find(character => character.id === selectedCharacter.id) ?? null;
 
+      const latestUpdate = latestCharacterUpdate.current;
+      if (latestUpdate?.character.id === selectedCharacter.id && !charactersMatch(nextSelectedCharacter, latestUpdate.character)) {
+        return;
+      }
+
       if (!nextSelectedCharacter) {
         setSelectedCharacter(null);
         return;
       }
 
-      if (nextSelectedCharacter !== selectedCharacter) setSelectedCharacter(nextSelectedCharacter);
+      if (nextSelectedCharacter !== selectedCharacter) {
+        setSelectedCharacter(nextSelectedCharacter);
+      }
     }, [characters, pendingCharacterSaveTimeout, selectedCharacter]);
 
     const loadCharacters = async metadata => {
@@ -136,19 +153,24 @@ export default function createAppShell(dependencies) {
       return allEntries;
     };
 
-    const flushSelectedCharacter = async character => {
+    const flushSelectedCharacter = async (character, updateId) => {
       if (!character) return;
 
       const metadata = await obr.scene.getMetadata();
+      if (updateId !== characterUpdateSequence.current) {
+        return;
+      }
       writePatch(mergeCharacterUpdate(metadata, character, playerId));
-      setPendingCharacterSaveTimeout(null);
     };
 
     const updateSelectedCharacter = character => {
       if (pendingCharacterSaveTimeout) clearTimeout(pendingCharacterSaveTimeout);
 
+      const updateId = characterUpdateSequence.current + 1;
+      characterUpdateSequence.current = updateId;
+      latestCharacterUpdate.current = { updateId, character };
       const timeout = setTimeout(() => {
-        flushSelectedCharacter(character);
+        flushSelectedCharacter(character, updateId);
       }, 500);
 
       setPendingCharacterSaveTimeout(timeout);
@@ -169,6 +191,7 @@ export default function createAppShell(dependencies) {
     };
 
     const syncFromMetadata = async metadata => {
+      const syncedCharacters = getCharactersFromMetadata(metadata);
       await syncAppShellFromMetadata({
         metadata,
         loadCharacters,
@@ -179,6 +202,13 @@ export default function createAppShell(dependencies) {
         setChat: setMetadataChatEntries,
         setGmData
       });
+
+      const latestUpdate = latestCharacterUpdate.current;
+      const syncedCharacter = latestUpdate && syncedCharacters.find(character => character.id === latestUpdate.character.id);
+      if (latestUpdate && charactersMatch(syncedCharacter, latestUpdate.character)) {
+        latestCharacterUpdate.current = null;
+        setPendingCharacterSaveTimeout(null);
+      }
     };
 
     React.useEffect(() => {
