@@ -1,8 +1,36 @@
 import { expect, test } from "@playwright/test";
+import {
+  getCharacterGroupsFromMetadata,
+  getNextCharacterId
+} from "../src/domain/characters.js";
 import { buildCharacter } from "./helpers/characters.js";
 import { attachDebugLogging } from "./helpers/debug.js";
 
 test.describe("Character List", () => {
+  test("classifies supported, importable, converted, and malformed records", () => {
+    const supported = buildCharacter({ id: 1, name: "CE Character" });
+    const legacy = { ...supported, id: 2, name: "Old Character", rulesVersion: "ce-p5.2" };
+    const converted = { ...supported, id: 3, name: "Converted Character", convertedFrom: 2 };
+    const malformed = { id: 4, name: "Malformed Character", rulesVersion: "ce-p5.2" };
+    const metadata = {
+      "grimwild.character.extension/metadata": {
+        1: supported,
+        2: legacy,
+        3: converted,
+        4: malformed
+      }
+    };
+
+    const groups = getCharacterGroupsFromMetadata(metadata);
+    expect(groups.supportedCharacters).toEqual([ supported, converted ]);
+    expect(groups.importableCharacters).toEqual([]);
+    expect(groups.hiddenCharacters).toEqual([ legacy, malformed ]);
+    expect(getCharacterGroupsFromMetadata({
+      "grimwild.character.extension/metadata": { 1: supported, 2: legacy }
+    }).importableCharacters).toEqual([ legacy ]);
+    expect(getNextCharacterId(metadata, () => 3)).toBe(5);
+  });
+
   test("keeps row actions visible for an empty-path character with a long name", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {

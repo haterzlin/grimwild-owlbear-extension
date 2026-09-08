@@ -1,7 +1,8 @@
 import {
   CHARACTER_METADATA_KEY,
   CE_RULES_VERSION,
-  isSupportedCharacter
+  isSupportedCharacter,
+  getCharactersFromMetadata
 } from "../core/metadata.js";
 
 export { CE_RULES_VERSION, isSupportedCharacter };
@@ -52,6 +53,45 @@ export const createEmptyCharacter = (idFactory = () => Date.now()) => ({
 export const getCharacterMetadataRecord = metadata => ({
   ...(metadata?.[CHARACTER_METADATA_KEY] ?? {})
 });
+
+export const isImportableLegacyCharacter = character => Boolean(
+  character &&
+  typeof character.rulesVersion === "string" &&
+  character.rulesVersion.length > 0 &&
+  character.rulesVersion !== CE_RULES_VERSION &&
+  isSupportedCharacter({ ...character, rulesVersion: CE_RULES_VERSION })
+);
+
+export const getConvertedFromCharacterIds = metadata => getCharactersFromMetadata(metadata)
+  .filter(character => isSupportedCharacter(character) && Number.isInteger(character.convertedFrom))
+  .map(character => character.convertedFrom)
+  .filter((id, index, ids) => ids.indexOf(id) === index);
+
+export const getCharacterGroupsFromMetadata = metadata => {
+  const characters = getCharactersFromMetadata(metadata);
+  const convertedFromIds = getConvertedFromCharacterIds(metadata);
+  const supportedCharacters = characters.filter(isSupportedCharacter);
+  const importableCharacters = characters.filter(character =>
+    isImportableLegacyCharacter(character) && !convertedFromIds.includes(character.id)
+  );
+
+  return {
+    supportedCharacters,
+    importableCharacters,
+    hiddenCharacters: characters.filter(character =>
+      !supportedCharacters.includes(character) && !importableCharacters.includes(character)
+    )
+  };
+};
+
+export const getNextCharacterId = (metadata, idFactory = () => Date.now()) => {
+  const usedIds = new Set(getCharactersFromMetadata(metadata)
+    .map(character => character?.id)
+    .filter(Number.isInteger));
+  let id = idFactory();
+  while (usedIds.has(id)) id += 1;
+  return id;
+};
 
 export const getUnsupportedCharactersFromMetadata = metadata =>
   Object.values(metadata?.[CHARACTER_METADATA_KEY] ?? {})
