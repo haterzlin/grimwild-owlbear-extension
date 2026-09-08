@@ -187,4 +187,53 @@ test.describe("Character List", () => {
       await flushDebug();
     }
   });
+
+  test("imports a legacy character without changing the original record", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await page.goto("/?mockOwlbear=1");
+      await expect(page.getByText("CHARACTER LIST", { exact: true })).toBeVisible();
+
+      const oldCharacter = buildCharacter({
+        id: 11,
+        name: "Conan",
+        path: "bard",
+        rulesVersion: "ce-p5.2",
+        experience: 3,
+        coreTalent: { name: "OLD CORE", trackers: [{ type: "checkbox", checked: true }] },
+        talents: [{ name: "BARDIC LORE", trackers: [{ type: "checkbox", checked: true }] }]
+      });
+      await page.evaluate(character => {
+        window.__grimwildTestApi.setMetadata({
+          "grimwild.character.extension/metadata": { 11: character },
+          "grimwild.pool.extension/metadata": { pool: { id: "pool" } },
+          "grimwild.extension/metadata": { chat: [{ id: 1, description: "keep" }] },
+          "grimwild.gm.extension/metadata": { suspense: "3" }
+        });
+      }, oldCharacter);
+
+      await expect(page.getByRole("button", { name: "Importovat „Conan“ do CE 5.3" })).toBeVisible();
+      await page.getByRole("button", { name: "Importovat „Conan“ do CE 5.3" }).click();
+
+      await expect.poll(async () => page.evaluate(() => {
+        const records = window.__grimwildTestApi.getMetadata()["grimwild.character.extension/metadata"];
+        return Object.values(records).find(character => character.convertedFrom === 11);
+      })).toMatchObject({
+        rulesVersion: "ce-p5.3",
+        convertedFrom: 11,
+        name: "Conan"
+      });
+
+      const metadata = await page.evaluate(() => window.__grimwildTestApi.getMetadata());
+      const records = metadata["grimwild.character.extension/metadata"];
+      expect(records[11]).toEqual(oldCharacter);
+      expect(Object.values(records)).toHaveLength(2);
+      expect(page.getByRole("button", { name: "Importovat „Conan“ do CE 5.3" })).toHaveCount(0);
+      expect(metadata["grimwild.pool.extension/metadata"]).toEqual({ pool: { id: "pool" } });
+      expect(metadata["grimwild.extension/metadata"]).toEqual({ chat: [{ id: 1, description: "keep" }] });
+      expect(metadata["grimwild.gm.extension/metadata"]).toEqual({ suspense: "3" });
+    } finally {
+      await flushDebug();
+    }
+  });
 });

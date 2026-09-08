@@ -137,6 +137,15 @@ prošel (Vite, 53 modulů). Celý `npm run test:e2e` nebyl spouštěn, protože 
 
 ## Fáze 3 — Zobrazení a import v `CharacterList`
 
+**Stav: dokončeno.**
+
+`CharacterList` nyní zobrazuje starší platné postavy dostupné v katalogu s
+konkrétním tlačítkem `Importovat „Jméno“ do CE 5.3`. Kliknutí bez potvrzení
+načte aktuální metadata, vytvoří nové ID přes `getNextCharacterId`, převede
+postavu přes `buildConvertedCharacter` a zapíše ji existujícím
+`buildCharacterCreatePatch`. `AppShell` předává katalog přes existující getter
+vzorec a ponechává ostatní metadata beze změny.
+
 ### Změna
 
 V `src/screens/CharacterList.js`:
@@ -164,6 +173,20 @@ Rozšířit `tests/character-list.spec.js` o scénář, který:
 - ověří novou postavu s novým ID, verzí `ce-p5.3` a `convertedFrom`,
 - ověří, že stará postava zmizí ze seznamu,
 - ověří, že původní záznam zůstal nezměněný.
+
+**Výsledek ověření:** Přidán E2E scénář importu postavy `Conan`, včetně kontroly
+konkrétního tlačítka, importu bez dialogu, nového CE 5.3 záznamu s
+`convertedFrom`, skrytí původního řádku, nezměněného originálu a zachování
+poolů, chatu a GM dat. Starší postavy s nedostupnou cestou se do viditelného
+seznamu nepřidávají.
+
+Spuštěno `npm run test:character-list` — 6 testů prošlo. Spuštěno
+`npm run test:paths` — 9 testů prošlo. Spuštěno `npm run build` — produkční
+build prošel (Vite, 53 modulů). Celý `npm run test:e2e` nebyl spouštěn;
+regresní běh všech E2E testů zůstává ve fázi 5.
+
+**Odchylky:** Žádné funkční odchylky od fáze 3. Varování pro dosud skryté
+neplatné nebo již převedené záznamy zůstává do fáze 5, jak předpokládá plán.
 
 ## Fáze 4 — Znovuimportování po smazání nové postavy
 

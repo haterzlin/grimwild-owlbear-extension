@@ -19,7 +19,7 @@ import {
   showPoolsScreen,
   syncAppShellFromMetadata
 } from "../core/app-shell-state.js";
-import { getUnsupportedCharactersFromMetadata, isSupportedCharacter } from "../domain/characters.js";
+import { getCharacterGroupsFromMetadata } from "../domain/characters.js";
 
 const characterSnapshot = character => {
   if (!character) return null;
@@ -135,8 +135,14 @@ export default function createAppShell(dependencies) {
     }, [characters, pendingCharacterSaveTimeout, selectedCharacter]);
 
     const loadCharacters = async metadata => {
-      setHasUnsupportedCharacters(getUnsupportedCharactersFromMetadata(metadata).length > 0);
-      return getCharactersFromMetadata(metadata).filter(isSupportedCharacter);
+      const groups = getCharacterGroupsFromMetadata(metadata);
+      const pathsById = getPathsById();
+      const importableCharacters = groups.importableCharacters.filter(character => {
+        const pathId = pathsById[character.path] ? character.path : character.path?.toLowerCase();
+        return Boolean(pathsById[pathId]);
+      });
+      setHasUnsupportedCharacters(groups.hiddenCharacters.length > 0);
+      return [ ...groups.supportedCharacters, ...importableCharacters ];
     };
 
     const loadPools = async metadata => getPoolsFromMetadata(metadata);

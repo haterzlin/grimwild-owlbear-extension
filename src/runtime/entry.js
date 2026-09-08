@@ -42,7 +42,9 @@ const createRuntimeScreens = obr => {
       logo: APP_ASSETS.logo,
       dividerPrimary: APP_ASSETS.dividerPrimary
     },
-    getPathAssets: () => pathAssets
+    getPathAssets: () => pathAssets,
+    getPathsById: () => pathsById,
+    getBackgroundTalents: () => backgroundTalents
   });
 
   const CharacterSheet = createCharacterSheetScreen({

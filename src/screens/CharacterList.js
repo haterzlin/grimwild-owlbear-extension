@@ -1,8 +1,12 @@
 import {
+  buildConvertedCharacter,
   buildCharacterCreatePatch,
   buildCharacterRemovePatch,
   createEmptyCharacter,
-  getCharacterRowViewModel
+  getCharacterRowViewModel,
+  getNextCharacterId,
+  isImportableLegacyCharacter,
+  isSupportedCharacter
 } from "../domain/characters.js";
 import { writeSceneMetadata } from "../core/metadata.js";
 
@@ -14,6 +18,8 @@ import { writeSceneMetadata } from "../core/metadata.js";
  * @property {(base: string, extras?: Object<string, boolean>) => string} classNames
  * @property {{ logo: string, dividerPrimary: string }} assets
  * @property {() => Object<string, string>} getPathAssets
+ * @property {() => Object<string, Object>} getPathsById
+ * @property {() => Object[]} getBackgroundTalents
  */
 
 /**
@@ -27,7 +33,9 @@ export function createCharacterListScreens(dependencies) {
     styles,
     classNames,
     assets,
-    getPathAssets
+    getPathAssets,
+    getPathsById,
+    getBackgroundTalents
   } = dependencies;
   const { jsx, jsxs } = jsxRuntime;
 
@@ -35,8 +43,9 @@ export function createCharacterListScreens(dependencies) {
     writeSceneMetadata(obr.scene, patch);
   };
 
-  const CharacterRow = ({ player, onRemove, onOpen }) => {
+  const CharacterRow = ({ player, onRemove, onOpen, onImport }) => {
     const viewModel = getCharacterRowViewModel(player, getPathAssets());
+    const isLegacy = isImportableLegacyCharacter(player);
 
     return jsx("div", {
       className: classNames(styles.fieldContainer),
@@ -78,7 +87,17 @@ export function createCharacterListScreens(dependencies) {
             },
             children: viewModel.pathLabel
           }),
-          jsx("button", {
+          isLegacy ? jsx("button", {
+            className: styles.statButton,
+            style: {
+              width: 240,
+              marginLeft: "auto"
+            },
+            onClick: () => {
+              onImport();
+            },
+            children: `Importovat „${viewModel.name}“ do CE 5.3`
+          }) : jsx("button", {
             className: styles.statButton,
             style: {
               width: 40,
@@ -89,7 +108,7 @@ export function createCharacterListScreens(dependencies) {
             },
             children: "Open"
           }),
-          jsx("button", {
+          !isLegacy && jsx("button", {
             className: styles.statButton,
             style: {
               width: "0.75rem",
@@ -117,6 +136,16 @@ export function createCharacterListScreens(dependencies) {
       if (confirm("Are you sure you want to delete the character?") === true) {
         writePatch(buildCharacterRemovePatch(metadata, characterId));
       }
+    };
+
+    const handleImportCharacter = async oldCharacter => {
+      const metadata = await obr.scene.getMetadata();
+      const converted = buildConvertedCharacter(oldCharacter, {
+        id: getNextCharacterId(metadata),
+        pathsById: getPathsById(),
+        backgroundTalents: getBackgroundTalents()
+      });
+      if (converted) writePatch(buildCharacterCreatePatch(metadata, converted));
     };
 
     return jsx("div", {
@@ -178,11 +207,14 @@ export function createCharacterListScreens(dependencies) {
           }),
           playerList.map(player => jsx(CharacterRow, {
             player,
-            onRemove: () => {
+            onRemove: isSupportedCharacter(player) ? () => {
               handleRemoveCharacter(player.id);
-            },
+            } : null,
             onOpen: () => {
               onOpen(player);
+            },
+            onImport: () => {
+              handleImportCharacter(player);
             }
           }, player.id))
         ]
