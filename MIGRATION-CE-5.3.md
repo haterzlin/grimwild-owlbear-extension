@@ -21,7 +21,7 @@ Sources, in priority order:
 2. **Actual baseline rules:** [GWCE P5.2 Pages.pdf](<../ce-5/GWCE P5.2 Pages.pdf>) (**P52**). Compare these directly with P53 to separate new changes from pre-existing omissions.
 3. **Target sheets:** [Character Sheets P5.3.pdf](<../ce-5.3/Character Sheets P5.3.pdf>) (**S53**), supporting tracker/layout evidence, not authority over conflicting rules text.
 4. **Change log:** [CE Change Log.pdf](<../ce-5.3/CE Change Log.pdf>). It combines changes from multiple previews and the older edition; it is not a standalone 5.2 → 5.3 checklist.
-5. [ce-5/sheet](../ce-5/sheet) and [5.2 sheets](<../ce-5/Character Sheets (P5.2).pdf>) are supporting **old** UI/content references only. There is no corresponding 5.3 HTML sheet folder or 5.3 Collected Talents PDF in the supplied sources. Do not treat the older Collected Talents as new content.
+5. [5.2 sheets](../sheet) and [5.2 sheets](<../ce-5/Character Sheets (P5.2).pdf>) are supporting **old** UI/content references only. There is no corresponding 5.3 HTML sheet folder or 5.3 Collected Talents PDF in the supplied sources. Do not treat the older Collected Talents as new content.
 
 The target Spreads PDF is an alternate layout; Printable Story Kits do not imply a new story-kit subsystem in this extension. Do not modify source PDFs or translated sheets as part of this migration.
 

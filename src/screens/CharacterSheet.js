@@ -471,6 +471,13 @@ export default function createCharacterSheetScreen(dependencies) {
                   children: [
                     jsxs("div", {
                       className: classNames(styles.fieldRow),
+                      style: {
+                        display: "grid",
+                        gridTemplateColumns: "4rem auto auto",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "0.25rem"
+                      },
                       children: [
                         jsx("b", {
                           children: "Thread"
@@ -495,6 +502,13 @@ export default function createCharacterSheetScreen(dependencies) {
                     }),
                     jsxs("div", {
                       className: classNames(styles.fieldRow),
+                      style: {
+                        display: "grid",
+                        gridTemplateColumns: "4rem auto auto",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "0.25rem"
+                      },
                       children: [
                         jsx("b", {
                           children: "Spark"
