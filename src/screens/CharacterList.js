@@ -50,7 +50,8 @@ export function createCharacterListScreens(dependencies) {
     return jsx("div", {
       className: classNames(styles.fieldContainer),
       style: {
-        flexDirection: "row"
+        flexDirection: "row",
+        alignItems: "center"
       },
       children: jsxs("div", {
         className: styles.characterRow,
@@ -66,6 +67,9 @@ export function createCharacterListScreens(dependencies) {
           }),
           jsx("div", {
             className: styles.fieldLabel,
+            style: {
+              lineHeight: "1.25rem"
+            },
             children: "PC: "
           }),
           jsx("input", {
@@ -73,24 +77,37 @@ export function createCharacterListScreens(dependencies) {
             value: viewModel.name,
             readOnly: true,
             style: {
-              width: 140
+              width: 120,
+              minWidth: 0,
+              lineHeight: "1.25rem"
             }
           }),
           jsx("div", {
             className: styles.fieldLabel,
+            style: {
+              lineHeight: "1.25rem"
+            },
             children: "Path: "
           }),
           jsx("div", {
             className: styles.header,
             style: {
-              width: 100
+              width: 110,
+              minWidth: 0,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              fontSize: "0.75rem",
+              lineHeight: "1.25rem",
+              transform: "translateY(1.5px)"
             },
             children: viewModel.pathLabel
           }),
           isLegacy ? jsx("button", {
             className: styles.statButton,
             style: {
-              marginLeft: "auto"
+              marginLeft: "auto",
+              flexShrink: 0
             },
             onClick: () => {
               onImport();
@@ -100,7 +117,8 @@ export function createCharacterListScreens(dependencies) {
             className: styles.statButton,
             style: {
               width: 40,
-              marginLeft: "auto"
+              marginLeft: "auto",
+              flexShrink: 0
             },
             onClick: () => {
               onOpen();
