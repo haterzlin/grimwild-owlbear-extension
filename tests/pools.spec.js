@@ -454,7 +454,7 @@ test.describe("Pools", () => {
             return Object.values(poolMetadata).map(pool => pool.value).sort((a, b) => a - b);
           });
         })
-        .toEqual([ 4, 6, 8 ]);
+        .toEqual([ 2, 4, 8 ]);
 
       await page.getByRole("button", { name: "×" }).last().click();
       await page.getByRole("button", { name: "×" }).last().click();

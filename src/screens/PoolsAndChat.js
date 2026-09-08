@@ -611,14 +611,14 @@ export function createPoolsAndChatScreens(dependencies) {
                     jsx("button", {
                       className: styles.statButton,
                       onClick: () => {
-                        addPool(4);
+                        addPool(2);
                       },
                       children: "Short"
                     }),
                     jsx("button", {
                       className: styles.statButton,
                       onClick: () => {
-                        addPool(6);
+                        addPool(4);
                       },
                       children: "Mid"
                     }),
