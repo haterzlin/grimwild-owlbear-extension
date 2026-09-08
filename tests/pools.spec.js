@@ -423,8 +423,12 @@ test.describe("Pools", () => {
       await expect(popup.getByRole("button", { name: "Close", exact: true })).toBeVisible();
 
       const popupClosed = popup.waitForEvent("close");
-      await popup.getByRole("button", { name: "Close", exact: true }).click();
-      await popupClosed;
+      await Promise.all([
+        popupClosed,
+        popup.getByRole("button", { name: "Close", exact: true }).click().catch(error => {
+          if (!error.message.includes("page has been closed")) throw error;
+        })
+      ]);
 
       await expect
         .poll(async () => page.evaluate(() => window.__grimwildTestApi.getPopoverState().isOpen))
