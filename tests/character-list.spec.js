@@ -226,12 +226,28 @@ test.describe("Character List", () => {
 
       const metadata = await page.evaluate(() => window.__grimwildTestApi.getMetadata());
       const records = metadata["grimwild.character.extension/metadata"];
+      const firstConverted = Object.values(records).find(character => character.convertedFrom === 11);
       expect(records[11]).toEqual(oldCharacter);
       expect(Object.values(records)).toHaveLength(2);
       expect(page.getByRole("button", { name: "Importovat „Conan“ do CE 5.3" })).toHaveCount(0);
       expect(metadata["grimwild.pool.extension/metadata"]).toEqual({ pool: { id: "pool" } });
       expect(metadata["grimwild.extension/metadata"]).toEqual({ chat: [{ id: 1, description: "keep" }] });
       expect(metadata["grimwild.gm.extension/metadata"]).toEqual({ suspense: "3" });
+
+      page.once("dialog", dialog => dialog.accept());
+      await page.locator('input[value="Conan"]').locator("xpath=ancestor::div[contains(@class,\"_characterRow_\")]").getByRole("button", { name: "×" }).click();
+      await expect(page.getByRole("button", { name: "Importovat „Conan“ do CE 5.3" })).toBeVisible();
+
+      await page.getByRole("button", { name: "Importovat „Conan“ do CE 5.3" }).click();
+      await expect.poll(async () => page.evaluate(() => {
+        const characterMetadata = window.__grimwildTestApi.getMetadata()["grimwild.character.extension/metadata"];
+        return Object.values(characterMetadata).find(character => character.convertedFrom === 11)?.id;
+      })).toBeGreaterThan(firstConverted.id);
+
+      const reimportedMetadata = await page.evaluate(() => window.__grimwildTestApi.getMetadata());
+      const reimportedRecords = reimportedMetadata["grimwild.character.extension/metadata"];
+      expect(reimportedRecords[11]).toEqual(oldCharacter);
+      expect(Object.values(reimportedRecords)).toHaveLength(2);
     } finally {
       await flushDebug();
     }

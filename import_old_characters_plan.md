@@ -190,6 +190,13 @@ neplatné nebo již převedené záznamy zůstává do fáze 5, jak předpoklád
 
 ## Fáze 4 — Znovuimportování po smazání nové postavy
 
+**Stav: dokončeno.**
+
+Fáze nevyžadovala změnu implementace: `CharacterList` již používá existující
+`buildCharacterRemovePatch`, který smaže pouze konvertovanou postavu. Při
+dalším načtení se tím automaticky odstraní její ID z `convertedFrom` odkazů a
+starší záznam se znovu zařadí mezi importovatelné postavy.
+
 ### Změna
 
 Znovu použít existující `buildCharacterRemovePatch`. Po smazání konvertované
@@ -204,6 +211,18 @@ Ve stejném nebo navazujícím testu:
 - ověřit, že stará postava se znovu objeví,
 - znovu ji importovat,
 - ověřit vznik nové postavy s novým ID.
+
+**Výsledek ověření:** Rozšířen E2E scénář z fáze 3 o smazání konvertované
+postavy, znovuobjevení staršího záznamu, opakovaný import a kontrolu nového ID.
+Originální záznam zůstává při obou importech nezměněný.
+
+Spuštěno `npm run test:character-list` — 6 testů prošlo. Spuštěno
+`npm run test:paths` — 9 testů prošlo. Spuštěno `npm run build` — produkční
+build prošel (Vite, 53 modulů). Celý `npm run test:e2e` zůstává plánovaný pro
+fázi 5.
+
+**Odchylky:** Žádné; implementace fáze 4 je pouze opětovné použití existujícího
+mazacího patchování.
 
 ## Fáze 5 — Odstranění starého varování a regresní kontrola
 
