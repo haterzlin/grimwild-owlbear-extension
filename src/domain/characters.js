@@ -4,6 +4,7 @@ import {
   isSupportedCharacter,
   getCharactersFromMetadata
 } from "../core/metadata.js";
+import { getPathData, initializeTalent } from "./paths.js";
 
 export { CE_RULES_VERSION, isSupportedCharacter };
 
@@ -91,6 +92,47 @@ export const getNextCharacterId = (metadata, idFactory = () => Date.now()) => {
   let id = idFactory();
   while (usedIds.has(id)) id += 1;
   return id;
+};
+
+export const buildConvertedCharacter = (oldCharacter, {
+  id,
+  pathsById = {},
+  backgroundTalents = []
+} = {}) => {
+  const pathId = pathsById[oldCharacter.path]
+    ? oldCharacter.path
+    : oldCharacter.path?.toLowerCase();
+  const pathData = getPathData(pathsById, pathId);
+  if (!pathData) return null;
+
+  const {
+    id: oldId,
+    rulesVersion: oldRulesVersion,
+    coreTalent: oldCoreTalent,
+    talents: oldTalents,
+    convertedFrom: oldConvertedFrom,
+    lastEdit,
+    ...preservedData
+  } = oldCharacter;
+  const currentTalents = [
+    ...Object.values(pathsById).flatMap(path => path?.pathTalent ?? []),
+    ...backgroundTalents
+  ];
+  const talentsByName = new Map(currentTalents.map(talent => [talent.name, talent]));
+
+  return {
+    ...createEmptyCharacter(() => id),
+    ...preservedData,
+    id,
+    rulesVersion: CE_RULES_VERSION,
+    path: pathId,
+    coreTalent: initializeTalent(pathData.coreTalent),
+    talents: (Array.isArray(oldTalents) ? oldTalents : [])
+      .map(talent => talentsByName.get(talent?.name))
+      .filter(Boolean)
+      .map(initializeTalent),
+    convertedFrom: oldId
+  };
 };
 
 export const getUnsupportedCharactersFromMetadata = metadata =>

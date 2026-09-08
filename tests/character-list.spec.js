@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import {
+  buildConvertedCharacter,
   getCharacterGroupsFromMetadata,
   getNextCharacterId
 } from "../src/domain/characters.js";
@@ -29,6 +30,57 @@ test.describe("Character List", () => {
       "grimwild.character.extension/metadata": { 1: supported, 2: legacy }
     }).importableCharacters).toEqual([ legacy ]);
     expect(getNextCharacterId(metadata, () => 3)).toBe(5);
+  });
+
+  test("converts legacy data with current catalog talents and default trackers", () => {
+    const oldCharacter = buildCharacter({
+      id: 7,
+      rulesVersion: "ce-p5.2",
+      name: "Old Character",
+      path: "BARD",
+      experience: 4,
+      bonds: [{ name: "Keep this bond" }],
+      coreTalent: { name: "OLD CORE", trackers: [{ type: "checkbox", checked: true }] },
+      talents: [
+        { name: "KNOWN", trackers: [{ type: "checkbox", checked: true }] },
+        { name: "REMOVED", trackers: [{ type: "field", value1: "old" }] },
+        { name: "BACKGROUND", trackers: [{ type: "field", value1: "old" }] }
+      ]
+    });
+    const pathsById = {
+      bard: {
+        coreTalent: { name: "CURRENT CORE", trackers: [{ type: "checkbox" }] },
+        pathTalent: [{ name: "KNOWN", trackers: [{ type: "checkbox" }] }]
+      }
+    };
+    const backgroundTalents = [{ name: "BACKGROUND", trackers: [{ type: "field" }] }];
+
+    const converted = buildConvertedCharacter(oldCharacter, {
+      id: 8,
+      pathsById,
+      backgroundTalents
+    });
+
+    expect(converted).toMatchObject({
+      id: 8,
+      rulesVersion: "ce-p5.3",
+      convertedFrom: 7,
+      name: "Old Character",
+      path: "bard",
+      experience: 4,
+      bonds: oldCharacter.bonds
+    });
+    expect(converted.coreTalent).toEqual({
+      name: "CURRENT CORE",
+      trackers: [{ type: "checkbox", checked: false }]
+    });
+    expect(converted.talents).toEqual([
+      { name: "KNOWN", trackers: [{ type: "checkbox", checked: false }] },
+      { name: "BACKGROUND", trackers: [{ type: "field", value1: "" }] }
+    ]);
+    expect(oldCharacter.coreTalent.trackers[0].checked).toBe(true);
+    expect(oldCharacter.talents[0].trackers[0].checked).toBe(true);
+    expect(buildConvertedCharacter(oldCharacter, { id: 8, pathsById: {} })).toBeNull();
   });
 
   test("keeps row actions visible for an empty-path character with a long name", async ({ page }, testInfo) => {

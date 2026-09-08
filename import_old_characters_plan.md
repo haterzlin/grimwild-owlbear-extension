@@ -79,6 +79,19 @@ spouštěn, protože fáze 1 nemění UI ani importní tok.
 
 ## Fáze 2 — Minimální převod dat
 
+**Stav: dokončeno.**
+
+Přidána čistá funkce `buildConvertedCharacter` v
+`src/domain/characters.js`. Používá `createEmptyCharacter`, `initializeTalent`
+a katalogové struktury; vrací `null`, pokud cesta není v katalogu dostupná.
+Při převodu normalizuje cestu na katalogový klíč, nastaví aktuální core talent,
+vybere známé běžné talenty napříč cestami a background katalogem, inicializuje
+jejich trackery a přidá `convertedFrom`. Původní objekt se nemění.
+
+**Odchylky:** Žádné funkční odchylky od fáze 2. Normalizace velikosti názvu
+cesty je pouze kompatibilita se staršími záznamy; UI import a filtrování podle
+dostupného katalogu zůstávají plánované pro fázi 3.
+
 ### Změna
 
 V `src/domain/characters.js` přidat jednu čistou funkci pro sestavení nové
@@ -110,6 +123,17 @@ Ověřit převod na staré postavě s:
 
 Výsledek musí mít aktuální core talent, pouze známé talenty, prázdné výchozí
 trackery, stejné XP a stejné zachované údaje.
+
+**Výsledek ověření:** Přidán doménový test se starou cestou ve velkých písmenech,
+starým core talentem, známým i neznámým běžným talentem, background talentem,
+vyplněnými trackery, XP a bondem. Ověřuje nové ID, verzi, `convertedFrom`,
+aktuální core talent, výchozí trackery, zachovaná data, nezměněný originál a
+odmítnutí nedostupné cesty.
+
+Spuštěno `npm run test:character-list` — 5 testů prošlo. Spuštěno `npm run
+test:paths` — 9 testů prošlo. Spuštěno `npm run build` — produkční build
+prošel (Vite, 53 modulů). Celý `npm run test:e2e` nebyl spouštěn, protože fáze
+2 nemění UI ani importní tok.
 
 ## Fáze 3 — Zobrazení a import v `CharacterList`
 
