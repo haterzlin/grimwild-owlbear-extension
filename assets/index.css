@@ -66,6 +66,9 @@ button {
 button:hover {
   background-color:#fff
 }
+select:hover {
+  background-color:#fff
+}
 button:active {
   background-color:#ddd
 }

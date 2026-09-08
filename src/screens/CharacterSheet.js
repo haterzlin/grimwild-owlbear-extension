@@ -93,6 +93,9 @@ export default function createCharacterSheetScreen(dependencies) {
       onChange(event.target.value);
     }
   }) : jsxs("select", {
+    style: {
+      cursor: "pointer"
+    },
     onChange: event => {
       onChange(event.target.value);
     },
