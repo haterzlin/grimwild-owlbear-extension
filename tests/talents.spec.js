@@ -69,6 +69,22 @@ test.describe("Talents", () => {
     }
   });
 
+  test("formats the artificer core talent like the character sheet", async ({ page }, testInfo) => {
+    const flushDebug = attachDebugLogging(page, testInfo);
+    try {
+      await openPathTabWithCorePath(page, "artificer");
+
+      await expect(page.getByText("INFUSION:", { exact: true })).toBeVisible();
+      await expect(page.getByText("ENGINEER:", { exact: true })).toBeVisible();
+      await expect(page.locator("i").filter({ hasText: "Growth: At levels 2, 4, and 6" })).toBeVisible();
+      await expect(page.getByText("TRACKERS", { exact: true })).toHaveCount(0);
+      await expect(page.getByText("Major Arcana", { exact: true })).toHaveCount(0);
+      await expect(page.getByText("Touchstones", { exact: true })).toHaveCount(0);
+    } finally {
+      await flushDebug();
+    }
+  });
+
   test("broadcasts the renamed Preview 5.3 talent", async ({ page }, testInfo) => {
     const flushDebug = attachDebugLogging(page, testInfo);
     try {

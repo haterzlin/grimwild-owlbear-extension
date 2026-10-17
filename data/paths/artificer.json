@@ -4,17 +4,7 @@
   "quote": "You shape the world with your creations, blending ingenuity, craftsmanship, and magic to forge and enchant wonders.",
   "coreTalent": {
     "name": "INFUSION",
-      "description": "You harness the power of creativity. You know 6 touchstones from the arcana crucibles (and all functions), and have created 3 major arcana using them. Anyone can use them with the most relevant stat (as arcana), though it always carries risk for those other than you. Given time, you can: disassemble and rebuild them using any touchstones you know - pull off a potent feat of mechanical ingenuity. You can push yourself to do it on the spot. Engineer: Take +1d at creating, repairing, or destroying mechanisms and arcana. You can also deconstruct arcana to learn their touchstones, destroying them in the process. [Growth: At levels 2, 4, and 6, you can create +1 major arcana and learn 2 touchstones.] Arcana doesn't regain uses when rebuilt, but those that expand vantage can still do so.",
-    "trackers": [
-      {
-        "name": "Major Arcana",
-        "type": "field"
-      },
-      {
-        "name": "Touchstones",
-        "type": "field"
-      }
-    ]
+      "description": "<b>INFUSION:</b> You harness the power of creativity. You know 6 touchstones from the arcana crucibles (and all functions), and have created 3 major arcana using them. Anyone can use them with the most relevant stat (as arcana), though it always carries risk for those other than you. Given time, you can: disassemble and rebuild them using any touchstones you know - pull off a potent feat of mechanical ingenuity. You can push yourself to do it on the spot.<br><br><b>ENGINEER:</b> Take +1d at creating, repairing, or destroying mechanisms and arcana. You can also deconstruct arcana to learn their touchstones, destroying them in the process.<br><br><i>Growth: At levels 2, 4, and 6, you can create +1 major arcana and learn 2 touchstones.</i><br><br>Arcana doesn't regain uses when rebuilt, but those that expand vantage can still do so."
   },
   "details": [],
   "pathTalent": [

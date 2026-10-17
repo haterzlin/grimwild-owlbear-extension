@@ -136,6 +136,8 @@ test.describe("Paths", () => {
       expect(result.paths.warlock.pathTalent.find(talent => talent.name === "MAGUS").description).toContain("Once per session");
       expect(result.paths.witch.pathTalent.find(talent => talent.name === "WONDER MAGNET").description).toContain("any action");
       expect(result.details.artificer[0].description).toContain("refresh every session");
+      expect(result.details.artificer[1].description).toContain("zapp-");
+      expect(result.details.artificer[1].description).toContain("-knob");
       expect(result.details.summoner.find(detail => detail.name === "FALLOUT").description).toContain("On a perfect");
     } finally {
       await flushDebug();

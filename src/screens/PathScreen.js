@@ -53,7 +53,7 @@ export function createPathScreens(dependencies) {
     writeSceneMetadata(obr.scene, patch);
   };
 
-  const TalentCard = ({ talent, onSelect, onRemove, onChangeTracker, onBroadcast, isSelected }) => {
+  const TalentCard = ({ talent, onSelect, onRemove, onChangeTracker, onBroadcast, isSelected, headerText = talent.name, showHeader = true, showDescription = true, showTrackers = true }) => {
     const compactTrackerGroups = [];
     talent.trackers?.forEach((tracker, trackerIndex) => {
       if (tracker.type === "fieldSmallLong") return;
@@ -145,16 +145,16 @@ export function createPathScreens(dependencies) {
     return jsxs("div", {
       className: classNames(styles.fieldColumn, styles.statContainer),
       children: [
-        jsxs("div", {
+        showHeader && jsxs("div", {
           className: styles.fieldRowNoSpread,
           style: {
             alignItems: "center",
             minHeight: "2rem"
           },
           children: [
-            jsx("div", {
+            showHeader && jsx("div", {
               className: styles.header,
-              children: talent.name
+              children: headerText
             }),
             onRemove && jsx("div", {
               style: {
@@ -169,7 +169,7 @@ export function createPathScreens(dependencies) {
             })
           ]
         }),
-        talent.trackers?.map((tracker, trackerIndex) => tracker.type !== "fieldSmallLong" ? "" : jsxs("div", {
+        showTrackers && talent.trackers?.map((tracker, trackerIndex) => tracker.type !== "fieldSmallLong" ? "" : jsxs("div", {
           className: classNames(styles.fieldStatContainerSmallRow, styles.statDetail),
           children: [
             jsx("div", {
@@ -197,18 +197,18 @@ export function createPathScreens(dependencies) {
             })
           ]
         }, tracker.name + trackerIndex)),
-        jsx("img", {
+        showDescription && jsx("img", {
           src: assets.dividerSecondary
         }),
-        jsx("div", {
+        showDescription && jsx("div", {
           dangerouslySetInnerHTML: {
             __html: talent.description
           }
         }),
-        jsx("img", {
+        showDescription && jsx("img", {
           src: assets.dividerSecondary
         }),
-        jsx("div", {
+        showTrackers && jsx("div", {
           children: jsx("div", {
             className: styles.statDetail,
             children: jsxs("div", {
@@ -345,14 +345,23 @@ export function createPathScreens(dependencies) {
           children: "CORE TALENT"
         }),
         jsx(TalentCard, {
+          talent: player.coreTalent ? { ...player.coreTalent, description: pathData.coreTalent.description } : pathData.coreTalent,
+          showHeader: pathData.name !== "ARTIFICER",
+          showTrackers: pathData.name !== "ARTIFICER",
+          onBroadcast: broadcast,
+          onChangeTracker: (tracker, trackerIndex) => {
+            updatePlayer(updateCoreTalentTracker(player, tracker, trackerIndex));
+          }
+        }),
+        pathData.name === "ARTIFICER" && pathData.coreTalent.trackers?.length ? jsx(TalentCard, {
           talent: player.coreTalent ?? pathData.coreTalent,
+          headerText: "TRACKERS",
+          showDescription: false,
           onChangeTracker: (tracker, trackerIndex) => {
             updatePlayer(updateCoreTalentTracker(player, tracker, trackerIndex));
           },
-          onBroadcast: () => {
-            broadcast(pathData.coreTalent);
-          }
-        }),
+          onBroadcast: () => {}
+        }) : "",
         jsx("img", {
           src: assets.dividerSecondary
         }),
