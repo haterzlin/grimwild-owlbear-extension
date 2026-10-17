@@ -50,16 +50,16 @@ Practical rule:
 
 ## Local run
 
-Run the app through Vite on `http://127.0.0.1:8000`:
+Run the app through Vite on `http://localhost:8000`:
 
 ```bash
-npm run dev -- --host 127.0.0.1 --port 8000 --strictPort
+npm run dev -- --host localhost --port 8000 --strictPort
 ```
 
 Then install the extension in Owlbear Rodeo from:
 
 ```text
-http://127.0.0.1:8000/manifest.json
+http://localhost:8000/manifest.json
 ```
 
 For local mock-runtime testing, open:
@@ -72,7 +72,7 @@ To verify the production build locally:
 
 ```bash
 npm run build
-npm run preview -- --host 127.0.0.1 --port 8000 --strictPort
+npm run preview -- --host localhost --port 8000 --strictPort
 ```
 
 ## Tests
