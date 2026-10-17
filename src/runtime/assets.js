@@ -16,7 +16,7 @@ export const DEFAULT_PATH_ASSETS = {
   summoner: "/assets/summoner.webp",
   swashbuckler: "/assets/swashbuckler.webp",
   witch: "/assets/witch.webp",
-  adventurer: null
+  adventurer: "/assets/adventurer.webp"
 };
 
 export const APP_ASSETS = {
