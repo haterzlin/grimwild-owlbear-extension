@@ -404,7 +404,7 @@ export function createPathScreens(dependencies) {
           if (onSelect) onSelect(pathId);
         },
         children: [
-          jsx("img", {
+          getPathAssets()[pathId] && jsx("img", {
             src: getPathAssets()[pathId],
             width: 80
           }),
